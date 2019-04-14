@@ -6,9 +6,7 @@ export default () => (
   <div>
     <span className={root}>Landing element</span>
     <Link to="/main/">
-      <div>
-        Sing in as guest
-      </div>
+      <div>Sing in as guest</div>
     </Link>
   </div>
 );
