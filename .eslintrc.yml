@@ -1,0 +1,21 @@
+---
+extends:
+  - airbnb
+  - prettier
+
+plugins:
+  - react
+  - jsx-a11y
+  - import
+  - filenames
+  - prettier
+
+rules:
+  filenames/match-regex:
+    - 2
+    - "^[a-z-\\.]+$"
+  react/jsx-filename-extension:
+    - 0
+
+env:
+  browser: true
