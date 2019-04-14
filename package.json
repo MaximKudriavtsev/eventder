@@ -1,0 +1,15 @@
+{
+  "name": "eventder",
+  "version": "0.0.1",
+  "description": "Eventder App",
+  "repository": "https://github.com/MaximKudriavtsev/eventder",
+  "author": "no@no.net",
+  "license": "Licence",
+  "private": true,
+  "scripts": {
+    "start": "parcel index.html --port 3000"
+  },
+  "devDependencies": {
+    "parcel-bundler": "^1.12.3"
+  }
+}
