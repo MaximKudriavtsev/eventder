@@ -16,6 +16,8 @@ rules:
     - "^[a-z-\\.]+$"
   react/jsx-filename-extension:
     - 0
+  no-console:
+    - 0
 
 env:
   browser: true
