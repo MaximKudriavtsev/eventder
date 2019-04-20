@@ -17,3 +17,23 @@
   node index.js
   ```
 - result will be at `result.json` file
+
+## Result Interface
+
+`result.json`
+
+```js
+{
+  id: number | string,
+  display_url: string,
+  preview_url: string,
+  owner_id: number | string,
+  taken_at_timestamp: number | string,
+  location: {
+    lat: number,
+    lng: number,
+    name: string,
+    instagramId: number
+  }
+}
+```
