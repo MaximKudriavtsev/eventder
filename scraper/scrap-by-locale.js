@@ -14,7 +14,6 @@ module.exports = async (login, password, location) => {
   );
 };
 
-
 // for testing
 
 // times
@@ -28,7 +27,6 @@ module.exports = async (login, password, location) => {
 //   console.log("");
 //   console.log(`Start downloading photos data from ...`);
 
-  
 //   execSync(
 //     `instagram-scraper --location ${
 //       tulaRussia
