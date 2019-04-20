@@ -44,8 +44,8 @@ fs.readdir(directoryPath, (err, fileNames) => {
     return [...data, ...finalData];
   }, []);
 
-  console.log(resultData);
-
   overrideFileIfChanged(resultDataFileName, JSON.stringify(resultData));
+
+  console.log(`Done! Records: ${resultData.length}`);
   return 0;
 });
