@@ -1,11 +1,12 @@
 import * as React from "react";
 import { Link } from "react-router-dom";
-import "./top.scss";
+import styles, { root, title } from "./top.scss";
 
+console.log(styles);
 export default () => (
-  <div className="root">
-    <div className="logo-container">
-      <span className="title">EVENTDER</span>
+  <div className={root}>
+    <div className={styles["logo-container"]}>
+      <span className={title}>EVENTDER</span>
       <Link to="/main/">
         <div>Sing in as guest</div>
       </Link>

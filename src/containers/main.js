@@ -1,6 +1,7 @@
 import * as React from "react";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
+import { Map } from "../components";
 
 import * as actions from "../actions/actions";
 
@@ -15,7 +16,7 @@ class Main extends React.PureComponent {
   }
 
   render() {
-    return <span>Map element</span>;
+    return <Map />;
   }
 }
 
