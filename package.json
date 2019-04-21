@@ -48,6 +48,7 @@
     "stylelint-config-standard": "^18.3.0"
   },
   "dependencies": {
+    "regenerator-runtime": "^0.13.2",
     "autoprefixer": "^9.5.1",
     "postcss-modules": "^1.4.1",
     "react": "^16.8.6",
