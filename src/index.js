@@ -3,11 +3,11 @@ import ReactDOM from "react-dom";
 import { Provider } from "react-redux";
 import App from "./containers/app";
 import configureStore from "./store";
-import rootSaga from "./sagas";
+import getUserLocation from "./sagas";
 import "./index.scss";
 
 const store = configureStore();
-store.runSaga(rootSaga);
+store.runSaga(getUserLocation);
 
 ReactDOM.render(
   <Provider store={store}>
