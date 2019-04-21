@@ -2,7 +2,6 @@ import * as React from "react";
 import { Link } from "react-router-dom";
 import styles, { root, title } from "./top.scss";
 
-console.log(styles);
 export default () => (
   <div className={root}>
     <div className={styles["logo-container"]}>
