@@ -1,5 +1,5 @@
-import { put, call } from "redux-saga/effects";
-import * as actions from "../actions/actions";
+import { put, call } from 'redux-saga/effects';
+import * as actions from '../actions/actions';
 
 const getLocation = () => {
   return new Promise(res => {

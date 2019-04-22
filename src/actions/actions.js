@@ -1,4 +1,4 @@
-import * as ActionTypes from "./action-types";
+import * as ActionTypes from './action-types';
 
 export const getUserLocation = payload => ({
   type: ActionTypes.RECEIVE_USER_LOCATION,
@@ -6,6 +6,6 @@ export const getUserLocation = payload => ({
 });
 
 export const testAction = () => ({
-  type: "TEST",
-  payload: "test"
+  type: 'TEST',
+  payload: 'test'
 });

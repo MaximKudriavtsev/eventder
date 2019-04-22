@@ -1,7 +1,7 @@
-import * as React from "react";
-import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
-import Landing from "./landing";
-import Main from "./main";
+import * as React from 'react';
+import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
+import Landing from './landing';
+import Main from './main';
 
 export default () => (
   <Router>

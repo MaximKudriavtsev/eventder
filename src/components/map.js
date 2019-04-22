@@ -1,8 +1,8 @@
-import * as React from "react";
-import PropTypes from "prop-types";
-import MapGL from "@urbica/react-map-gl";
-import "mapbox-gl/dist/mapbox-gl.css";
-import { root } from "./map.scss";
+import * as React from 'react';
+import PropTypes from 'prop-types';
+import MapGL from '@urbica/react-map-gl';
+import 'mapbox-gl/dist/mapbox-gl.css';
+import { root } from './map.scss';
 
 const Map = ({ viewport, onViewportChange, ...restProps }) => (
   <MapGL

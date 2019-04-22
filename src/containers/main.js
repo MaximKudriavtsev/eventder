@@ -1,9 +1,9 @@
-import * as React from "react";
-import { connect } from "react-redux";
-import { bindActionCreators } from "redux";
-import { Map } from "../components";
+import * as React from 'react';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+import { Map } from '../components';
 
-import * as actions from "../actions/actions";
+import * as actions from '../actions/actions';
 
 /* eslint-disable react/prop-types */
 class Main extends React.PureComponent {

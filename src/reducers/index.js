@@ -1,4 +1,4 @@
-import * as ActionTypes from "../actions/action-types";
+import * as ActionTypes from '../actions/action-types';
 
 const initialState = {
   images: [],
@@ -8,7 +8,7 @@ const initialState = {
 export default (state = initialState, { type, payload }) => {
   switch (type) {
     case ActionTypes.ERROR: {
-      console.log("ERROR");
+      console.log('ERROR');
       console.log(payload);
       return state;
     }

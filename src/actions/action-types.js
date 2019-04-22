@@ -1,2 +1,2 @@
-export const RECEIVE_USER_LOCATION = "RECEIVE_USER_LOCATION";
-export const ERROR = "ERROR";
+export const RECEIVE_USER_LOCATION = 'RECEIVE_USER_LOCATION';
+export const ERROR = 'ERROR';
