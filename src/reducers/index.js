@@ -14,7 +14,6 @@ export default (state = initialState, { type, payload }) => {
     }
 
     case ActionTypes.RECEIVE_USER_LOCATION: {
-      console.log(payload);
       return {
         ...state,
         userLocation: payload

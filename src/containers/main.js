@@ -18,7 +18,20 @@ class Main extends React.PureComponent {
       }
     };
 
-    // props.actions.getUserLocation();
+    props.actions.getUserLocationInit();
+  }
+
+  static getDerivedStateFromProps(nextProps, prevState) {
+    const { viewport: prevViewport } = prevState;
+    const { userLocation } = nextProps;
+
+    return {
+      viewport: {
+        ...prevViewport,
+        latitude: userLocation[0],
+        longitude: userLocation[1]
+      }
+    };
   }
 
   render() {

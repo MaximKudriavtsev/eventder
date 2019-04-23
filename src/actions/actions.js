@@ -9,3 +9,7 @@ export const testAction = () => ({
   type: 'TEST',
   payload: 'test'
 });
+
+export const getUserLocationInit = () => ({
+  type: ActionTypes.GET_USER_LOCATION
+});
