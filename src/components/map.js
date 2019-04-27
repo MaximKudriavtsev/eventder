@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import MapGL, { Marker } from '@urbica/react-map-gl';
 import 'mapbox-gl/dist/mapbox-gl.css';
 import { root } from './map.scss';
-import data from '../../scraper/result.json';
+import data from '../../scraper-vk/result.json';
 
 const Map = ({ viewport, onViewportChange, ...restProps }) => (
   <MapGL
