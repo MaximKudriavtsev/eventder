@@ -51,7 +51,7 @@ const PostPreview = ({ open, toggleVisible, postData }) => {
 
         <div className={container} style={{ alignItems: 'flex-end' }}>
           <p className={mainText}>Адрес</p>
-          <p className={childText}>123</p>
+          <p className={childText}>Тула</p>
         </div>
       </ModalFooter>
     </Modal>
@@ -63,7 +63,19 @@ export default PostPreview;
 PostPreview.propTypes = {
   open: PropTypes.bool,
   toggleVisible: PropTypes.func,
-  postData: PropTypes.objectOf(PropTypes.object)
+  postData: PropTypes.objectOf({
+    id: PropTypes.number,
+    display_url: PropTypes.string,
+    preview_url: PropTypes.string,
+    owner_id: PropTypes.number,
+    taken_at_timestamp: PropTypes.number,
+    location: {
+      lat: PropTypes.number,
+      lng: PropTypes.number,
+      name: PropTypes.string,
+      instagramId: PropTypes.number
+    }
+  })
 };
 
 PostPreview.defaultProps = {
