@@ -26,9 +26,10 @@ requestPromise(queryString).then(response => {
   console.log(`Download ${result.count} vk posts`);
 
   const formatedItems = result.items.map(vkPost => {
+    const lastSizeIndex = vkPost.sizes.length;
     return {
       id: vkPost.id,
-      display_url: vkPost.sizes[1].url,
+      display_url: vkPost.sizes[lastSizeIndex - 1].url,
       preview_url: vkPost.sizes[0].url,
       owner_id: vkPost.owner_id,
       taken_at_timestamp: vkPost.date,

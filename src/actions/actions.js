@@ -5,11 +5,11 @@ export const getUserLocation = payload => ({
   payload
 });
 
-export const testAction = () => ({
-  type: 'TEST',
-  payload: 'test'
-});
-
 export const getUserLocationInit = () => ({
   type: ActionTypes.GET_USER_LOCATION
+});
+
+export const changeCurrentPostData = payload => ({
+  type: ActionTypes.CHANGE_CURRENT_POST_DATA,
+  payload
 });

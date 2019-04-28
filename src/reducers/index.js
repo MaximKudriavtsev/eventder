@@ -1,8 +1,11 @@
 import * as ActionTypes from '../actions/action-types';
+import posts from '../../scraper-vk/result.json';
 
 const initialState = {
-  images: [],
-  userLocation: [null, null]
+  posts,
+  userLocation: [null, null],
+  currentPostId: null,
+  currentPostData: {}
 };
 
 export default (state = initialState, { type, payload }) => {
@@ -17,6 +20,14 @@ export default (state = initialState, { type, payload }) => {
       return {
         ...state,
         userLocation: payload
+      };
+    }
+
+    case ActionTypes.CHANGE_CURRENT_POST_DATA: {
+      console.log(payload);
+      return {
+        ...state,
+        currentPostData: payload
       };
     }
 

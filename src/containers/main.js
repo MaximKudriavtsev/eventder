@@ -2,8 +2,9 @@ import * as React from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { Map } from '../components';
+import PostPreview from '../components/post-preview';
 
-import * as actions from '../actions/actions';
+import * as rootActions from '../actions/actions';
 
 /* eslint-disable react/prop-types */
 class Main extends React.PureComponent {
@@ -15,10 +16,22 @@ class Main extends React.PureComponent {
         latitude: props.userLocation[0] || 54.19,
         longitude: props.userLocation[1] || 37.61,
         zoom: 14
-      }
+      },
+      previewVisible: false
     };
 
     props.actions.getUserLocationInit();
+    this.changeViewport = viewport => {
+      this.setState({ viewport });
+    };
+    this.changePostPreviewVisible = () => {
+      const { previewVisible } = this.state;
+      this.setState({ previewVisible: !previewVisible });
+    };
+    this.onMarkerClick = postData => {
+      this.changePostPreviewVisible();
+      props.actions.changeCurrentPostData(postData);
+    };
   }
 
   static getDerivedStateFromProps(nextProps, prevState) {
@@ -35,19 +48,28 @@ class Main extends React.PureComponent {
   }
 
   render() {
-    const { viewport: stateViewport } = this.state;
+    const { posts, currentPostData } = this.props;
+    const { viewport: stateViewport, previewVisible } = this.state;
+
     return (
-      <Map
-        viewport={stateViewport}
-        onViewportChange={viewport => {
-          this.setState(viewport);
-        }}
-      />
+      <React.Fragment>
+        <Map
+          posts={posts}
+          viewport={stateViewport}
+          onViewportChange={this.changeViewport}
+          onMarkerClick={this.onMarkerClick}
+        />
+        <PostPreview
+          open={previewVisible}
+          postData={currentPostData}
+          toggleVisible={this.changePostPreviewVisible}
+        />
+      </React.Fragment>
     );
   }
 }
 
 export default connect(
   x => x,
-  dispatch => ({ actions: bindActionCreators(actions, dispatch) })
+  dispatch => ({ actions: bindActionCreators(rootActions, dispatch) })
 )(Main);

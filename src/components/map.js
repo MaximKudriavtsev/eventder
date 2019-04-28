@@ -3,9 +3,14 @@ import PropTypes from 'prop-types';
 import MapGL, { Marker } from '@urbica/react-map-gl';
 import 'mapbox-gl/dist/mapbox-gl.css';
 import { root } from './map.scss';
-import data from '../../scraper-vk/result.json';
 
-const Map = ({ viewport, onViewportChange, ...restProps }) => (
+const Map = ({
+  viewport,
+  onViewportChange,
+  posts,
+  onMarkerClick,
+  ...restProps
+}) => (
   <MapGL
     className={root}
     mapStyle="mapbox://styles/mapbox/light-v9"
@@ -16,15 +21,20 @@ const Map = ({ viewport, onViewportChange, ...restProps }) => (
     zoom={viewport.zoom}
     {...restProps}
   >
-    {data.map(({ preview_url: previewUrl, location, id }) => (
+    {posts.map(postData => (
       <Marker
         offset={[0, -66]}
-        draggable
-        key={id}
-        latitude={location.lat}
-        longitude={location.lng}
+        key={postData.id}
+        latitude={postData.location.lat}
+        longitude={postData.location.lng}
       >
-        <svg width="120" height="167" viewBox="0 0 120 167" fill="none">
+        <svg
+          width="120"
+          height="167"
+          viewBox="0 0 120 167"
+          fill="none"
+          onClick={() => onMarkerClick(postData)}
+        >
           <path
             fillRule="evenodd"
             clipRule="evenodd"
@@ -44,7 +54,7 @@ const Map = ({ viewport, onViewportChange, ...restProps }) => (
             height="87"
             clipPath="url(#cut-off-bottom)"
             transform="translate(15, 6)"
-            xlinkHref={previewUrl}
+            xlinkHref={postData.preview_url}
           />
         </svg>
       </Marker>
@@ -60,7 +70,9 @@ Map.propTypes = {
     longitude: PropTypes.number,
     zoom: PropTypes.number
   },
-  onViewportChange: PropTypes.func.isRequired
+  onViewportChange: PropTypes.func.isRequired,
+  onMarkerClick: PropTypes.func.isRequired,
+  posts: PropTypes.arrayOf(PropTypes.object)
 };
 
 Map.defaultProps = {
@@ -68,5 +80,6 @@ Map.defaultProps = {
     latitude: PropTypes.number,
     longitude: PropTypes.number,
     zoom: PropTypes.number
-  }
+  },
+  posts: []
 };
