@@ -23,6 +23,8 @@ console.log(queryString);
 requestPromise(queryString).then(response => {
   const result = JSON.parse(response).response;
 
+  console.log(`Download ${result.count} vk posts`);
+
   const formatedItems = result.items.map(vkPost => {
     return {
       id: vkPost.id,
