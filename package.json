@@ -7,7 +7,7 @@
   "license": "Licence",
   "private": true,
   "scripts": {
-    "start": "parcel index.html --port 3000",
+    "start": "node scraper-vk/index.js && parcel index.html --port 3000",
     "lint": "eslint .",
     "prettier": "prettier --write src/**/*.js",
     "stylelint": "stylelint '**/*.scss'"
@@ -51,6 +51,7 @@
   },
   "dependencies": {
     "@urbica/react-map-gl": "^1.5.0",
+    "@urbica/react-map-gl-cluster": "^0.1.0",
     "autoprefixer": "^9.5.1",
     "babel-plugin-transform-es2015-typeof-symbol": "^6.23.0",
     "mapbox-gl": "^0.53.1",

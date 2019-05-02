@@ -962,6 +962,11 @@
     "@types/unist" "*"
     "@types/vfile-message" "*"
 
+"@urbica/react-map-gl-cluster@^0.1.0":
+  version "0.1.0"
+  resolved "https://registry.yarnpkg.com/@urbica/react-map-gl-cluster/-/react-map-gl-cluster-0.1.0.tgz#2b39eaadb34b51da28c6a551ea5967c6f4015e06"
+  integrity sha512-BqF8f+AwOGPRKWX8IhNeXL2NziC2yU1MZcdy3WGP1NGDWp+EH7eom4SlzuKjRgs1RVSQOy7rZsUjglZdbhw2zw==
+
 "@urbica/react-map-gl@^1.5.0":
   version "1.5.0"
   resolved "https://registry.yarnpkg.com/@urbica/react-map-gl/-/react-map-gl-1.5.0.tgz#4c3f0c4ef358b489f7f9125aac567c98a937b934"

@@ -1,5 +1,4 @@
 import * as ActionTypes from '../actions/action-types';
-// import posts from '../../scraper-vk/result.json';
 
 const initialState = {
   posts: [],
