@@ -2,6 +2,9 @@ import { put, call, takeEvery, all } from 'redux-saga/effects';
 import * as actions from '../actions/actions';
 import * as actionTypes from '../actions/action-types';
 
+// Moscow 55.752865, 37.622173
+const SEARCH_RADIUS = 1000;
+
 const getLocation = () => {
   return new Promise(res => {
     const geoSuccess = position => {
@@ -11,9 +14,12 @@ const getLocation = () => {
   }).then(res => res);
 };
 
-const getVkPostsComputed = () => {
+const getVkPostsComputed = (lat, long) => () => {
+  const makeDateInterval = () =>
+    Math.floor(new Date().getTime() / 1000 - 1 * 60 * 60);
+
   return fetch(
-    'https://392veon8m6.execute-api.eu-central-1.amazonaws.com/default/getVkPosts'
+    `https://392veon8m6.execute-api.eu-central-1.amazonaws.com/default/getVkPosts?lat=${lat}&long=${long}&radius=${SEARCH_RADIUS}&startTime=${makeDateInterval()}`
   )
     .then(res => res.json())
     .then(res => res);
@@ -22,7 +28,7 @@ const getVkPostsComputed = () => {
 export function* getUserLocation2() {
   const location = yield call(getLocation);
   yield put(actions.getUserLocation(location));
-  const posts = yield call(getVkPostsComputed);
+  const posts = yield call(getVkPostsComputed(location[0], location[1]));
   yield put(actions.getPosts(posts));
 }
 
