@@ -1,8 +1,8 @@
 import * as ActionTypes from '../actions/action-types';
-import posts from '../../scraper-vk/result.json';
+// import posts from '../../scraper-vk/result.json';
 
 const initialState = {
-  posts,
+  posts: [],
   userLocation: [null, null],
   currentPostId: null,
   currentPostData: {}
@@ -20,6 +20,13 @@ export default (state = initialState, { type, payload }) => {
       return {
         ...state,
         userLocation: payload
+      };
+    }
+
+    case ActionTypes.RECEIVE_POSTS: {
+      return {
+        ...state,
+        posts: payload
       };
     }
 

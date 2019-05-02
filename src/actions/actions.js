@@ -13,3 +13,8 @@ export const changeCurrentPostData = payload => ({
   type: ActionTypes.CHANGE_CURRENT_POST_DATA,
   payload
 });
+
+export const getPosts = payload => ({
+  type: ActionTypes.RECEIVE_POSTS,
+  payload
+});
