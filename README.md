@@ -15,7 +15,7 @@ https://eventder.auth.eu-central-1.amazoncognito.com/login?response_type=token&c
 
 Google app ID
 ```
-error_description=attributes+required%3A+%5Bemail%5D&error=invalid_request
+159492328546-p8i8fcbhi8iogc8pkk4bdcrqcsl684d2.apps.googleusercontent.com
 ```
 
 App secret
