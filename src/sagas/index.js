@@ -29,6 +29,25 @@ const getVkPostsComputed = (/* lat, long */) => () => {
   return postsVk;
 };
 
+const publishUserFileComputed = file => () => {
+  fetch(
+    'https://ofc5fkliu0.execute-api.eu-central-1.amazonaws.com/default/saveUserFile',
+    {
+      method: 'POST',
+      body: file,
+      mode: 'no-cors'
+    }
+  )
+    .then(() => {
+      put(actions.successPublishUserFile());
+    })
+    .catch(error => {
+      put(actions.errorPublishUserFile(error));
+    });
+
+  put(actions.loading());
+};
+
 export function* getUserLocation2() {
   const location = yield call(getLocation);
   yield put(actions.getUserLocation(location));
@@ -49,6 +68,14 @@ export function* getVkPosts() {
   yield takeEvery('GET_VK_POSTS', getVkPosts2);
 }
 
+export function* publishUserFile2({ payload }) {
+  yield call(publishUserFileComputed(payload));
+}
+
+export function* publishUserFile() {
+  yield takeEvery(actionTypes.PUBLISH_USER_FILE, publishUserFile2);
+}
+
 export function* rootSaga() {
-  yield all([getUserLocation()]);
+  yield all([getUserLocation(), publishUserFile()]);
 }

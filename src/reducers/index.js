@@ -15,6 +15,30 @@ export default (state = initialState, { type, payload }) => {
       return state;
     }
 
+    case ActionTypes.LOADING: {
+      return {
+        ...state,
+        loading: true
+      };
+    }
+
+    case ActionTypes.SUCCESS_PUBLISH_USER_FILE: {
+      console.log('File has been uploaded');
+      return {
+        ...state,
+        loading: false
+      };
+    }
+
+    case ActionTypes.ERROR_PUBLISH_USER_FILE: {
+      console.log('Error');
+      console.log(payload);
+      return {
+        ...state,
+        loading: false
+      };
+    }
+
     case ActionTypes.RECEIVE_USER_LOCATION: {
       return {
         ...state,

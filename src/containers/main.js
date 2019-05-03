@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { Map } from '../components';
 import PostPreview from '../components/post-preview';
+import FileUploader from '../components/file-uploader';
 
 import * as rootActions from '../actions/actions';
 
@@ -48,8 +49,9 @@ class Main extends React.PureComponent {
   }
 
   render() {
-    const { posts, currentPostData } = this.props;
+    const { posts, currentPostData, actions } = this.props;
     const { viewport: stateViewport, previewVisible } = this.state;
+    const { publishUserFile } = actions;
 
     return (
       <React.Fragment>
@@ -59,6 +61,7 @@ class Main extends React.PureComponent {
           onViewportChange={this.changeViewport}
           onMarkerClick={this.onMarkerClick}
         />
+        <FileUploader publishUserFile={publishUserFile} />
         <PostPreview
           open={previewVisible}
           postData={currentPostData}
