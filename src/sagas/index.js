@@ -30,14 +30,21 @@ const getVkPostsComputed = (/* lat, long */) => () => {
 };
 
 const publishUserFileComputed = file => () => {
+  const postData = new FormData();
+
+  postData.append('picture', file);
+
   fetch(
     'https://ofc5fkliu0.execute-api.eu-central-1.amazonaws.com/default/saveUserFile',
     {
       method: 'POST',
-      body: file,
-      mode: 'no-cors'
+      body: postData,
+      headers: {
+        'Access-Control-Allow-Origin': '*'
+      }
     }
   )
+    .then(res => res.formData())
     .then(() => {
       put(actions.successPublishUserFile());
     })
