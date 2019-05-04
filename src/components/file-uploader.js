@@ -1,4 +1,6 @@
 import * as React from 'react';
+import { inputContainer, fileInput, inputLabel } from './file-uploader.scss';
+import addButton from '../assets/add-image.svg';
 
 export default class extends React.Component {
   constructor(props) {
@@ -17,8 +19,17 @@ export default class extends React.Component {
 
   render() {
     return (
-      <div style={{ position: 'absolute', bottom: '30px' }}>
-        <input type="file" name="file" onChange={this.onChangeHandler} />
+      <div className={inputContainer}>
+        <label htmlFor="file" className={inputLabel}>
+          <input
+            id="file"
+            className={fileInput}
+            type="file"
+            name="file"
+            onChange={this.onChangeHandler}
+          />
+          <img src={addButton} alt="add post" />
+        </label>
       </div>
     );
   }
