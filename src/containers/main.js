@@ -4,8 +4,8 @@ import { bindActionCreators } from 'redux';
 import { Map } from '../components';
 import PostPreview from '../components/post-preview';
 import FileUploader from '../components/file-uploader';
-
 import * as rootActions from '../actions/actions';
+import isMobileDevice from '../utils/is-mobile-device';
 
 /* eslint-disable react/prop-types */
 class Main extends React.PureComponent {
@@ -18,7 +18,8 @@ class Main extends React.PureComponent {
         longitude: props.userLocation[1] || 37.61,
         zoom: 14
       },
-      previewVisible: false
+      previewVisible: false,
+      mobileDevice: null
     };
 
     props.actions.getUserLocationInit();
@@ -48,19 +49,35 @@ class Main extends React.PureComponent {
     };
   }
 
+  componentDidMount() {
+    if (isMobileDevice()) {
+      this.setState({ mobileDevice: true });
+    } else {
+      this.setState({ mobileDevice: false });
+    }
+  }
+
   render() {
     const { posts, currentPostData, actions } = this.props;
-    const { viewport: stateViewport, previewVisible } = this.state;
+    const {
+      viewport: stateViewport,
+      previewVisible,
+      mobileDevice
+    } = this.state;
     const { publishUserFile } = actions;
 
     return (
       <React.Fragment>
-        <Map
-          posts={posts}
-          viewport={stateViewport}
-          onViewportChange={this.changeViewport}
-          onMarkerClick={this.onMarkerClick}
-        />
+        {mobileDevice ? (
+          <div>Map</div>
+        ) : (
+          <Map
+            posts={posts}
+            viewport={stateViewport}
+            onViewportChange={this.changeViewport}
+            onMarkerClick={this.onMarkerClick}
+          />
+        )}
         <FileUploader publishUserFile={publishUserFile} />
         <PostPreview
           open={previewVisible}
