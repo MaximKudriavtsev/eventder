@@ -3,6 +3,8 @@ node_modules/
 
 # temp
 .cache
+.serverless
 yarn-error.log
 dist
 scraper/instagram-scraper.log
+scraper-vk/result.json
