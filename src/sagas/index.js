@@ -1,8 +1,14 @@
+import aws from 'aws-sdk';
 import { put, call, takeEvery, all } from 'redux-saga/effects';
 import * as actions from '../actions/actions';
 import * as actionTypes from '../actions/action-types';
 
 import postsVk from '../../scraper-vk/result.json';
+
+const s3 = new aws.S3({
+  apiVersion: '2006-03-01',
+  params: { Bucket: 'eventder' }
+});
 
 // Moscow 55.752865, 37.622173
 // const SEARCH_RADIUS = 1000;
@@ -30,22 +36,24 @@ const getVkPostsComputed = (/* lat, long */) => () => {
 };
 
 const publishUserFileComputed = file => () => {
-  const postData = new FormData();
+  // const postData = new FormData();
 
-  postData.append('picture', file);
+  // postData.append('picture', file);
 
-  fetch(
-    'https://ofc5fkliu0.execute-api.eu-central-1.amazonaws.com/default/saveUserFile',
-    {
-      method: 'POST',
-      body: postData,
-      headers: {
-        'Access-Control-Allow-Origin': '*'
-      }
+  const reader = new FileReader();
+  reader.readAsBinaryString(file);
+
+  fetch('https://1qn7e34k46.execute-api.eu-central-1.amazonaws.com/dev/files', {
+    method: 'POST',
+    body: file,
+    mode: 'no-cors',
+    headers: {
+      'Access-Control-Allow-Origin': '*'
     }
-  )
-    .then(res => res.formData())
-    .then(() => {
+  })
+    .then(res => res.text())
+    .then(res => {
+      console.log(res);
       put(actions.successPublishUserFile());
     })
     .catch(error => {

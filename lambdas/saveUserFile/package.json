@@ -5,6 +5,7 @@
   "author": "",
   "dependencies": {
     "uuid": "^3.3.2",
-    "aws-sdk": "^2.451.0"
+    "aws-sdk": "^2.451.0",
+    "formidable": "^1.2.1"
   }
 }

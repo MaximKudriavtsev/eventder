@@ -10,6 +10,9 @@ provider:
   runtime: nodejs8.10
   stage: dev
   region: eu-central-1
+  apiGateway:
+    binaryMediaTypes: # Optional binary media types the API might return
+      - '*/*'
   environment:
     DYNAMODB_TABLE: ${self:service}-${opt:stage, self:provider.stage}
   iamRoleStatements:
@@ -32,45 +35,10 @@ functions:
     handler: handler.save
     environment:
       BUCKET: ${self:custom.bucket}
-
-  create:
-    handler: files/create.create
     events:
       - http:
           path: files
           method: post
-          cors: true
-
-  list:
-    handler: files/list.list
-    events:
-      - http:
-          path: files
-          method: get
-          cors: true
-
-  get:
-    handler: files/get.get
-    events:
-      - http:
-          path: files/{id}
-          method: get
-          cors: true
-
-  update:
-    handler: files/update.update
-    events:
-      - http:
-          path: files/{id}
-          method: put
-          cors: true
-
-  delete:
-    handler: files/delete.delete
-    events:
-      - http:
-          path: files/{id}
-          method: delete
           cors: true
 
 resources:
