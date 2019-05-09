@@ -4,17 +4,19 @@ const AWS = require('aws-sdk');
 // const dynamoDb = new AWS.DynamoDB.DocumentClient();
 const s3 = new AWS.S3();
 
-// const s3PublicUrl = 'https://s3.eu-central-1.amazonaws.com/eventder/';
+const s3PublicUrl = 'https://s3.eu-central-1.amazonaws.com/eventder/';
 
 module.exports.save = (event, context, callback) => {
   const timestamp = new Date().getTime();
   const id = uuid.v1();
 
   const buffer = new Buffer(event.body, 'base64');
+  const fileType = 'jpg';
+  const fileKey = `${id}.${fileType}`;
 
   const s3Params = {
     Bucket: process.env.BUCKET,
-    Key: `${id}.jpg`,
+    Key: fileKey,
     Body: buffer
   };
   // const dynamoDBParams = {
@@ -48,9 +50,11 @@ module.exports.save = (event, context, callback) => {
     // create a response
     const response = {
       statusCode: 200,
-      body: JSON.stringify('done'),
+      body: `${s3PublicUrl}${fileKey}`,
       headers: {
-        'Access-Control-Allow-Origin': '*'
+        'Access-Control-Allow-Origin': '*',
+        'Content-Type': 'text/plain',
+        'Access-Control-Allow-Headers': 'Content-Type'
       }
     };
     callback(null, response);

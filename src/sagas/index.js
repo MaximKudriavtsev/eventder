@@ -46,9 +46,10 @@ const publishUserFileComputed = file => () => {
   fetch('https://1qn7e34k46.execute-api.eu-central-1.amazonaws.com/dev/files', {
     method: 'POST',
     body: file,
-    mode: 'no-cors',
+    mode: 'no-cors', // !!!!!!
     headers: {
-      'Access-Control-Allow-Origin': '*'
+      'Content-Type': 'image/jpeg',
+      Accept: 'text/plain'
     }
   })
     .then(res => res.text())
