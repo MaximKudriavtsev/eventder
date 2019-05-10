@@ -63,7 +63,7 @@ export default PostPreview;
 PostPreview.propTypes = {
   open: PropTypes.bool,
   toggleVisible: PropTypes.func,
-  postData: PropTypes.objectOf({
+  postData: PropTypes.shape({
     id: PropTypes.number,
     display_url: PropTypes.string,
     preview_url: PropTypes.string,
@@ -81,5 +81,17 @@ PostPreview.propTypes = {
 PostPreview.defaultProps = {
   open: false,
   toggleVisible: undefined,
-  postData: {}
+  postData: {
+    id: 0,
+    display_url: '',
+    preview_url: '',
+    owner_id: 0,
+    taken_at_timestamp: 0,
+    location: {
+      lat: 0,
+      lng: 0,
+      name: '',
+      instagramId: 0
+    }
+  }
 };

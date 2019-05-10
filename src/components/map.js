@@ -69,11 +69,11 @@ const Map = ({
 export default Map;
 
 Map.propTypes = {
-  viewport: {
+  viewport: PropTypes.shape({
     latitude: PropTypes.number,
     longitude: PropTypes.number,
     zoom: PropTypes.number
-  },
+  }),
   onViewportChange: PropTypes.func.isRequired,
   onMarkerClick: PropTypes.func.isRequired,
   posts: PropTypes.arrayOf(PropTypes.object)
