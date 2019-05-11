@@ -7,9 +7,7 @@ import FileUploader from '../components/file-uploader';
 import * as rootActions from '../actions/actions';
 import isMobileDevice from '../utils/is-mobile-device';
 
-
 const ownerId = '4444'; // owner id from AWS cognito
-
 
 /* eslint-disable react/prop-types */
 class Main extends React.PureComponent {
@@ -63,7 +61,11 @@ class Main extends React.PureComponent {
 
   render() {
     const {
-      posts, currentPostData, actions, userLocation,
+      posts,
+      currentPostData,
+      actions,
+      userLocation,
+      eventderPosts
     } = this.props;
     const {
       viewport: stateViewport,
@@ -79,6 +81,7 @@ class Main extends React.PureComponent {
         ) : (
           <Map
             posts={posts}
+            eventderPosts={eventderPosts}
             viewport={stateViewport}
             onViewportChange={this.changeViewport}
             onMarkerClick={this.onMarkerClick}

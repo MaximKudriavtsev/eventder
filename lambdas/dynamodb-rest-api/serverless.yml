@@ -1,0 +1,61 @@
+service: dynamodb-rest-api
+
+frameworkVersion: ">=1.1.0 <2.0.0"
+
+provider:
+  region: eu-central-1
+  name: aws
+  runtime: nodejs8.10
+  environment:
+    DYNAMODB_TABLE: eventder-dynamodb-test
+  iamRoleStatements:
+    - Effect: Allow
+      Action:
+        - dynamodb:Query
+        - dynamodb:Scan
+        - dynamodb:GetItem
+        - dynamodb:PutItem
+        - dynamodb:UpdateItem
+        - dynamodb:DeleteItem
+      Resource: "arn:aws:dynamodb:${opt:region, self:provider.region}:*:table/${self:provider.environment.DYNAMODB_TABLE}"
+
+functions:
+  create:
+    handler: records/create.create
+    events:
+      - http:
+          path: records
+          method: post
+          cors: true
+
+  list:
+    handler: records/list.list
+    events:
+      - http:
+          path: records
+          method: get
+          cors: true
+
+  get:
+    handler: records/get.get
+    events:
+      - http:
+          path: records/{id}
+          method: get
+          cors: true
+
+  update:
+    handler: records/update.update
+    events:
+      - http:
+          path: records/{id}
+          method: put
+          cors: true
+
+  delete:
+    handler: records/delete.delete
+    events:
+      - http:
+          path: records/{id}
+          method: delete
+          cors: true

@@ -2,6 +2,7 @@ import * as ActionTypes from '../actions/action-types';
 
 const initialState = {
   posts: [],
+  eventderPosts: [],
   userLocation: [null, null],
   currentPostId: null,
   currentPostData: {}
@@ -50,6 +51,13 @@ export default (state = initialState, { type, payload }) => {
       return {
         ...state,
         posts: payload
+      };
+    }
+
+    case ActionTypes.RECEIVE_EVENTDER_POSTS: {
+      return {
+        ...state,
+        eventderPosts: payload
       };
     }
 

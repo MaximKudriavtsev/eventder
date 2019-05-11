@@ -4,7 +4,9 @@ const AWS = require('aws-sdk');
 const dynamoDb = new AWS.DynamoDB.DocumentClient();
 const s3 = new AWS.S3();
 
-const s3PublicUrl = 'https://s3.eu-central-1.amazonaws.com/eventder/';
+const s3PublicUrl = `https://s3.eu-central-1.amazonaws.com/${
+  process.env.BUCKET
+}/`;
 
 module.exports.save = (event, context, callback) => {
   const timestamp = new Date().getTime();
@@ -43,7 +45,7 @@ module.exports.save = (event, context, callback) => {
         statusCode: error.statusCode || 501,
         headers: {
           'Content-Type': 'application/json',
-          'Access-Control-Allow-Origin': '*',
+          'Access-Control-Allow-Origin': '*'
         },
         body: JSON.stringify({ error: "Couldn't create the image item s3." })
       });
@@ -53,10 +55,13 @@ module.exports.save = (event, context, callback) => {
     // create a response
     const response = {
       statusCode: 200,
-      body: JSON.stringify({ display_url: `${s3PublicUrl}${fileKey}`, item: dynamoDBParams.Item }),
+      body: JSON.stringify({
+        display_url: `${s3PublicUrl}${fileKey}`,
+        item: dynamoDBParams.Item
+      }),
       headers: {
         'Content-Type': 'application/json',
-        'Access-Control-Allow-Origin': '*',
+        'Access-Control-Allow-Origin': '*'
       }
     };
     dynamoDb.put(dynamoDBParams, errorDB => {

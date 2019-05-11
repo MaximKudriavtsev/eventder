@@ -19,6 +19,11 @@ export const getPosts = payload => ({
   payload
 });
 
+export const getEventderPosts = payload => ({
+  type: ActionTypes.RECEIVE_EVENTDER_POSTS,
+  payload
+});
+
 export const publishUserFile = payload => ({
   type: ActionTypes.PUBLISH_USER_FILE,
   payload

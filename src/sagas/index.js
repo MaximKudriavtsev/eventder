@@ -35,6 +35,17 @@ const getVkPostsComputed = (/* lat, long */) => () => {
   return postsVk;
 };
 
+const getEventderPostsComputed = () => {
+  return fetch(
+    'https://j0mho994nd.execute-api.eu-central-1.amazonaws.com/dev/records',
+    {
+      mode: 'cors'
+    }
+  )
+    .then(res => res.json())
+    .then(res => res);
+};
+
 const publishUserFileComputed = ({ file, lat, lng, ownerId }) => () => {
   // const postData = new FormData();
 
@@ -43,16 +54,19 @@ const publishUserFileComputed = ({ file, lat, lng, ownerId }) => () => {
   const reader = new FileReader();
   reader.readAsBinaryString(file);
 
-  fetch(`https://pgu80wwqs6.execute-api.eu-central-1.amazonaws.com/dev/files?lat=${lat}&lng=${lng}&ownerId=${ownerId}`, {
-    method: 'POST',
-    body: file,
-    mode: 'no-cors', // !!!!!!
-    headers: {
-      'Content-Type': 'application/json'
-      // 'Accept': 'application/json',
-      // 'Access-Control-Allow-Headers': 'Content-Type, Accept, Access-Control-Allow-Origin'
+  fetch(
+    `https://pgu80wwqs6.execute-api.eu-central-1.amazonaws.com/dev/files?lat=${lat}&lng=${lng}&ownerId=${ownerId}`,
+    {
+      method: 'POST',
+      body: file,
+      mode: 'no-cors', // !!!!!!
+      headers: {
+        'Content-Type': 'application/json'
+        // 'Accept': 'application/json',
+        // 'Access-Control-Allow-Headers': 'Content-Type, Accept, Access-Control-Allow-Origin'
+      }
     }
-  })
+  )
     .then(res => {
       res.text();
     })
@@ -70,8 +84,12 @@ const publishUserFileComputed = ({ file, lat, lng, ownerId }) => () => {
 export function* getUserLocation2() {
   const location = yield call(getLocation);
   yield put(actions.getUserLocation(location));
-  const posts = yield call(getVkPostsComputed(location[0], location[1]));
-  yield put(actions.getPosts(posts));
+
+  const vkPosts = yield call(getVkPostsComputed(location[0], location[1]));
+  yield put(actions.getPosts(vkPosts));
+
+  const eventderPosts = yield call(getEventderPostsComputed);
+  yield put(actions.getEventderPosts(eventderPosts));
 }
 
 export function* getUserLocation() {
