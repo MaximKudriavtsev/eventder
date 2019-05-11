@@ -41,8 +41,11 @@ module.exports.save = (event, context, callback) => {
       console.error(error);
       callback(null, {
         statusCode: error.statusCode || 501,
-        headers: { 'Content-Type': 'text/plain' },
-        body: "Couldn't create the image item s3."
+        headers: {
+          'Content-Type': 'application/json',
+          'Access-Control-Allow-Origin': '*',
+        },
+        body: JSON.stringify({ error: "Couldn't create the image item s3." })
       });
       return;
     }
@@ -50,11 +53,10 @@ module.exports.save = (event, context, callback) => {
     // create a response
     const response = {
       statusCode: 200,
-      body: `${s3PublicUrl}${fileKey}`,
+      body: JSON.stringify({ display_url: `${s3PublicUrl}${fileKey}` }),
       headers: {
+        'Content-Type': 'application/json',
         'Access-Control-Allow-Origin': '*',
-        'Content-Type': 'text/plain',
-        'Access-Control-Allow-Headers': 'Content-Type'
       }
     };
     callback(null, response);

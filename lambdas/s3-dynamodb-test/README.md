@@ -1,0 +1,1 @@
+Make sure that image was successful upload to s3. Link is available to download.

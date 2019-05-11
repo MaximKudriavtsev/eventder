@@ -1,0 +1,10 @@
+{
+    "name": "create-record-dynamo-db",
+    "version": "1.0.0",
+    "description": "Create a record to DynamoDB after each s3 saves",
+    "author": "",
+    "dependencies": {
+      "uuid": "^3.3.2",
+      "aws-sdk": "^2.451.0"
+    }
+  }

@@ -11,10 +11,15 @@ export default class extends React.Component {
 
   onChangeHandler(event) {
     // eslint-disable-next-line react/prop-types
-    const { publishUserFile } = this.props;
+    const {
+      publishUserFile,
+      lat,
+      lng,
+      ownerId,
+    } = this.props;
     const file = event.target.files[0];
     console.log(event.target.files[0]);
-    publishUserFile(file);
+    publishUserFile({ file, lat, lng, ownerId });
   }
 
   render() {

@@ -1,0 +1,11 @@
+{
+  "name": "save-user-file",
+  "version": "1.0.0",
+  "description": "Save file from user to s3 and create a record to DynamoDB",
+  "author": "",
+  "dependencies": {
+    "uuid": "^3.3.2",
+    "aws-sdk": "^2.451.0",
+    "formidable": "^1.2.1"
+  }
+}
