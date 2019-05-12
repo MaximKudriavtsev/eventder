@@ -62,7 +62,6 @@ export default (state = initialState, { type, payload }) => {
     }
 
     case ActionTypes.CHANGE_CURRENT_POST_DATA: {
-      console.log(payload);
       return {
         ...state,
         currentPostData: payload

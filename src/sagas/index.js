@@ -1,17 +1,10 @@
-import aws from 'aws-sdk';
 import { put, call, takeEvery, all } from 'redux-saga/effects';
 import * as actions from '../actions/actions';
 import * as actionTypes from '../actions/action-types';
 
 import postsVk from '../../scraper-vk/result.json';
 
-const s3 = new aws.S3({
-  apiVersion: '2006-03-01',
-  params: { Bucket: 'eventder' }
-});
-
-// Moscow 55.752865, 37.622173
-// const SEARCH_RADIUS = 1000;
+const SEARCH_RADIUS = 1000;
 
 const getLocation = () => {
   return new Promise(res => {
@@ -22,16 +15,21 @@ const getLocation = () => {
   }).then(res => res);
 };
 
-const getVkPostsComputed = (/* lat, long */) => () => {
-  // const makeDateInterval = () =>
-  //   Math.floor(new Date().getTime() / 1000 - 1 * 60 * 60);
+const getVkPostsComputed = (lat, long) => () => {
+  if (process.env.BASE_NAME === '/site/') {
+    // use local data without execute Lambda
+    const makeDateInterval = () =>
+      Math.floor(new Date().getTime() / 1000 - 1 * 60 * 60);
 
-  // return fetch(
-  //   `https://392veon8m6.execute-api.eu-central-1.amazonaws.com/default/getVkPosts?lat=${lat}&long=${long}&radius=${SEARCH_RADIUS}&startTime=${makeDateInterval()}`
-  // )
-  //   .then(res => res.json())
-  //   .then(res => res);
-
+    return fetch(
+      `https://392veon8m6.execute-api.eu-central-1.amazonaws.com/default/getVkPosts?lat=${lat}&long=${long}&radius=${SEARCH_RADIUS}&startTime=${makeDateInterval()}`,
+      {
+        mode: 'cors'
+      }
+    )
+      .then(res => res.json())
+      .then(res => res);
+  }
   return postsVk;
 };
 
@@ -47,10 +45,6 @@ const getEventderPostsComputed = () => {
 };
 
 const publishUserFileComputed = ({ file, lat, lng, ownerId }) => () => {
-  // const postData = new FormData();
-
-  // postData.append('picture', file);
-
   const reader = new FileReader();
   reader.readAsBinaryString(file);
 
@@ -59,19 +53,16 @@ const publishUserFileComputed = ({ file, lat, lng, ownerId }) => () => {
     {
       method: 'POST',
       body: file,
-      mode: 'no-cors', // !!!!!!
+      mode: 'no-cors',
       headers: {
         'Content-Type': 'application/json'
-        // 'Accept': 'application/json',
-        // 'Access-Control-Allow-Headers': 'Content-Type, Accept, Access-Control-Allow-Origin'
       }
     }
   )
     .then(res => {
       res.text();
     })
-    .then(res => {
-      console.log(res);
+    .then(() => {
       put(actions.successPublishUserFile());
     })
     .catch(error => {

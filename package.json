@@ -8,6 +8,7 @@
   "private": true,
   "scripts": {
     "start": "node scraper-vk/index.js && parcel index.html --port 3000",
+    "build": "BASE_NAME=/site/ parcel build index.html --public-url /site/",
     "lint": "eslint .",
     "prettier": "prettier --write src/**/*.js",
     "stylelint": "stylelint '**/*.scss'"
