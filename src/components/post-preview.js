@@ -8,11 +8,17 @@ import {
   container,
   // button,
   mainText,
-  childText
+  childText,
+  modalMain,
+  exitButton,
+  exitIcon
 } from './post-preview.scss';
+
+/* eslint-disable jsx-a11y/no-static-element-interactions */
 
 // import liked from '../assets/liked.svg';
 // import like from '../assets/like.svg';
+import whiteCross from '../assets/white-cross.svg';
 
 const formatDate = date =>
   new Intl.DateTimeFormat('ru-RU', {
@@ -28,7 +34,7 @@ const PostPreview = ({ open, toggleVisible, postData }) => {
   // const toggleLike = () => console.log('toggle like');
 
   return (
-    <Modal isOpen={open} toggle={toggleVisible}>
+    <Modal isOpen={open} toggle={toggleVisible} className={modalMain}>
       <ModalBody className={body}>
         <img className={image} src={postData && postData.display_url} alt="" />
       </ModalBody>
@@ -52,6 +58,10 @@ const PostPreview = ({ open, toggleVisible, postData }) => {
         <div className={container} style={{ alignItems: 'flex-end' }}>
           <p className={mainText}>Адрес</p>
           <p className={childText}>Тула</p>
+        </div>
+
+        <div className={exitButton} onClick={toggleVisible}>
+          <img className={exitIcon} src={whiteCross} alt="exit" />
         </div>
       </ModalFooter>
     </Modal>

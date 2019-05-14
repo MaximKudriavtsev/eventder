@@ -1,6 +1,11 @@
 import * as React from 'react';
 import PropTypes from 'prop-types';
-import { inputContainer, fileInput, inputLabel } from './file-uploader.scss';
+import {
+  inputContainer,
+  fileInput,
+  inputLabel,
+  inputButton
+} from './file-uploader.scss';
 import addButton from '../assets/add-image.svg';
 
 class FileUploader extends React.Component {
@@ -27,7 +32,7 @@ class FileUploader extends React.Component {
             name="file"
             onChange={this.onChangeHandler}
           />
-          <img src={addButton} alt="add post" />
+          <img src={addButton} alt="add post" className={inputButton} />
         </label>
       </div>
     );

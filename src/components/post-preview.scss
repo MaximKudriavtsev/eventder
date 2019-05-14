@@ -43,3 +43,29 @@
   line-height: normal;
   color: #757575;
 }
+
+.exitButton {
+  display: none;
+}
+
+@media screen and (max-width: 400px) {
+  .modalMain {
+    width: 100%;
+    height: 100%;
+    max-width: 100%;
+    margin: 0;
+  }
+
+  .exitButton {
+    position: absolute;
+    top: 1.5vh;
+    right: 1.5vh;
+    display: block;
+  }
+
+  .exitIcon {
+    height: 3vh;
+    width: 3vh;
+    cursor: pointer;
+  }
+}
