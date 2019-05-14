@@ -6,13 +6,13 @@ import {
   body,
   modalFooter,
   container,
-  button,
+  // button,
   mainText,
   childText
 } from './post-preview.scss';
 
-import liked from '../assets/liked.svg';
-import like from '../assets/like.svg';
+// import liked from '../assets/liked.svg';
+// import like from '../assets/like.svg';
 
 const formatDate = date =>
   new Intl.DateTimeFormat('ru-RU', {
@@ -25,7 +25,7 @@ const formatDate = date =>
 // TODO: use yandex geolocation to recognize address
 
 const PostPreview = ({ open, toggleVisible, postData }) => {
-  const toggleLike = () => console.log('toggle like');
+  // const toggleLike = () => console.log('toggle like');
 
   return (
     <Modal isOpen={open} toggle={toggleVisible}>
@@ -42,12 +42,12 @@ const PostPreview = ({ open, toggleVisible, postData }) => {
           </p>
         </div>
 
-        <img
+        {/* <img
           className={button}
           src={postData.like ? liked : like}
           alt="like"
           onClick={toggleLike}
-        />
+        /> */}
 
         <div className={container} style={{ alignItems: 'flex-end' }}>
           <p className={mainText}>Адрес</p>
