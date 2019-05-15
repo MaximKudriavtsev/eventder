@@ -33,6 +33,12 @@ const formatDate = date =>
 const PostPreview = ({ open, toggleVisible, postData }) => {
   // const toggleLike = () => console.log('toggle like');
 
+  const postDate =
+    postData.taken_at_timestamp &&
+    postData.taken_at_timestamp.toString().length === 10
+      ? postData.taken_at_timestamp * 1000
+      : postData.taken_at_timestamp;
+
   return (
     <Modal isOpen={open} toggle={toggleVisible} className={modalMain}>
       <ModalBody className={body}>
@@ -43,8 +49,7 @@ const PostPreview = ({ open, toggleVisible, postData }) => {
         <div className={container}>
           <p className={mainText}>Опубликовано</p>
           <p className={childText}>
-            {postData.taken_at_timestamp &&
-              formatDate(new Date(postData.taken_at_timestamp * 1000))}
+            {postData.taken_at_timestamp && formatDate(new Date(postDate))}
           </p>
         </div>
 
@@ -96,7 +101,7 @@ PostPreview.defaultProps = {
     display_url: '',
     preview_url: '',
     owner_id: 0,
-    taken_at_timestamp: 0,
+    taken_at_timestamp: 1,
     location: {
       lat: 0,
       lng: 0,
