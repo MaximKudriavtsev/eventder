@@ -8,6 +8,7 @@
   "private": true,
   "scripts": {
     "start": "node scraper-vk/index.js && parcel index.html --port 3000",
+    "build": "BASE_NAME=/site/ parcel build index.html --public-url /site/",
     "lint": "eslint .",
     "prettier": "prettier --write src/**/*.js",
     "stylelint": "stylelint '**/*.scss'"
@@ -40,6 +41,8 @@
     "eslint-plugin-jsx-a11y": "^6.1.1",
     "eslint-plugin-prettier": "^3.0.1",
     "eslint-plugin-react": "^7.11.0",
+    "express": "^4.16.4",
+    "formidable": "^1.2.1",
     "husky": "^1.3.1",
     "lint-staged": "^8.1.5",
     "parcel-bundler": "^1.12.3",
@@ -53,6 +56,7 @@
     "@urbica/react-map-gl": "^1.5.0",
     "@urbica/react-map-gl-cluster": "^0.1.0",
     "autoprefixer": "^9.5.1",
+    "aws-sdk": "^2.456.0",
     "babel-plugin-transform-es2015-typeof-symbol": "^6.23.0",
     "js-cookie": "^2.2.0",
     "leaflet": "^1.5.0",

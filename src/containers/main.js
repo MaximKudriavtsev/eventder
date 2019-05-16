@@ -8,6 +8,8 @@ import * as rootActions from '../actions/actions';
 import isMobileDevice from '../utils/is-mobile-device';
 import 'leaflet/dist/leaflet.css';
 
+const ownerId = '4444'; // owner id from AWS cognito
+
 /* eslint-disable react/prop-types */
 class Main extends React.PureComponent {
   constructor(props) {
@@ -59,7 +61,13 @@ class Main extends React.PureComponent {
   }
 
   render() {
-    const { posts, currentPostData, actions } = this.props;
+    const {
+      posts,
+      currentPostData,
+      actions,
+      userLocation,
+      eventderPosts
+    } = this.props;
     const {
       viewport: stateViewport,
       previewVisible,
@@ -82,12 +90,18 @@ class Main extends React.PureComponent {
         ) : (
           <Map
             posts={posts}
+            eventderPosts={eventderPosts}
             viewport={stateViewport}
             onViewportChange={this.changeViewport}
             onMarkerClick={this.onMarkerClick}
           />
         )}
-        <FileUploader publishUserFile={publishUserFile} />
+        <FileUploader
+          publishUserFile={publishUserFile}
+          lat={userLocation[0]}
+          lng={userLocation[1]}
+          ownerId={ownerId}
+        />
         <PostPreview
           open={previewVisible}
           postData={currentPostData}

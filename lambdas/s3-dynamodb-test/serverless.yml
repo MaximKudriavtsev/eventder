@@ -1,9 +1,9 @@
-service: save-user-file
+service: s3-dynamodb-test
 
 frameworkVersion: ">=1.1.0"
 
 custom:
-  bucket: eventder
+  bucket: eventder-s3-test
 
 provider:
   name: aws
@@ -14,7 +14,7 @@ provider:
     binaryMediaTypes: # Optional binary media types the API might return
       - '*/*'
   environment:
-    DYNAMODB_TABLE: ${self:service}-${opt:stage, self:provider.stage}
+    DYNAMODB_TABLE: eventder-dynamodb-test
   iamRoleStatements:
     - Effect: Allow
       Action:
@@ -40,6 +40,12 @@ functions:
           path: files
           method: post
           cors: true
+          request:
+            parameters:
+              querystrings:
+                lat: true
+                lng: true
+                ownerId: true
 
 resources:
   Resources:

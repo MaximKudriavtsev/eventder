@@ -1,0 +1,28 @@
+service: create-record-dynamo-db
+
+frameworkVersion: ">=1.1.0"
+
+custom:
+  bucket: eventder
+
+provider:
+  name: aws
+  runtime: nodejs8.10
+  region: eu-central-1
+  environment:
+    DYNAMODB_TABLE: ${self:service}-${opt:stage, self:provider.stage}
+  iamRoleStatements:
+    - Effect: Allow
+      Action:
+        - s3:*
+        - dynamodb:PutItem
+      Resource:
+        - "*"
+
+functions:
+  createRecord:
+    handler: handler
+    events:
+      - s3:
+          bucket: eventder
+          event: s3:ObjectCreated:*

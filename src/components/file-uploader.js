@@ -1,8 +1,14 @@
 import * as React from 'react';
-import { inputContainer, fileInput, inputLabel } from './file-uploader.scss';
+import PropTypes from 'prop-types';
+import {
+  inputContainer,
+  fileInput,
+  inputLabel,
+  inputButton
+} from './file-uploader.scss';
 import addButton from '../assets/add-image.svg';
 
-export default class extends React.Component {
+class FileUploader extends React.Component {
   constructor(props) {
     super(props);
 
@@ -10,11 +16,9 @@ export default class extends React.Component {
   }
 
   onChangeHandler(event) {
-    // eslint-disable-next-line react/prop-types
-    const { publishUserFile } = this.props;
+    const { publishUserFile, lat, lng, ownerId } = this.props;
     const file = event.target.files[0];
-    console.log(event.target.files[0]);
-    publishUserFile(file);
+    publishUserFile({ file, lat, lng, ownerId });
   }
 
   render() {
@@ -28,9 +32,25 @@ export default class extends React.Component {
             name="file"
             onChange={this.onChangeHandler}
           />
-          <img src={addButton} alt="add post" />
+          <img src={addButton} alt="add post" className={inputButton} />
         </label>
       </div>
     );
   }
 }
+
+FileUploader.propTypes = {
+  publishUserFile: PropTypes.func,
+  lat: PropTypes.number,
+  lng: PropTypes.number,
+  ownerId: PropTypes.number
+};
+
+FileUploader.defaultProps = {
+  publishUserFile: () => undefined,
+  lat: null,
+  lng: null,
+  ownerId: null
+};
+
+export default FileUploader;
