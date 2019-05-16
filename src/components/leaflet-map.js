@@ -45,7 +45,6 @@ const LeafletMap = ({ position, stateViewport, posts, onMarkerClick }) => (
       url="https://api.maptiler.com/maps/streets/{z}/{x}/{y}.png?key=wEprA7FVrnTjOteV6Qfz"
       attribution={null}
     />
-    {/* <RouteMarker /> */}
     {posts.map(postData => {
       return (
         <IconMarker
