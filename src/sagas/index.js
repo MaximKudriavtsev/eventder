@@ -11,7 +11,10 @@ const getLocation = () => {
     const geoSuccess = position => {
       res([position.coords.latitude, position.coords.longitude]);
     };
-    navigator.geolocation.getCurrentPosition(geoSuccess);
+    const geoReject = () => {
+      res([54.19, 37.61]);
+    };
+    navigator.geolocation.getCurrentPosition(geoSuccess, geoReject);
   }).then(res => res);
 };
 
