@@ -1,11 +1,12 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { Map } from '../components';
+import { Map, LeafletMap } from '../components';
 import PostPreview from '../components/post-preview';
 import FileUploader from '../components/file-uploader';
 import * as rootActions from '../actions/actions';
 import isMobileDevice from '../utils/is-mobile-device';
+import 'leaflet/dist/leaflet.css';
 
 /* eslint-disable react/prop-types */
 class Main extends React.PureComponent {
@@ -69,7 +70,15 @@ class Main extends React.PureComponent {
     return (
       <React.Fragment>
         {mobileDevice ? (
-          <div>Map</div>
+          <LeafletMap
+            position={[
+              stateViewport.latitude || 54.19,
+              stateViewport.longitude || 37.61
+            ]}
+            stateViewport={stateViewport}
+            posts={posts}
+            onMarkerClick={this.onMarkerClick}
+          />
         ) : (
           <Map
             posts={posts}

@@ -1,4 +1,5 @@
 const uuid = require('uuid');
+// eslint-disable-next-line import/no-unresolved
 const AWS = require('aws-sdk');
 
 const dynamoDb = new AWS.DynamoDB.DocumentClient();
