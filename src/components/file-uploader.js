@@ -43,7 +43,7 @@ FileUploader.propTypes = {
   publishUserFile: PropTypes.func,
   lat: PropTypes.number,
   lng: PropTypes.number,
-  ownerId: PropTypes.number
+  ownerId: PropTypes.oneOfType([PropTypes.number, PropTypes.string])
 };
 
 FileUploader.defaultProps = {

@@ -79,10 +79,10 @@ PostPreview.propTypes = {
   open: PropTypes.bool,
   toggleVisible: PropTypes.func,
   postData: PropTypes.shape({
-    id: PropTypes.number,
+    id: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
     display_url: PropTypes.string,
     preview_url: PropTypes.string,
-    owner_id: PropTypes.number,
+    owner_id: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
     taken_at_timestamp: PropTypes.number,
     location: {
       lat: PropTypes.number,

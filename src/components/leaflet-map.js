@@ -34,8 +34,8 @@ class IconMarker extends React.PureComponent {
 }
 
 IconMarker.propTypes = {
-  lng: PropTypes.arrayOf(PropTypes.string).isRequired,
-  lat: PropTypes.shape({}).isRequired,
+  lng: PropTypes.oneOfType([PropTypes.number, PropTypes.string]).isRequired,
+  lat: PropTypes.oneOfType([PropTypes.number, PropTypes.string]).isRequired,
   onClick: PropTypes.func.isRequired,
   imageURL: PropTypes.string.isRequired,
   className: PropTypes.string.isRequired
@@ -87,7 +87,9 @@ const LeafletMap = ({
 );
 
 LeafletMap.propTypes = {
-  position: PropTypes.arrayOf(PropTypes.string).isRequired,
+  position: PropTypes.arrayOf(
+    PropTypes.oneOfType([PropTypes.string, PropTypes.number])
+  ).isRequired,
   stateViewport: PropTypes.shape({}).isRequired,
   posts: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
   eventderPosts: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
