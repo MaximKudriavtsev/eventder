@@ -2,7 +2,7 @@ import * as React from 'react';
 import PropTypes from 'prop-types';
 import { Map, TileLayer, Marker } from 'react-leaflet';
 import { Icon } from 'leaflet';
-import { marker, map } from './leaflet-map.scss';
+import { marker, map, eventderMarker } from './leaflet-map.scss';
 
 const CustomIcon = Icon.extend({
   options: {
@@ -13,7 +13,7 @@ const CustomIcon = Icon.extend({
 
 class IconMarker extends React.PureComponent {
   render() {
-    const { lng, lat, onClick, imageURL, ...restProps } = this.props;
+    const { lng, lat, onClick, imageURL, className, ...restProps } = this.props;
     return (
       <Marker
         position={[lat, lng]}
@@ -23,7 +23,7 @@ class IconMarker extends React.PureComponent {
         icon={
           new CustomIcon({
             iconUrl: imageURL,
-            className: marker
+            className
           })
         }
         {...restProps}
@@ -36,10 +36,17 @@ IconMarker.propTypes = {
   lng: PropTypes.arrayOf(PropTypes.string).isRequired,
   lat: PropTypes.shape({}).isRequired,
   onClick: PropTypes.func.isRequired,
-  imageURL: PropTypes.string.isRequired
+  imageURL: PropTypes.string.isRequired,
+  className: PropTypes.string.isRequired
 };
 
-const LeafletMap = ({ position, stateViewport, posts, onMarkerClick }) => (
+const LeafletMap = ({
+  position,
+  stateViewport,
+  posts,
+  onMarkerClick,
+  eventderPosts
+}) => (
   <Map center={position} zoom={stateViewport.zoom} className={map}>
     <TileLayer
       url="https://api.maptiler.com/maps/streets/{z}/{x}/{y}.png?key=wEprA7FVrnTjOteV6Qfz"
@@ -52,6 +59,21 @@ const LeafletMap = ({ position, stateViewport, posts, onMarkerClick }) => (
           lng={postData.location.lng}
           lat={postData.location.lat}
           imageURL={postData.preview_url}
+          className={marker}
+          onClick={() => {
+            onMarkerClick(postData);
+          }}
+        />
+      );
+    })}
+    {eventderPosts.map(postData => {
+      return (
+        <IconMarker
+          key={postData.preview_url}
+          lng={postData.location.lng}
+          lat={postData.location.lat}
+          imageURL={postData.preview_url}
+          className={eventderMarker}
           onClick={() => {
             onMarkerClick(postData);
           }}
@@ -65,6 +87,7 @@ LeafletMap.propTypes = {
   position: PropTypes.arrayOf(PropTypes.string).isRequired,
   stateViewport: PropTypes.shape({}).isRequired,
   posts: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
+  eventderPosts: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
   onMarkerClick: PropTypes.func.isRequired
 };
 

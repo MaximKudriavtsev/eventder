@@ -85,6 +85,7 @@ class Main extends React.PureComponent {
             ]}
             stateViewport={stateViewport}
             posts={posts}
+            eventderPosts={eventderPosts}
             onMarkerClick={this.onMarkerClick}
           />
         ) : (
