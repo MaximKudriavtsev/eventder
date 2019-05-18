@@ -7,8 +7,8 @@ import { marker, map, eventderMarker } from './leaflet-map.scss';
 
 const CustomIcon = Icon.extend({
   options: {
-    iconSize: [120, 167],
-    iconAnchor: [90, 167]
+    iconSize: [100, 130],
+    iconAnchor: [75, 130]
   }
 });
 

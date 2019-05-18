@@ -1,4 +1,5 @@
 const fs = require('fs');
+// eslint-disable-next-line import/no-extraneous-dependencies
 const requestPromise = require('request-promise');
 const { TULA_LOCATION, SERVICE_ACCESS_KEY } = require('./keys');
 

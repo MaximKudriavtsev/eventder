@@ -3,8 +3,9 @@ import PropTypes from 'prop-types';
 import MapGL, { Marker } from '@urbica/react-map-gl';
 import Cluster from '@urbica/react-map-gl-cluster';
 import 'mapbox-gl/dist/mapbox-gl.css';
-import { root } from './map.scss';
+import { root, marker } from './map.scss';
 import ClusterMarker from './cluster-marker';
+import currentMarker from '../assets/current-marker.svg';
 
 const Map = ({
   viewport,
@@ -24,6 +25,13 @@ const Map = ({
     zoom={viewport.zoom}
     {...restProps}
   >
+    <Marker
+      offset={[0, -25]}
+      latitude={viewport.latitude}
+      longitude={viewport.longitude}
+    >
+      <img src={currentMarker} alt="You are here" className={marker} />
+    </Marker>
     <Cluster radius={40} extent={512} nodeSize={64} component={ClusterMarker}>
       {posts.map(postData => (
         <Marker
