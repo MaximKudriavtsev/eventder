@@ -50,13 +50,14 @@
     "prettier": "^1.17.0",
     "sass": "^1.18.0",
     "stylelint": "^10.0.0",
-    "stylelint-config-standard": "^18.3.0"
+    "stylelint-config-standard": "^18.3.0",
+    "request": "^2.88.0",
+    "request-promise": "^4.2.4"
   },
   "dependencies": {
     "@urbica/react-map-gl": "^1.5.0",
     "@urbica/react-map-gl-cluster": "^0.1.0",
     "autoprefixer": "^9.5.1",
-    "aws-sdk": "^2.456.0",
     "babel-plugin-transform-es2015-typeof-symbol": "^6.23.0",
     "js-cookie": "^2.2.0",
     "leaflet": "1.4.0",
@@ -73,8 +74,6 @@
     "react-router-dom": "^5.0.0",
     "reactstrap": "^8.0.0",
     "redux": "^4.0.1",
-    "redux-saga": "^1.0.2",
-    "request": "^2.88.0",
-    "request-promise": "^4.2.4"
+    "redux-saga": "^1.0.2"
   }
 }
