@@ -45,7 +45,7 @@ const PostPreview = ({ open, toggleVisible, postsData }) => {
       <Slider {...settings}>
         {Array.isArray(postsData) &&
           postsData.map(postData => (
-            <React.Fragment>
+            <React.Fragment key={postData.id}>
               <ModalBody className={body}>
                 <img
                   className={image}

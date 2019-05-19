@@ -16,7 +16,7 @@ import {
   previewMain,
   previewImage,
   previewFooter
-} from './post-preview-base.scss';
+} from './post-preview-mobile.scss';
 
 const settings = {
   dots: true,

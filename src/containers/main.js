@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { Map, LeafletMap } from '../components';
 import PostPreview from '../components/post-preview';
-import PostPreviewMobile from '../components/post-preview-base';
+import PostPreviewMobile from '../components/post-preview-mobile';
 import FileUploader from '../components/file-uploader';
 import * as rootActions from '../actions/actions';
 import isMobileDevice from '../utils/is-mobile-device';
