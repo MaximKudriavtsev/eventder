@@ -5,7 +5,7 @@ const initialState = {
   eventderPosts: [],
   userLocation: [null, null],
   currentPostId: null,
-  currentPostData: {}
+  currentPostsData: {}
 };
 
 export default (state = initialState, { type, payload }) => {
@@ -64,7 +64,7 @@ export default (state = initialState, { type, payload }) => {
     case ActionTypes.CHANGE_CURRENT_POST_DATA: {
       return {
         ...state,
-        currentPostData: payload
+        currentPostsData: Array.isArray(payload) ? payload : [payload]
       };
     }
 

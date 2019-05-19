@@ -5,6 +5,8 @@ import { Icon } from 'leaflet';
 import MarkerClusterGroup from './leaflet-marker-cluster';
 import { marker, map, eventderMarker } from './leaflet-map.scss';
 
+/* eslint-disable react/no-multi-comp */
+
 const CustomIcon = Icon.extend({
   options: {
     iconSize: [100, 130],
@@ -41,50 +43,80 @@ IconMarker.propTypes = {
   className: PropTypes.string.isRequired
 };
 
-const LeafletMap = ({
-  position,
-  stateViewport,
-  posts,
-  onMarkerClick,
-  eventderPosts
-}) => (
-  <Map center={position} zoom={stateViewport.zoom} className={map} maxZoom={23}>
-    <TileLayer
-      url="https://api.maptiler.com/maps/streets/{z}/{x}/{y}.png?key=wEprA7FVrnTjOteV6Qfz"
-      attribution={null}
-    />
-    <MarkerClusterGroup maxClusterRadius={40}>
-      {posts.map(postData => {
-        return (
-          <IconMarker
-            key={postData.preview_url}
-            lng={postData.location.lng}
-            lat={postData.location.lat}
-            imageURL={postData.preview_url}
-            className={marker}
-            onClick={() => {
-              onMarkerClick(postData);
-            }}
-          />
-        );
-      })}
-      {eventderPosts.map(postData => {
-        return (
-          <IconMarker
-            key={postData.preview_url}
-            lng={postData.location.lng}
-            lat={postData.location.lat}
-            imageURL={postData.preview_url}
-            className={eventderMarker}
-            onClick={() => {
-              onMarkerClick(postData);
-            }}
-          />
-        );
-      })}
-    </MarkerClusterGroup>
-  </Map>
-);
+class LeafletMap extends React.PureComponent {
+  constructor() {
+    super();
+
+    this.onMarkerClick = this.onMarkerClick.bind(this);
+    this.onClusterClick = this.onClusterClick.bind(this);
+  }
+
+  onMarkerClick(data) {
+    const { onMarkerClick } = this.props;
+    onMarkerClick(data);
+  }
+
+  onClusterClick(event) {
+    const { onMarkerClick } = this.props;
+    const markers = event.sourceTarget
+      .getAllChildMarkers()
+      .map(item => item.options.postData);
+    onMarkerClick(markers);
+  }
+
+  render() {
+    const { position, stateViewport, posts, eventderPosts } = this.props;
+
+    return (
+      <Map
+        center={position}
+        zoom={stateViewport.zoom}
+        className={map}
+        maxZoom={23}
+      >
+        <TileLayer
+          url="https://api.maptiler.com/maps/streets/{z}/{x}/{y}.png?key=wEprA7FVrnTjOteV6Qfz"
+          attribution={null}
+        />
+        <MarkerClusterGroup
+          maxClusterRadius={40}
+          onClusterClick={this.onClusterClick}
+        >
+          {posts.map(postData => {
+            return (
+              <IconMarker
+                key={postData.preview_url}
+                lng={postData.location.lng}
+                lat={postData.location.lat}
+                imageURL={postData.preview_url}
+                className={marker}
+                postData={postData}
+                onClick={() => {
+                  this.onMarkerClick(postData);
+                }}
+              />
+            );
+          })}
+          {eventderPosts.map(postData => {
+            return (
+              <IconMarker
+                key={postData.preview_url}
+                lng={postData.location.lng}
+                lat={postData.location.lat}
+                imageURL={postData.preview_url}
+                className={eventderMarker}
+                postData={postData}
+                onClick={() => {
+                  this.onMarkerClick(postData);
+                }}
+              />
+            );
+          })}
+        </MarkerClusterGroup>
+      </Map>
+    );
+  }
+}
 
 LeafletMap.propTypes = {
   position: PropTypes.arrayOf(

@@ -41,8 +41,6 @@ const Map = ({
           longitude={postData.location.lng}
         >
           <svg
-            // width="120"
-            // height="167"
             width="13vh"
             height="17vh"
             viewBox="0 0 120 167"
@@ -81,8 +79,6 @@ const Map = ({
           longitude={postData.location.lng}
         >
           <svg
-            // width="120"
-            // height="167"
             width="13vh"
             height="17vh"
             viewBox="0 0 120 167"

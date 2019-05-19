@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { Map, LeafletMap } from '../components';
 import PostPreview from '../components/post-preview';
+import PostPreviewMobile from '../components/post-preview-base';
 import FileUploader from '../components/file-uploader';
 import * as rootActions from '../actions/actions';
 import isMobileDevice from '../utils/is-mobile-device';
@@ -63,7 +64,7 @@ class Main extends React.PureComponent {
   render() {
     const {
       posts,
-      currentPostData,
+      currentPostsData,
       actions,
       userLocation,
       eventderPosts
@@ -78,35 +79,44 @@ class Main extends React.PureComponent {
     return (
       <React.Fragment>
         {mobileDevice ? (
-          <LeafletMap
-            position={[
-              stateViewport.latitude || 54.19,
-              stateViewport.longitude || 37.61
-            ]}
-            stateViewport={stateViewport}
-            posts={posts}
-            eventderPosts={eventderPosts}
-            onMarkerClick={this.onMarkerClick}
-          />
+          <React.Fragment>
+            <LeafletMap
+              position={[
+                stateViewport.latitude || 54.19,
+                stateViewport.longitude || 37.61
+              ]}
+              stateViewport={stateViewport}
+              posts={posts}
+              eventderPosts={eventderPosts}
+              onMarkerClick={this.onMarkerClick}
+            />
+            <PostPreviewMobile
+              open={previewVisible}
+              postsData={currentPostsData}
+              toggleVisible={this.changePostPreviewVisible}
+            />
+          </React.Fragment>
         ) : (
-          <Map
-            posts={posts}
-            eventderPosts={eventderPosts}
-            viewport={stateViewport}
-            onViewportChange={this.changeViewport}
-            onMarkerClick={this.onMarkerClick}
-          />
+          <React.Fragment>
+            <Map
+              posts={posts}
+              eventderPosts={eventderPosts}
+              viewport={stateViewport}
+              onViewportChange={this.changeViewport}
+              onMarkerClick={this.onMarkerClick}
+            />
+            <PostPreview
+              open={previewVisible}
+              postsData={currentPostsData}
+              toggleVisible={this.changePostPreviewVisible}
+            />
+          </React.Fragment>
         )}
         <FileUploader
           publishUserFile={publishUserFile}
           lat={userLocation[0]}
           lng={userLocation[1]}
           ownerId={ownerId}
-        />
-        <PostPreview
-          open={previewVisible}
-          postData={currentPostData}
-          toggleVisible={this.changePostPreviewVisible}
         />
       </React.Fragment>
     );
