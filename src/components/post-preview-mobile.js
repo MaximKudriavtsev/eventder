@@ -1,9 +1,10 @@
 import * as React from 'react';
 import * as PropTypes from 'prop-types';
 import Slider from 'react-slick';
+import PhotoPreview from './photo-preview';
 import leftChevron from '../assets/left-chevron.svg';
 
-import { container, mainText, childText } from './post-preview.scss';
+// import { container, mainText, childText } from './post-preview.scss';
 
 import {
   slickSliderCustom,
@@ -12,10 +13,10 @@ import {
   headerLeftButton,
   headerBackImage,
   headerTitle,
-  headerRightButton,
-  previewMain,
-  previewImage,
-  previewFooter
+  headerRightButton
+  // previewMain,
+  // previewImage,
+  // previewFooter
 } from './post-preview-mobile.scss';
 
 const settings = {
@@ -26,61 +27,62 @@ const settings = {
   slidesToScroll: 1
 };
 
-const dateFormatter = new Intl.DateTimeFormat('ru-RU', {
-  day: 'numeric',
-  month: 'short',
-  hour: 'numeric',
-  minute: 'numeric'
-});
+// const dateFormatter = new Intl.DateTimeFormat('ru-RU', {
+//   day: 'numeric',
+//   month: 'short',
+//   hour: 'numeric',
+//   minute: 'numeric'
+// });
 
-const formatDate = date => dateFormatter.format(date);
+// const formatDate = date => dateFormatter.format(date);
 
-const postDate = timestamp =>
-  timestamp && timestamp.toString().length === 10
-    ? timestamp * 1000
-    : timestamp;
+// const postDate = timestamp =>
+//   timestamp && timestamp.toString().length === 10
+//     ? timestamp * 1000
+//     : timestamp;
 
 const preventSafariBoundEffect = event => {
   event.preventDefault();
 };
 
-const PostPreviewMobile = ({ open, toggleVisible, postsData }) => {
-  document.ontouchmove = preventSafariBoundEffect;
-  return (
-    <div className={modalMain} style={{ display: open ? 'flex' : 'none' }}>
-      <div className={modalHeader}>
-        <div className={headerLeftButton} onClick={toggleVisible}>
-          <img className={headerBackImage} src={leftChevron} alt="exit" />
+class PostPreviewMobile extends React.PureComponent {
+  constructor() {
+    super();
+
+    this.state = {
+      loading: true
+    };
+
+    this.toggleLoading = this.toggleLoading.bind(this);
+  }
+
+  toggleLoading() {
+    const { loading: stateLoading } = this.state;
+    this.setState({ loading: !stateLoading });
+  }
+
+  render() {
+    const { open, toggleVisible, postsData } = this.props;
+
+    document.ontouchmove = preventSafariBoundEffect;
+    return (
+      <div className={modalMain} style={{ display: open ? 'flex' : 'none' }}>
+        <div className={modalHeader}>
+          <div className={headerLeftButton} onClick={toggleVisible}>
+            <img className={headerBackImage} src={leftChevron} alt="exit" />
+          </div>
+          <div className={headerTitle}>Eventder</div>
+          <div className={headerRightButton} />
         </div>
-        <div className={headerTitle}>Eventder</div>
-        <div className={headerRightButton} />
+
+        <Slider {...settings} className={slickSliderCustom}>
+          {Array.isArray(postsData) &&
+            postsData.map(data => <PhotoPreview data={data} />)}
+        </Slider>
       </div>
-
-      <Slider {...settings} className={slickSliderCustom}>
-        {Array.isArray(postsData) &&
-          postsData.map(data => (
-            <div className={previewMain} key={data.id}>
-              <img
-                className={previewImage}
-                src={data && data.display_url}
-                alt=""
-              />
-
-              <div className={previewFooter}>
-                <div className={container}>
-                  <p className={mainText}>Опубликовано</p>
-                  <p className={childText}>
-                    {data.taken_at_timestamp &&
-                      formatDate(new Date(postDate(data.taken_at_timestamp)))}
-                  </p>
-                </div>
-              </div>
-            </div>
-          ))}
-      </Slider>
-    </div>
-  );
-};
+    );
+  }
+}
 
 PostPreviewMobile.propTypes = {
   open: PropTypes.bool,
