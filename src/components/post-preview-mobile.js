@@ -40,7 +40,12 @@ const postDate = timestamp =>
     ? timestamp * 1000
     : timestamp;
 
+const preventSafariBoundEffect = event => {
+  event.preventDefault();
+};
+
 const PostPreviewMobile = ({ open, toggleVisible, postsData }) => {
+  document.ontouchmove = preventSafariBoundEffect;
   return (
     <div className={modalMain} style={{ display: open ? 'flex' : 'none' }}>
       <div className={modalHeader}>
