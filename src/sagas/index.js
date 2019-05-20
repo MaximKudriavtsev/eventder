@@ -1,4 +1,5 @@
-import { put, call, takeEvery, all } from 'redux-saga/effects';
+import { put, call, takeEvery, all, take } from 'redux-saga/effects';
+import { eventChannel, END } from 'redux-saga';
 import * as actions from '../actions/actions';
 import * as actionTypes from '../actions/action-types';
 
@@ -16,6 +17,20 @@ const getLocation = () => {
     };
     navigator.geolocation.getCurrentPosition(geoSuccess, geoReject);
   }).then(res => res);
+};
+
+const getVkPostsComputedBase = (lat, long) => {
+  const makeDateInterval = () =>
+    Math.floor(new Date().getTime() / 1000 - 1 * 60 * 60);
+
+  return fetch(
+    `https://392veon8m6.execute-api.eu-central-1.amazonaws.com/default/getVkPosts?lat=${lat}&long=${long}&radius=${SEARCH_RADIUS}&startTime=${makeDateInterval()}`,
+    {
+      mode: 'cors'
+    }
+  )
+    .then(res => res.json())
+    .then(res => res);
 };
 
 const getVkPostsComputed = (lat, long) => () => {
@@ -79,15 +94,83 @@ const publishUserFileComputed = ({ file, lat, lng, ownerId }) => () => {
   put(actions.loading());
 };
 
+function createEventChannelEventder() {
+  return eventChannel(emitter => {
+    // initial call
+    getEventderPostsComputed().then(res => emitter(res));
+    let endCallsTime = 500; // ~ 1.6 hour
+    const iv = setInterval(() => {
+      endCallsTime -= 1;
+      if (endCallsTime > 0) {
+        getEventderPostsComputed().then(res => emitter(res));
+      } else {
+        emitter(END);
+      }
+    }, 10000);
+    return () => {
+      clearInterval(iv);
+    };
+  });
+}
+
+function createEventChannelVk(location) {
+  return eventChannel(emitter => {
+    // initial call
+    getVkPostsComputedBase(location[0], location[1]).then(res => emitter(res));
+    let endCallsTime = 100; // ~ 1.6 hour
+    const iv = setInterval(() => {
+      endCallsTime -= 1;
+      if (endCallsTime > 0) {
+        getVkPostsComputedBase(location[0], location[1]).then(res =>
+          emitter(res)
+        );
+      } else {
+        emitter(END);
+      }
+    }, 70000);
+    return () => {
+      clearInterval(iv);
+    };
+  });
+}
+
+export function* saga(location) {
+  const vkChain = yield call(createEventChannelVk, location);
+  try {
+    while (true) {
+      const vkPosts = yield take(vkChain);
+      yield put(actions.getPosts(vkPosts));
+    }
+  } finally {
+    console.log('countdown terminated');
+  }
+}
+
+function* sagaEventder() {
+  const eventderChain = yield call(createEventChannelEventder, 4);
+  try {
+    while (true) {
+      const eventderPosts = yield take(eventderChain);
+      yield put(actions.getEventderPosts(eventderPosts));
+    }
+  } finally {
+    console.log('countdown terminated');
+  }
+}
+
 export function* getUserLocation2() {
   const location = yield call(getLocation);
   yield put(actions.getUserLocation(location));
 
-  const vkPosts = yield call(getVkPostsComputed(location[0], location[1]));
-  yield put(actions.getPosts(vkPosts));
+  // const vkPosts = yield call(getVkPostsComputed(location[0], location[1]));
+  // yield put(actions.getPosts(vkPosts));
 
-  const eventderPosts = yield call(getEventderPostsComputed);
-  yield put(actions.getEventderPosts(eventderPosts));
+  // const eventderPosts = yield call(getEventderPostsComputed);
+  // yield put(actions.getEventderPosts(eventderPosts));
+
+  // call every time
+  yield saga(location);
+  // yield sagaEventder();
 }
 
 export function* getUserLocation() {
@@ -112,5 +195,5 @@ export function* publishUserFile() {
 }
 
 export function* rootSaga() {
-  yield all([getUserLocation(), publishUserFile()]);
+  yield all([getUserLocation(), publishUserFile(), sagaEventder()]);
 }
