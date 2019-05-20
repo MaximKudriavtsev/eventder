@@ -1,11 +1,22 @@
 import * as React from 'react';
 import PropTypes from 'prop-types';
 import { Map, TileLayer, Marker } from 'react-leaflet';
-import { Icon } from 'leaflet';
+import L, { Icon } from 'leaflet';
 import MarkerClusterGroup from './leaflet-marker-cluster';
-import { marker, map, eventderMarker } from './leaflet-map.scss';
+import {
+  marker,
+  map,
+  eventderMarker,
+  pulsatingCircle,
+  innerBlock
+} from './leaflet-map.scss';
 
 /* eslint-disable react/no-multi-comp */
+
+const iconCreateFunction = cluster =>
+  L.divIcon({
+    html: `<div class=${pulsatingCircle}><div class=${innerBlock}>${cluster.getChildCount()}</div></div>`
+  });
 
 const CustomIcon = Icon.extend({
   options: {
@@ -81,6 +92,7 @@ class LeafletMap extends React.PureComponent {
         <MarkerClusterGroup
           maxClusterRadius={40}
           onClusterClick={this.onClusterClick}
+          iconCreateFunction={iconCreateFunction}
         >
           {posts.map(postData => {
             return (

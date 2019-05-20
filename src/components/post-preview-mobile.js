@@ -77,7 +77,7 @@ class PostPreviewMobile extends React.PureComponent {
 
         <Slider {...settings} className={slickSliderCustom}>
           {Array.isArray(postsData) &&
-            postsData.map(data => <PhotoPreview data={data} />)}
+            postsData.map(data => <PhotoPreview data={data} key={data.id} />)}
         </Slider>
       </div>
     );
