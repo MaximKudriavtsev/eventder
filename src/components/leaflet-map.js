@@ -76,7 +76,13 @@ class LeafletMap extends React.PureComponent {
   }
 
   render() {
-    const { position, stateViewport, posts, eventderPosts } = this.props;
+    const {
+      position,
+      stateViewport,
+      posts,
+      eventderPosts,
+      ...restProps
+    } = this.props;
 
     return (
       <Map
@@ -84,6 +90,7 @@ class LeafletMap extends React.PureComponent {
         zoom={stateViewport.zoom}
         className={map}
         maxZoom={23}
+        {...restProps}
       >
         <TileLayer
           url="https://api.maptiler.com/maps/streets/{z}/{x}/{y}.png?key=wEprA7FVrnTjOteV6Qfz"

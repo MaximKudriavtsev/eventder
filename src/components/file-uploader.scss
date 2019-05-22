@@ -4,7 +4,7 @@
   bottom: 10px;
   width: 100%;
   display: flex;
-  justify-content: center;
+  justify-content: space-around;
 }
 
 .fileInput {
@@ -21,6 +21,6 @@
 }
 
 .inputButton {
-  width: 10vh;
-  height: 10vh;
+  width: 7vh;
+  height: 7vh;
 }

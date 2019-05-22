@@ -18,8 +18,10 @@ class Main extends React.PureComponent {
 
     this.state = {
       viewport: {
-        latitude: props.userLocation[0] || 54.19,
-        longitude: props.userLocation[1] || 37.61,
+        center: [
+          props.userLocation[0] || 54.19,
+          props.userLocation[1] || 37.61
+        ],
         zoom: 14
       },
       previewVisible: false,
@@ -37,6 +39,16 @@ class Main extends React.PureComponent {
     this.onMarkerClick = postData => {
       this.changePostPreviewVisible();
       props.actions.changeCurrentPostData(postData);
+    };
+    this.resetCurrentLocation = () => {
+      const { userLocation } = this.props;
+
+      this.setState({
+        viewport: {
+          center: [userLocation[0] || 54.19, userLocation[1] || 37.61],
+          zoom: 14
+        }
+      });
     };
   }
 
@@ -79,14 +91,14 @@ class Main extends React.PureComponent {
     return (
       <React.Fragment>
         <LeafletMap
-          position={[
-            stateViewport.latitude || 54.19,
-            stateViewport.longitude || 37.61
-          ]}
+          position={stateViewport.center}
           stateViewport={stateViewport}
+          viewport={stateViewport}
+          onViewportChange={this.changeViewport}
           posts={posts}
           eventderPosts={eventderPosts}
           onMarkerClick={this.onMarkerClick}
+          animate={false}
         />
         {mobileDevice ? (
           <PostPreviewMobile
@@ -106,6 +118,7 @@ class Main extends React.PureComponent {
           lat={userLocation[0]}
           lng={userLocation[1]}
           ownerId={ownerId}
+          changeCurrentLocation={this.resetCurrentLocation}
         />
       </React.Fragment>
     );

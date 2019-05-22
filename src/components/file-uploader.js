@@ -6,7 +6,8 @@ import {
   inputLabel,
   inputButton
 } from './file-uploader.scss';
-import addButton from '../assets/add-image.svg';
+import camera from '../assets/camera.svg';
+import hunt from '../assets/hunt.svg';
 
 class FileUploader extends React.Component {
   constructor(props) {
@@ -22,6 +23,8 @@ class FileUploader extends React.Component {
   }
 
   render() {
+    const { changeCurrentLocation } = this.props;
+
     return (
       <div className={inputContainer}>
         <label htmlFor="file" className={inputLabel}>
@@ -32,14 +35,21 @@ class FileUploader extends React.Component {
             name="file"
             onChange={this.onChangeHandler}
           />
-          <img src={addButton} alt="add post" className={inputButton} />
+          <img src={camera} alt="add post" className={inputButton} />
         </label>
+        <img
+          src={hunt}
+          className={inputButton}
+          alt="Hunt"
+          onClick={changeCurrentLocation}
+        />
       </div>
     );
   }
 }
 
 FileUploader.propTypes = {
+  changeCurrentLocation: PropTypes.func,
   publishUserFile: PropTypes.func,
   lat: PropTypes.number,
   lng: PropTypes.number,
@@ -47,6 +57,7 @@ FileUploader.propTypes = {
 };
 
 FileUploader.defaultProps = {
+  changeCurrentLocation: () => undefined,
   publishUserFile: () => undefined,
   lat: null,
   lng: null,
