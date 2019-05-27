@@ -99,6 +99,7 @@ class Main extends React.PureComponent {
           eventderPosts={eventderPosts}
           onMarkerClick={this.onMarkerClick}
           animate={false}
+          initialPosition={userLocation}
         />
         {mobileDevice ? (
           <PostPreviewMobile

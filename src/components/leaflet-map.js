@@ -10,6 +10,8 @@ import {
   pulsatingCircle,
   innerBlock
 } from './leaflet-map.scss';
+// import diametrMeters from '../utils/calculate-circle';
+// import Round from '../assets/round.svg';
 
 /* eslint-disable react/no-multi-comp */
 
@@ -24,6 +26,20 @@ const CustomIcon = Icon.extend({
     iconAnchor: [75, 130]
   }
 });
+
+const CustomIcon2 = Icon.extend({
+  options: {
+    iconSize: [80, 100],
+    iconAnchor: [40, 100]
+  }
+});
+
+// const CustomIcon3 = Icon.extend({
+//   options: {
+//     iconSize: [500, 500],
+//     iconAnchor: [250, 250]
+//   }
+// });
 
 class IconMarker extends React.PureComponent {
   render() {
@@ -81,8 +97,13 @@ class LeafletMap extends React.PureComponent {
       stateViewport,
       posts,
       eventderPosts,
+      initialPosition,
       ...restProps
     } = this.props;
+
+    const initial = [initialPosition[0] || 20, initialPosition[1] || 20];
+
+    // const diametr = diametrMeters(1000, stateViewport.zoom, position);
 
     return (
       <Map
@@ -132,6 +153,28 @@ class LeafletMap extends React.PureComponent {
             );
           })}
         </MarkerClusterGroup>
+        <Marker
+          position={initial}
+          zIndexOffset={1000}
+          icon={
+            new CustomIcon2({
+              iconUrl: 'https://image.flaticon.com/icons/svg/143/143960.svg'
+            })
+          }
+        />
+        {/* <Marker
+          position={initial}
+          zIndexOffset={1000}
+          icon={
+            new Icon.extend({
+              options: {
+                iconSize: [500, 500],
+                iconAnchor: [250, 250],
+                iconUrl: Round,
+              }
+            })
+          }
+        /> */}
       </Map>
     );
   }
@@ -139,6 +182,9 @@ class LeafletMap extends React.PureComponent {
 
 LeafletMap.propTypes = {
   position: PropTypes.arrayOf(
+    PropTypes.oneOfType([PropTypes.string, PropTypes.number])
+  ).isRequired,
+  initialPosition: PropTypes.arrayOf(
     PropTypes.oneOfType([PropTypes.string, PropTypes.number])
   ).isRequired,
   stateViewport: PropTypes.shape({}).isRequired,
