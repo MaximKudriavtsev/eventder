@@ -116,6 +116,17 @@ class LeafletMap extends React.PureComponent {
           url="https://api.maptiler.com/maps/streets/{z}/{x}/{y}.png?key=wEprA7FVrnTjOteV6Qfz"
           attribution={null}
         />
+        <Marker
+          position={initial}
+          zIndexOffset={-1000}
+          icon={
+            new CustomIcon3({
+              iconUrl: Round,
+              iconSize: [diametr, diametr],
+              iconAnchor: [diametr / 2, diametr / 2]
+            })
+          }
+        />
         <MarkerClusterGroup
           maxClusterRadius={40}
           onClusterClick={this.onClusterClick}
@@ -158,17 +169,6 @@ class LeafletMap extends React.PureComponent {
           icon={
             new CustomIcon2({
               iconUrl: 'https://image.flaticon.com/icons/svg/143/143960.svg'
-            })
-          }
-        />
-        <Marker
-          position={initial}
-          zIndexOffset={1000}
-          icon={
-            new CustomIcon3({
-              iconUrl: Round,
-              iconSize: [diametr, diametr],
-              iconAnchor: [diametr / 2, diametr / 2]
             })
           }
         />
