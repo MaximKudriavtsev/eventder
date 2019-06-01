@@ -7,7 +7,7 @@ export default (radius, zoomValue, position) => {
     (156543.03392 * Math.cos((position[0] * Math.PI) / 180)) /
     Math.pow(2, zoomValue); // сколько метров в 1 px
 
-  const diametrPx = Math.pow((2 * radius) / metersPerPx, -1);
+  const diametrPx = (2 * radius) / metersPerPx;
 
   return diametrPx;
 };

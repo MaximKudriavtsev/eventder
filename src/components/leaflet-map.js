@@ -10,8 +10,8 @@ import {
   pulsatingCircle,
   innerBlock
 } from './leaflet-map.scss';
-// import diametrMeters from '../utils/calculate-circle';
-// import Round from '../assets/round.svg';
+import diametrMeters from '../utils/calculate-circle';
+import Round from '../assets/round.svg';
 
 /* eslint-disable react/no-multi-comp */
 
@@ -34,12 +34,12 @@ const CustomIcon2 = Icon.extend({
   }
 });
 
-// const CustomIcon3 = Icon.extend({
-//   options: {
-//     iconSize: [500, 500],
-//     iconAnchor: [250, 250]
-//   }
-// });
+const CustomIcon3 = Icon.extend({
+  options: {
+    iconSize: [500, 500],
+    iconAnchor: [250, 250]
+  }
+});
 
 class IconMarker extends React.PureComponent {
   render() {
@@ -103,8 +103,7 @@ class LeafletMap extends React.PureComponent {
 
     const initial = [initialPosition[0] || 20, initialPosition[1] || 20];
 
-    // const diametr = diametrMeters(1000, stateViewport.zoom, position);
-
+    const diametr = diametrMeters(1000, stateViewport.zoom, position);
     return (
       <Map
         center={position}
@@ -162,19 +161,17 @@ class LeafletMap extends React.PureComponent {
             })
           }
         />
-        {/* <Marker
+        <Marker
           position={initial}
           zIndexOffset={1000}
           icon={
-            new Icon.extend({
-              options: {
-                iconSize: [500, 500],
-                iconAnchor: [250, 250],
-                iconUrl: Round,
-              }
+            new CustomIcon3({
+              iconUrl: Round,
+              iconSize: [diametr, diametr],
+              iconAnchor: [diametr / 2, diametr / 2]
             })
           }
-        /> */}
+        />
       </Map>
     );
   }
