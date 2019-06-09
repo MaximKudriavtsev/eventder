@@ -1,6 +1,6 @@
 import * as React from 'react';
 import PropTypes from 'prop-types';
-import { Map, TileLayer, Marker } from 'react-leaflet';
+import { Map, TileLayer, Marker, Polygon } from 'react-leaflet';
 import L, { Icon } from 'leaflet';
 import MarkerClusterGroup from './leaflet-marker-cluster';
 import {
@@ -10,11 +10,9 @@ import {
   pulsatingCircle,
   innerBlock
 } from './leaflet-map.scss';
-import diametrMeters from '../utils/calculate-circle';
-import Round from '../assets/round.svg';
+import circleCoordinates from '../utils/circle-coordinates';
 
 /* eslint-disable react/no-multi-comp */
-
 const iconCreateFunction = cluster =>
   L.divIcon({
     html: `<div class=${pulsatingCircle}><div class=${innerBlock}>${cluster.getChildCount()}</div></div>`
@@ -34,22 +32,13 @@ const CustomIcon2 = Icon.extend({
   }
 });
 
-const CustomIcon3 = Icon.extend({
-  options: {
-    iconSize: [500, 500],
-    iconAnchor: [250, 250]
-  }
-});
-
 class IconMarker extends React.PureComponent {
   render() {
     const { lng, lat, onClick, imageURL, className, ...restProps } = this.props;
     return (
       <Marker
         position={[lat, lng]}
-        onClick={() => {
-          onClick();
-        }}
+        onClick={onClick}
         icon={
           new CustomIcon({
             iconUrl: imageURL,
@@ -103,7 +92,10 @@ class LeafletMap extends React.PureComponent {
 
     const initial = [initialPosition[0] || 20, initialPosition[1] || 20];
 
-    const diametr = diametrMeters(1000, stateViewport.zoom, position);
+    const polygonCircle = [
+      circleCoordinates(initial[0], initial[1], 1000), // outer ring
+      circleCoordinates(initial[0], initial[1], 3) // hole
+    ];
     return (
       <Map
         center={position}
@@ -115,17 +107,6 @@ class LeafletMap extends React.PureComponent {
         <TileLayer
           url="https://api.maptiler.com/maps/streets/{z}/{x}/{y}.png?key=wEprA7FVrnTjOteV6Qfz"
           attribution={null}
-        />
-        <Marker
-          position={initial}
-          zIndexOffset={-1000}
-          icon={
-            new CustomIcon3({
-              iconUrl: Round,
-              iconSize: [diametr, diametr],
-              iconAnchor: [diametr / 2, diametr / 2]
-            })
-          }
         />
         <MarkerClusterGroup
           maxClusterRadius={40}
@@ -172,6 +153,7 @@ class LeafletMap extends React.PureComponent {
             })
           }
         />
+        <Polygon positions={polygonCircle} color="#00b9cb" />
       </Map>
     );
   }
