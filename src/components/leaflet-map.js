@@ -32,8 +32,8 @@ const CustomIcon = Icon.extend({
 
 const CustomIcon2 = Icon.extend({
   options: {
-    iconSize: [80, 100],
-    iconAnchor: [40, 100]
+    iconSize: [50, 80],
+    iconAnchor: [25, 80]
   }
 });
 
