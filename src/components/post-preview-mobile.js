@@ -4,8 +4,6 @@ import Slider from 'react-slick';
 import PhotoPreview from './photo-preview';
 import leftChevron from '../assets/left-chevron.svg';
 
-// import { container, mainText, childText } from './post-preview.scss';
-
 import {
   slickSliderCustom,
   modalMain,
@@ -14,9 +12,6 @@ import {
   headerBackImage,
   headerTitle,
   headerRightButton
-  // previewMain,
-  // previewImage,
-  // previewFooter
 } from './post-preview-mobile.scss';
 
 const settings = {
@@ -26,20 +21,6 @@ const settings = {
   slidesToShow: 1,
   slidesToScroll: 1
 };
-
-// const dateFormatter = new Intl.DateTimeFormat('ru-RU', {
-//   day: 'numeric',
-//   month: 'short',
-//   hour: 'numeric',
-//   minute: 'numeric'
-// });
-
-// const formatDate = date => dateFormatter.format(date);
-
-// const postDate = timestamp =>
-//   timestamp && timestamp.toString().length === 10
-//     ? timestamp * 1000
-//     : timestamp;
 
 const preventSafariBoundEffect = event => {
   event.preventDefault();

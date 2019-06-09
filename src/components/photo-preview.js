@@ -1,6 +1,5 @@
 import * as React from 'react';
 import * as PropTypes from 'prop-types';
-
 import { container, mainText, childText } from './post-preview.scss';
 import {
   previewMain,
@@ -8,6 +7,8 @@ import {
   previewFooter
 } from './post-preview-mobile.scss';
 import LoadingIndicator from '../assets/loading.svg';
+import Like from '../assets/like.svg';
+import Liked from '../assets/liked.svg';
 
 const dateFormatter = new Intl.DateTimeFormat('ru-RU', {
   day: 'numeric',
@@ -28,19 +29,29 @@ class PhotoPreview extends React.PureComponent {
     super(props);
 
     this.state = {
+      like: props.data.likeCount || false,
       loading: true,
       postId: props.data.id
     };
 
     this.toggleLoading = this.toggleLoading.bind(this);
+    this.setLike = this.setLike.bind(this);
   }
 
   static getDerivedStateFromProps(props, state) {
     const { postId } = state;
 
     if (postId !== props.data.id)
-      return { postId: props.data.id, loading: true };
+      return {
+        postId: props.data.id,
+        loading: true,
+        like: props.data.likeCount || false
+      };
     return state;
+  }
+
+  setLike(value) {
+    this.setState({ like: value });
   }
 
   toggleLoading() {
@@ -48,8 +59,10 @@ class PhotoPreview extends React.PureComponent {
   }
 
   render() {
-    const { loading } = this.state;
+    const { loading, like } = this.state;
     const { data } = this.props;
+
+    const toggleLike = () => this.setLike(!like);
 
     return (
       <div className={previewMain} key={data.id}>
@@ -86,6 +99,16 @@ class PhotoPreview extends React.PureComponent {
                 formatDate(new Date(postDate(data.taken_at_timestamp)))}
             </p>
           </div>
+          <div className={container} style={{ flexDirection: 'row' }}>
+            <p className={mainText} onClick={toggleLike}>
+              {like ? (
+                <img src={Liked} alt="liked" />
+              ) : (
+                <img src={Like} alt="like" />
+              )}
+            </p>
+          </div>
+          <div className={container} />
         </div>
       </div>
     );
@@ -104,7 +127,8 @@ PhotoPreview.propTypes = {
       lng: PropTypes.number,
       name: PropTypes.string,
       instagramId: PropTypes.number
-    }
+    },
+    likeCount: PropTypes.number
   }).isRequired
 };
 

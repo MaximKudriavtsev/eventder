@@ -1,35 +1,12 @@
 import * as React from 'react';
 import * as PropTypes from 'prop-types';
-import { Modal, ModalBody, ModalFooter } from 'reactstrap';
+import { Modal, ModalBody } from 'reactstrap';
 import Slider from 'react-slick';
-import {
-  image,
-  body,
-  modalFooter,
-  container,
-  mainText,
-  childText,
-  modalMain,
-  exitButton,
-  exitIcon
-} from './post-preview.scss';
+import PhotoPreview from './photo-preview';
+import { body, modalMain, exitButton, exitIcon } from './post-preview.scss';
 
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 import whiteCross from '../assets/white-cross.svg';
-
-const dateFormatter = new Intl.DateTimeFormat('ru-RU', {
-  day: 'numeric',
-  month: 'short',
-  hour: 'numeric',
-  minute: 'numeric'
-});
-
-const formatDate = date => dateFormatter.format(date);
-
-const postDate = timestamp =>
-  timestamp && timestamp.toString().length === 10
-    ? timestamp * 1000
-    : timestamp;
 
 const settings = {
   dots: true,
@@ -47,28 +24,11 @@ const PostPreview = ({ open, toggleVisible, postsData }) => {
           postsData.map(postData => (
             <React.Fragment key={postData.id}>
               <ModalBody className={body}>
-                <img
-                  className={image}
-                  src={postData && postData.display_url}
-                  alt=""
-                />
-              </ModalBody>
-
-              <ModalFooter className={modalFooter}>
-                <div className={container}>
-                  <p className={mainText}>Опубликовано</p>
-                  <p className={childText}>
-                    {postData.taken_at_timestamp &&
-                      formatDate(
-                        new Date(postDate(postData.taken_at_timestamp))
-                      )}
-                  </p>
-                </div>
-
+                <PhotoPreview data={postData} key={postData.id} />
                 <div className={exitButton} onClick={toggleVisible}>
                   <img className={exitIcon} src={whiteCross} alt="exit" />
                 </div>
-              </ModalFooter>
+              </ModalBody>
             </React.Fragment>
           ))}
       </Slider>
