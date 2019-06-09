@@ -25,8 +25,8 @@ const iconCreateFunction = cluster =>
 
 const CustomIcon = Icon.extend({
   options: {
-    iconSize: [100, 130],
-    iconAnchor: [75, 130]
+    iconSize: [70, 70],
+    iconAnchor: [35, 35]
   }
 });
 
