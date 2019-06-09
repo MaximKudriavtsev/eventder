@@ -12,6 +12,11 @@ import {
 } from './leaflet-map.scss';
 import circleCoordinates from '../utils/circle-coordinates';
 
+const TILE_LAYER_URL =
+  'https://api.maptiler.com/maps/streets/{z}/{x}/{y}.png?key=wEprA7FVrnTjOteV6Qfz';
+const MARKER_CURRENT_URL =
+  'https://image.flaticon.com/icons/svg/143/143960.svg';
+
 /* eslint-disable react/no-multi-comp */
 const iconCreateFunction = cluster =>
   L.divIcon({
@@ -104,10 +109,7 @@ class LeafletMap extends React.PureComponent {
         maxZoom={23}
         {...restProps}
       >
-        <TileLayer
-          url="https://api.maptiler.com/maps/streets/{z}/{x}/{y}.png?key=wEprA7FVrnTjOteV6Qfz"
-          attribution={null}
-        />
+        <TileLayer url={TILE_LAYER_URL} attribution={null} />
         <MarkerClusterGroup
           maxClusterRadius={40}
           onClusterClick={this.onClusterClick}
@@ -149,7 +151,7 @@ class LeafletMap extends React.PureComponent {
           zIndexOffset={1000}
           icon={
             new CustomIcon2({
-              iconUrl: 'https://image.flaticon.com/icons/svg/143/143960.svg'
+              iconUrl: MARKER_CURRENT_URL
             })
           }
         />
