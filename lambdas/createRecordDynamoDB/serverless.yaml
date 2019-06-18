@@ -26,3 +26,11 @@ functions:
       - s3:
           bucket: eventder
           event: s3:ObjectCreated:*
+          
+  addLike:
+    handler: addLike 
+    events:
+      - http:
+          path: addLike 
+          method: put 
+          cors: true
