@@ -46,6 +46,13 @@ functions:
                 lat: true
                 lng: true
                 ownerId: true
+  addLike:
+    handler: handler.addLike 
+    events:
+      - http:
+          path: addLike/{id}
+          method: put 
+          cors: true
 
 resources:
   Resources:

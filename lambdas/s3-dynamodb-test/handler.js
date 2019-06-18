@@ -78,3 +78,59 @@ module.exports.save = (event, context, callback) => {
     });
   });
 };
+
+module.exports.addLike = (event, context, callback) => {
+  const params = {
+    TableName: process.env.DYNAMODB_TABLE,
+    Key: {
+      id: event.pathParameters.id
+    }
+  };
+
+  // fetch record from the database
+  dynamoDb.get(params, (error, result) => {
+    // handle potential errors
+    if (error) {
+      console.error(error);
+      callback(null, {
+        statusCode: error.statusCode || 501,
+        headers: { 'Content-Type': 'text/plain' },
+        body: "Couldn't fetch the record item."
+      });
+      return;
+    }
+
+    const params = {
+      TableName: process.env.DYNAMODB_TABLE,
+      Key: {
+        id: event.pathParameters.id
+      },
+      ExpressionAttributeValues: {
+        ':l': (result.Item.liked || 0) + 1
+      },
+      UpdateExpression: 'SET liked=:l',
+      ReturnValues: 'ALL_NEW'
+    };
+
+    // update the record in the database
+    dynamoDb.update(params, (error, result) => {
+      // handle potential errors
+      if (error) {
+        console.error(error);
+        callback(null, {
+          statusCode: error.statusCode || 501,
+          headers: { 'Content-Type': 'text/plain' },
+          body: "Couldn't fetch the record item."
+        });
+        return;
+      }
+
+      // create a response
+      const response = {
+        statusCode: 200,
+        body: JSON.stringify(result.Attributes)
+      };
+      callback(null, response);
+    });
+  });
+};
