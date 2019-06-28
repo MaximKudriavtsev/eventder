@@ -7,8 +7,8 @@ import {
   previewFooter
 } from './post-preview-mobile.scss';
 import LoadingIndicator from '../assets/loading.svg';
-import Like from '../assets/like.svg';
-import Liked from '../assets/liked.svg';
+import Heart from '../assets/heart.svg';
+import HeartFull from '../assets/heart-full.svg';
 
 const dateFormatter = new Intl.DateTimeFormat('ru-RU', {
   day: 'numeric',
@@ -29,7 +29,7 @@ class PhotoPreview extends React.PureComponent {
     super(props);
 
     this.state = {
-      like: props.data.likeCount || false,
+      like: props.data.liked || false,
       loading: true,
       postId: props.data.id
     };
@@ -45,7 +45,7 @@ class PhotoPreview extends React.PureComponent {
       return {
         postId: props.data.id,
         loading: true,
-        like: props.data.likeCount || false
+        like: props.data.liked || false
       };
     return state;
   }
@@ -99,14 +99,25 @@ class PhotoPreview extends React.PureComponent {
                 formatDate(new Date(postDate(data.taken_at_timestamp)))}
             </p>
           </div>
-          <div className={container} style={{ flexDirection: 'row' }}>
-            <p className={mainText} onClick={toggleLike}>
+          <div className={container}>
+            <div className={mainText} onClick={toggleLike}>
               {like ? (
-                <img src={Liked} alt="liked" />
+                <img
+                  src={HeartFull}
+                  style={{ margin: '0 auto', height: '35px' }}
+                  alt="liked"
+                />
               ) : (
-                <img src={Like} alt="like" />
+                <img
+                  src={Heart}
+                  style={{ margin: '0 auto', height: '35px' }}
+                  alt="like"
+                />
               )}
-            </p>
+            </div>
+            <div className={childText} style={{ textAlign: 'center' }}>
+              {data.liked || 0}
+            </div>
           </div>
           <div className={container} />
         </div>
@@ -128,7 +139,7 @@ PhotoPreview.propTypes = {
       name: PropTypes.string,
       instagramId: PropTypes.number
     },
-    likeCount: PropTypes.number
+    liked: PropTypes.number
   }).isRequired
 };
 
