@@ -128,7 +128,11 @@ module.exports.addLike = (event, context, callback) => {
       // create a response
       const response = {
         statusCode: 200,
-        body: JSON.stringify(result.Attributes)
+        body: JSON.stringify(result.Attributes),
+        headers: {
+          'Content-Type': 'application/json',
+          'Access-Control-Allow-Origin': '*'
+        }
       };
       callback(null, response);
     });

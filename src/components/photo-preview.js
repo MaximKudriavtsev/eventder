@@ -51,6 +51,21 @@ class PhotoPreview extends React.PureComponent {
   }
 
   setLike(value) {
+    if (value) {
+      const { data } = this.props;
+      fetch(
+        `https://pgu80wwqs6.execute-api.eu-central-1.amazonaws.com/dev/addLike/${
+          data.id
+        }`,
+        {
+          method: 'PUT',
+          mode: 'cors',
+          headers: {
+            'Content-Type': 'application/json'
+          }
+        }
+      ).then(res => console.log(res));
+    }
     this.setState({ like: value });
   }
 
