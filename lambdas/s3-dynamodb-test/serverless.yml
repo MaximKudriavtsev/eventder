@@ -53,6 +53,14 @@ functions:
           path: addLike/{id}
           method: post 
           cors: true
+  
+  removeLike:
+    handler: handler.removeLike
+    events:
+      - http:
+          path: removeLike/{id}
+          method: post 
+          cors: true
 
 resources:
   Resources:

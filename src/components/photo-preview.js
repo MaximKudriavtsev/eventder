@@ -54,22 +54,16 @@ class PhotoPreview extends React.PureComponent {
 
   setLike(value) {
     const { likeCount: prevLikeCount } = this.state;
+    const { data } = this.props;
+    const method = value ? 'addLike' : 'removeLike';
 
-    if (value) {
-      const { data } = this.props;
-      fetch(
-        `https://pgu80wwqs6.execute-api.eu-central-1.amazonaws.com/dev/addLike/${
-          data.id
-        }`,
-        {
-          method: 'POST',
-          mode: 'no-cors',
-          headers: {
-            'Content-Type': 'application/json'
-          }
-        }
-      ).then(res => console.log(res));
-    }
+    fetch(
+      `https://pgu80wwqs6.execute-api.eu-central-1.amazonaws.com/dev/${method}/${
+        data.id
+      }`,
+      { mode: 'no-cors', method: 'POST' }
+    );
+
     this.setState({
       like: value,
       likeCount: value ? prevLikeCount + 1 : prevLikeCount - 1
@@ -123,7 +117,7 @@ class PhotoPreview extends React.PureComponent {
           </div>
           <div className={container}>
             <div className={mainText} onClick={toggleLike}>
-              {like ? (
+              {likeCount > 0 ? (
                 <img
                   src={HeartFull}
                   style={{ margin: '0 auto', height: '35px' }}

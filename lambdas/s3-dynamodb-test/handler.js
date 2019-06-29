@@ -146,3 +146,73 @@ module.exports.addLike = (event, context, callback) => {
     });
   });
 };
+
+module.exports.removeLike = (event, context, callback) => {
+  const params = {
+    TableName: process.env.DYNAMODB_TABLE,
+    Key: {
+      id: event.pathParameters.id
+    }
+  };
+
+  // fetch record from the database
+  dynamoDb.get(params, (error, result) => {
+    // handle potential errors
+    if (error) {
+      console.error(error);
+      callback(null, {
+        statusCode: error.statusCode || 501,
+        headers: {
+          'Content-Type': 'text/plain',
+          'Content-Type': 'application/json',
+          'Access-Control-Allow-Origin': '*'
+        },
+        body: "Couldn't fetch the record item."
+      });
+      return;
+    }
+
+    const likeCount = result.Item.liked;
+
+    const params = {
+      TableName: process.env.DYNAMODB_TABLE,
+      Key: {
+        id: event.pathParameters.id
+      },
+      ExpressionAttributeValues: {
+        ':l': likeCount > 0 ? likeCount - 1 : 0
+      },
+      UpdateExpression: 'SET liked=:l',
+      ReturnValues: 'ALL_NEW'
+    };
+
+    // update the record in the database
+    dynamoDb.update(params, (error, result) => {
+      // handle potential errors
+      if (error) {
+        console.error(error);
+        callback(null, {
+          statusCode: error.statusCode || 501,
+          headers: {
+            'Content-Type': 'text/plain',
+            'Content-Type': 'application/json',
+            'Access-Control-Allow-Origin': '*'
+          },
+          body: "Couldn't fetch the record item."
+        });
+        return;
+      }
+
+      // create a response
+      const response = {
+        statusCode: 200,
+        body: JSON.stringify(result.Attributes),
+        headers: {
+          'Content-Type': 'application/json',
+          'Access-Control-Allow-Origin': '*'
+        }
+      };
+      callback(null, response);
+    });
+  });
+};
