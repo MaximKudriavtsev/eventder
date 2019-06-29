@@ -94,7 +94,11 @@ module.exports.addLike = (event, context, callback) => {
       console.error(error);
       callback(null, {
         statusCode: error.statusCode || 501,
-        headers: { 'Content-Type': 'text/plain' },
+        headers: {
+          'Content-Type': 'text/plain',
+          'Content-Type': 'application/json',
+          'Access-Control-Allow-Origin': '*'
+        },
         body: "Couldn't fetch the record item."
       });
       return;
@@ -119,7 +123,11 @@ module.exports.addLike = (event, context, callback) => {
         console.error(error);
         callback(null, {
           statusCode: error.statusCode || 501,
-          headers: { 'Content-Type': 'text/plain' },
+          headers: {
+            'Content-Type': 'text/plain',
+            'Content-Type': 'application/json',
+            'Access-Control-Allow-Origin': '*'
+          },
           body: "Couldn't fetch the record item."
         });
         return;

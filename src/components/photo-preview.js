@@ -31,7 +31,8 @@ class PhotoPreview extends React.PureComponent {
     this.state = {
       like: props.data.liked || false,
       loading: true,
-      postId: props.data.id
+      postId: props.data.id,
+      likeCount: props.data.liked || 0
     };
 
     this.toggleLoading = this.toggleLoading.bind(this);
@@ -45,12 +46,15 @@ class PhotoPreview extends React.PureComponent {
       return {
         postId: props.data.id,
         loading: true,
-        like: props.data.liked || false
+        like: props.data.liked || false,
+        likeCount: props.data.liked
       };
     return state;
   }
 
   setLike(value) {
+    const { likeCount: prevLikeCount } = this.state;
+
     if (value) {
       const { data } = this.props;
       fetch(
@@ -58,15 +62,18 @@ class PhotoPreview extends React.PureComponent {
           data.id
         }`,
         {
-          method: 'PUT',
-          mode: 'cors',
+          method: 'POST',
+          mode: 'no-cors',
           headers: {
             'Content-Type': 'application/json'
           }
         }
       ).then(res => console.log(res));
     }
-    this.setState({ like: value });
+    this.setState({
+      like: value,
+      likeCount: value ? prevLikeCount + 1 : prevLikeCount - 1
+    });
   }
 
   toggleLoading() {
@@ -74,7 +81,7 @@ class PhotoPreview extends React.PureComponent {
   }
 
   render() {
-    const { loading, like } = this.state;
+    const { loading, like, likeCount } = this.state;
     const { data } = this.props;
 
     const toggleLike = () => this.setLike(!like);
@@ -131,7 +138,7 @@ class PhotoPreview extends React.PureComponent {
               )}
             </div>
             <div className={childText} style={{ textAlign: 'center' }}>
-              {data.liked || 0}
+              {likeCount}
             </div>
           </div>
           <div className={container} />
