@@ -15,6 +15,10 @@ export default () => {
   const userData = checkCookie('userData');
   if (userData) return <Redirect to="/main" />;
 
+  const redirectUrl = process.env.BASE_NAME
+    ? 'https://maximkudriavtsev.github.io/site'
+    : COGNITO_REDIRECT_URL;
+
   return (
     <div className={root}>
       <div className={styles['logo-container']}>
@@ -24,7 +28,7 @@ export default () => {
         </Link>
         <br />
         <a
-          href={`https://${COGNITO_APP_URL}/login?response_type=token&client_id=${COGNITO_CLIENT_ID}&redirect_uri=${COGNITO_REDIRECT_URL}/auth`}
+          href={`https://${COGNITO_APP_URL}/login?response_type=token&client_id=${COGNITO_CLIENT_ID}&redirect_uri=${redirectUrl}/auth`}
         >
           Log In
         </a>
