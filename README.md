@@ -1,6 +1,30 @@
 # Eventder
 The Eventder
 
+## userData from Cookie
+
+```js
+{
+    at_hash: "HQYV3xmA_raE4W7TQ1HLZA"
+    aud: "2cebga41r6o40otl3jpnurnef0"
+    auth_time: 1562962496
+    cognito:groups: ["eu-central-1_ntnGLrfF9_Google"]
+    cognito:username: "Google_115224543247075433119"
+    email: "maxim71ruswow@gmail.com"
+    email_verified: true
+    exp: 1562966096
+    family_name: "Kudryavtsev"
+    given_name: "Maxim"
+    iat: 1562962496
+    identities: [{…}]
+    iss: "https://cognito-idp.eu-central-1.amazonaws.com/eu-central-1_ntnGLrfF9"
+    name: "Maxim Kudryavtsev"
+    picture: "https://lh4.googleusercontent.com/-uxUX2ux1aLE/AAAAAAAAAAI/AAAAAAAAAAA/ACHi3rdeTNO6KmQOAPrD9vqsi7DsEvPNyw/s96-c/photo.jpg"
+    sub: "60481c00-b57f-4c5c-bd54-d44fe153b7d6"
+    token_use: "id"
+}
+```
+
 ## AWS Lambdas
 
 ### getVkPosts

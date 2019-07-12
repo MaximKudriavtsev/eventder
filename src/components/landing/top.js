@@ -20,9 +20,12 @@ export default props => {
       <div className={styles['logo-container']}>
         <span className={title}>EVENTDER</span>
         {userData ? (
-          <Link to="/main">
-            <div>Open Map</div>
-          </Link>
+          <div>
+            <p>{`Привет, ${userData.name}!`}</p>
+            <Link to="/main">
+              <div>Open Map</div>
+            </Link>
+          </div>
         ) : (
           <React.Fragment>
             <Link to="/main/">
