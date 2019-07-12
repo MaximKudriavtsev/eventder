@@ -4,6 +4,7 @@ const initialState = {
   posts: [],
   eventderPosts: [],
   userLocation: [null, null],
+  userData: null,
   currentPostId: null,
   currentPostsData: {}
 };
@@ -65,6 +66,13 @@ export default (state = initialState, { type, payload }) => {
       return {
         ...state,
         currentPostsData: Array.isArray(payload) ? payload : [payload]
+      };
+    }
+
+    case ActionTypes.SET_USER_DATA: {
+      return {
+        ...state,
+        userData: payload
       };
     }
 

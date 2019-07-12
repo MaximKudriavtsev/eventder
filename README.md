@@ -16,7 +16,15 @@ The Eventder
     family_name: "Kudryavtsev"
     given_name: "Maxim"
     iat: 1562962496
-    identities: [{…}]
+    identities: Array(1)
+    0: {
+        dateCreated: "1556816740836"
+        issuer: null
+        primary: "true"
+        providerName: "Google"
+        providerType: "Google"
+        userId: "115224543247075433119"
+    }
     iss: "https://cognito-idp.eu-central-1.amazonaws.com/eu-central-1_ntnGLrfF9"
     name: "Maxim Kudryavtsev"
     picture: "https://lh4.googleusercontent.com/-uxUX2ux1aLE/AAAAAAAAAAI/AAAAAAAAAAA/ACHi3rdeTNO6KmQOAPrD9vqsi7DsEvPNyw/s96-c/photo.jpg"

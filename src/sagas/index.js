@@ -66,7 +66,7 @@ const publishUserFileComputed = ({ file, lat, lng, ownerId }) => () => {
   const reader = new FileReader();
   reader.readAsBinaryString(file);
 
-  alert('Началась загрузка фото 🚀\nМожет занять какое-то время');
+  alert('Началась загрузка фото 🚀\nЭто может занять какое-то время');
 
   fetch(
     `https://pgu80wwqs6.execute-api.eu-central-1.amazonaws.com/dev/files?lat=${lat}&lng=${lng}&ownerId=${ownerId}`,

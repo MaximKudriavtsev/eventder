@@ -9,8 +9,6 @@ import * as rootActions from '../actions/actions';
 import isMobileDevice from '../utils/is-mobile-device';
 import 'leaflet/dist/leaflet.css';
 
-const ownerId = '4444'; // owner id from AWS cognito
-
 /* eslint-disable react/prop-types */
 class Main extends React.PureComponent {
   constructor(props) {
@@ -79,7 +77,8 @@ class Main extends React.PureComponent {
       currentPostsData,
       actions,
       userLocation,
-      eventderPosts
+      eventderPosts,
+      userData
     } = this.props;
     const {
       viewport: stateViewport,
@@ -114,13 +113,15 @@ class Main extends React.PureComponent {
             toggleVisible={this.changePostPreviewVisible}
           />
         )}
-        <FileUploader
-          publishUserFile={publishUserFile}
-          lat={userLocation[0]}
-          lng={userLocation[1]}
-          ownerId={ownerId}
-          changeCurrentLocation={this.resetCurrentLocation}
-        />
+        {userData && (
+          <FileUploader
+            publishUserFile={publishUserFile}
+            lat={userLocation[0]}
+            lng={userLocation[1]}
+            ownerId={userData.identities[0].userId}
+            changeCurrentLocation={this.resetCurrentLocation}
+          />
+        )}
       </React.Fragment>
     );
   }

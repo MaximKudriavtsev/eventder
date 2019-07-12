@@ -41,3 +41,8 @@ export const errorPublishUserFile = payload => ({
 export const loading = () => ({
   type: ActionTypes.LOADING
 });
+
+export const setUserData = payload => ({
+  type: ActionTypes.SET_USER_DATA,
+  payload
+});
