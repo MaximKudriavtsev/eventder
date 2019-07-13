@@ -46,3 +46,13 @@ export const setUserData = payload => ({
   type: ActionTypes.SET_USER_DATA,
   payload
 });
+
+export const addLike = payload => ({
+  type: ActionTypes.ADD_LIKE,
+  payload
+});
+
+export const removeLike = payload => ({
+  type: ActionTypes.REMOVE_LIKE,
+  payload
+});

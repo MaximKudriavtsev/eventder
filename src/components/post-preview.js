@@ -16,7 +16,7 @@ const settings = {
   slidesToScroll: 1
 };
 
-const PostPreview = ({ open, toggleVisible, postsData }) => {
+const PostPreview = ({ open, toggleVisible, postsData, userId }) => {
   return (
     <Modal isOpen={open} toggle={toggleVisible} className={modalMain}>
       <Slider {...settings}>
@@ -24,7 +24,11 @@ const PostPreview = ({ open, toggleVisible, postsData }) => {
           postsData.map(postData => (
             <React.Fragment key={postData.id}>
               <ModalBody className={body}>
-                <PhotoPreview data={postData} key={postData.id} />
+                <PhotoPreview
+                  data={postData}
+                  key={postData.id}
+                  userId={userId}
+                />
                 <div className={exitButton} onClick={toggleVisible}>
                   <img className={exitIcon} src={whiteCross} alt="exit" />
                 </div>
@@ -39,6 +43,7 @@ const PostPreview = ({ open, toggleVisible, postsData }) => {
 export default PostPreview;
 
 PostPreview.propTypes = {
+  userId: PropTypes.number,
   open: PropTypes.bool,
   toggleVisible: PropTypes.func,
   postsData: PropTypes.arrayOf(
@@ -59,6 +64,7 @@ PostPreview.propTypes = {
 };
 
 PostPreview.defaultProps = {
+  userId: 0,
   open: false,
   toggleVisible: undefined,
   postsData: {

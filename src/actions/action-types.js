@@ -17,3 +17,6 @@ export const ERROR_PUBLISH_USER_FILE = 'ERROR_PUBLISH_USER_FILE';
 export const LOADING = 'LOADING';
 
 export const SET_USER_DATA = 'SET_USER_DATA';
+
+export const ADD_LIKE = 'ADD_LIKE';
+export const REMOVE_LIKE = 'REMOVE_LIKE';

@@ -102,12 +102,14 @@ class Main extends React.PureComponent {
         />
         {mobileDevice ? (
           <PostPreviewMobile
+            userId={userData.identities[0].userId}
             open={previewVisible}
             postsData={currentPostsData}
             toggleVisible={this.changePostPreviewVisible}
           />
         ) : (
           <PostPreview
+            userId={userData.identities[0].userId}
             open={previewVisible}
             postsData={currentPostsData}
             toggleVisible={this.changePostPreviewVisible}

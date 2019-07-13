@@ -24,12 +24,19 @@ const postDate = timestamp =>
     ? timestamp * 1000
     : timestamp;
 
+const isLikedMyself = (likedIds, userId) => {
+  if (Array.isArray(likedIds)) {
+    return likedIds.some(id => userId === id);
+  }
+  return false;
+};
+
 class PhotoPreview extends React.PureComponent {
   constructor(props) {
     super(props);
 
     this.state = {
-      like: props.data.liked || false,
+      isLiked: isLikedMyself(props.data.liked_users, props.userId),
       loading: true,
       postId: props.data.id,
       likeCount: props.data.liked || 0
@@ -46,7 +53,7 @@ class PhotoPreview extends React.PureComponent {
       return {
         postId: props.data.id,
         loading: true,
-        like: props.data.liked || false,
+        isLiked: isLikedMyself(props.liked_users, props.userId),
         likeCount: props.data.liked
       };
     return state;
@@ -54,20 +61,29 @@ class PhotoPreview extends React.PureComponent {
 
   setLike(value) {
     const { likeCount: prevLikeCount } = this.state;
-    const { data } = this.props;
+    const { data, userId } = this.props;
     const method = value ? 'addLike' : 'removeLike';
 
     fetch(
-      `https://pgu80wwqs6.execute-api.eu-central-1.amazonaws.com/dev/${method}/${
-        data.id
-      }`,
-      { mode: 'no-cors', method: 'POST' }
+      `https://pgu80wwqs6.execute-api.eu-central-1.amazonaws.com/dev/${method}`,
+      {
+        mode: 'no-cors',
+        method: 'POST',
+        body: JSON.stringify({ id: data.id, userId })
+      }
     );
 
     this.setState({
-      like: value,
+      isLiked: value,
       likeCount: value ? prevLikeCount + 1 : prevLikeCount - 1
     });
+
+    if (value) {
+      // TODO: pass the next actions into this component
+      // addLocalLike({ id: data.id, userId });
+    } else {
+      // removeLocalLike({ id: data.id, userId });
+    }
   }
 
   toggleLoading() {
@@ -75,10 +91,12 @@ class PhotoPreview extends React.PureComponent {
   }
 
   render() {
-    const { loading, like, likeCount } = this.state;
+    const { loading, likeCount, isLiked } = this.state;
     const { data } = this.props;
 
-    const toggleLike = () => this.setLike(!like);
+    console.log(data); // data.liked_users: []
+
+    const toggleLike = () => this.setLike(!isLiked);
 
     return (
       <div className={previewMain} key={data.id}>
@@ -117,7 +135,7 @@ class PhotoPreview extends React.PureComponent {
           </div>
           <div className={container}>
             <div className={mainText} onClick={toggleLike}>
-              {likeCount > 0 ? (
+              {isLiked ? (
                 <img
                   src={HeartFull}
                   style={{ margin: '0 auto', height: '35px' }}
@@ -143,6 +161,9 @@ class PhotoPreview extends React.PureComponent {
 }
 
 PhotoPreview.propTypes = {
+  // addLocalLike: PropTypes.func.isRequired,
+  // removeLocalLike: PropTypes.func.isRequired,
+  userId: PropTypes.number.isRequired,
   data: PropTypes.shape({
     id: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
     display_url: PropTypes.string,
@@ -155,7 +176,8 @@ PhotoPreview.propTypes = {
       name: PropTypes.string,
       instagramId: PropTypes.number
     },
-    liked: PropTypes.number
+    liked: PropTypes.number,
+    liked_users: PropTypes.arrayOf(PropTypes.number)
   }).isRequired
 };
 

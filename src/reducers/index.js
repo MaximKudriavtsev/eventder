@@ -76,6 +76,35 @@ export default (state = initialState, { type, payload }) => {
       };
     }
 
+    case ActionTypes.ADD_LIKE: {
+      const nextEventderPostData = state.eventderPosts.map(postData => {
+        if (postData.id === payload.id) {
+          return {
+            ...postData,
+            liked_user: postData.liked_user.push(payload.userId),
+            liked: postData.liked_user.length + 1
+          };
+        }
+        return postData;
+      });
+      const nextCurrentPostsData = state.currentPostsData.map(postData => {
+        if (postData.id === payload.id) {
+          return {
+            ...postData,
+            liked_user: postData.liked_user.push(payload.userId),
+            liked: postData.liked_user.length + 1
+          };
+        }
+        return postData;
+      });
+
+      return {
+        ...state,
+        eventderPosts: nextEventderPostData,
+        currentPostsData: nextCurrentPostsData
+      };
+    }
+
     default: {
       return state;
     }

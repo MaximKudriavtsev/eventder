@@ -43,7 +43,7 @@ class PostPreviewMobile extends React.PureComponent {
   }
 
   render() {
-    const { open, toggleVisible, postsData } = this.props;
+    const { open, toggleVisible, postsData, userId } = this.props;
 
     document.ontouchmove = preventSafariBoundEffect;
     return (
@@ -58,7 +58,9 @@ class PostPreviewMobile extends React.PureComponent {
 
         <Slider {...settings} className={slickSliderCustom}>
           {Array.isArray(postsData) &&
-            postsData.map(data => <PhotoPreview data={data} key={data.id} />)}
+            postsData.map(data => (
+              <PhotoPreview data={data} key={data.id} userId={userId} />
+            ))}
         </Slider>
       </div>
     );
@@ -66,6 +68,7 @@ class PostPreviewMobile extends React.PureComponent {
 }
 
 PostPreviewMobile.propTypes = {
+  userId: PropTypes.number,
   open: PropTypes.bool,
   toggleVisible: PropTypes.func,
   postsData: PropTypes.arrayOf(
@@ -86,6 +89,7 @@ PostPreviewMobile.propTypes = {
 };
 
 PostPreviewMobile.defaultProps = {
+  userId: 0,
   open: false,
   toggleVisible: undefined,
   postsData: [
