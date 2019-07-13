@@ -2,13 +2,11 @@ import * as React from 'react';
 import { Link } from 'react-router-dom';
 import styles, { root, title } from './top.scss';
 import Auth from '../auth';
-import { COGNITO_APP_URL, COGNITO_CLIENT_ID } from '../../credentials';
+import SignUp from '../sign-up';
+import SignOut from '../sign-out';
 
 /* eslint-disable react/prop-types */
 const Landing = React.memo(props => {
-  const redirectUrl = process.env.BASE_NAME
-    ? 'https://maximkudriavtsev.github.io/site/'
-    : 'http://localhost:3000/';
   const { userData } = props;
 
   return (
@@ -23,6 +21,10 @@ const Landing = React.memo(props => {
             <Link to="/main">
               <div>Открыть карту</div>
             </Link>
+            <br />
+            <SignOut>
+              <a href="/">Выйти</a>
+            </SignOut>
           </div>
         ) : (
           <React.Fragment>
@@ -30,11 +32,7 @@ const Landing = React.memo(props => {
               <div>Войти как гость</div>
             </Link>
             <br />
-            <a
-              href={`https://${COGNITO_APP_URL}/login?response_type=token&client_id=${COGNITO_CLIENT_ID}&redirect_uri=${redirectUrl}`}
-            >
-              Войти
-            </a>
+            <SignUp>Войти</SignUp>
           </React.Fragment>
         )}
       </div>
