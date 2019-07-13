@@ -80,10 +80,13 @@ module.exports.save = (event, context, callback) => {
 };
 
 module.exports.addLike = (event, context, callback) => {
+  const data = JSON.parse(event.body);
+  const { userId, id } = data;
+
   const params = {
     TableName: process.env.DYNAMODB_TABLE,
     Key: {
-      id: event.pathParameters.id
+      id
     }
   };
 
@@ -94,25 +97,26 @@ module.exports.addLike = (event, context, callback) => {
       console.error(error);
       callback(null, {
         statusCode: error.statusCode || 501,
-        headers: {
-          'Content-Type': 'text/plain',
-          'Content-Type': 'application/json',
-          'Access-Control-Allow-Origin': '*'
-        },
+        headers: { 'Content-Type': 'text/plain' },
         body: "Couldn't fetch the record item."
       });
       return;
     }
 
+    const likedUsers = result.liked_users || [];
+    likedUsers.push(userId);
+    const uniqueUsers = [...new Set(likedUsers)];
+
     const params = {
       TableName: process.env.DYNAMODB_TABLE,
       Key: {
-        id: event.pathParameters.id
+        id: data.id
       },
       ExpressionAttributeValues: {
-        ':l': (result.Item.liked || 0) + 1
+        ':l': uniqueUsers.length,
+        ':u': uniqueUsers
       },
-      UpdateExpression: 'SET liked=:l',
+      UpdateExpression: 'SET like=:l, liked_users=:u',
       ReturnValues: 'ALL_NEW'
     };
 
@@ -123,11 +127,7 @@ module.exports.addLike = (event, context, callback) => {
         console.error(error);
         callback(null, {
           statusCode: error.statusCode || 501,
-          headers: {
-            'Content-Type': 'text/plain',
-            'Content-Type': 'application/json',
-            'Access-Control-Allow-Origin': '*'
-          },
+          headers: { 'Content-Type': 'text/plain' },
           body: "Couldn't fetch the record item."
         });
         return;
@@ -136,11 +136,7 @@ module.exports.addLike = (event, context, callback) => {
       // create a response
       const response = {
         statusCode: 200,
-        body: JSON.stringify(result.Attributes),
-        headers: {
-          'Content-Type': 'application/json',
-          'Access-Control-Allow-Origin': '*'
-        }
+        body: JSON.stringify(result.Attributes)
       };
       callback(null, response);
     });

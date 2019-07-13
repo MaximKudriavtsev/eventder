@@ -50,7 +50,7 @@ functions:
     handler: handler.addLike 
     events:
       - http:
-          path: addLike/{id}
+          path: addLike
           method: post 
           cors: true
   
