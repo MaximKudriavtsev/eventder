@@ -5,11 +5,12 @@ const dynamoDb = new AWS.DynamoDB.DocumentClient();
 
 module.exports = (event, context, callback) => {
   const data = JSON.parse(event.body);
+  const { userId, id } = data;
 
   const params = {
     TableName: process.env.DYNAMODB_TABLE,
     Key: {
-      id: data.id
+      id
     }
   };
 
@@ -26,15 +27,20 @@ module.exports = (event, context, callback) => {
       return;
     }
 
+    const likedUsers = result.liked_users || [];
+    likedUsers.push(userId);
+    const uniqueUsers = [...new Set(likedUsers)];
+
     const params = {
       TableName: process.env.DYNAMODB_TABLE,
       Key: {
         id: data.id
       },
       ExpressionAttributeValues: {
-        ':l': (result.like || 0) + 1
+        ':l': uniqueUsers.length,
+        ':u': uniqueUsers
       },
-      UpdateExpression: 'SET like=:l',
+      UpdateExpression: 'SET like=:l, liked_users=:u',
       ReturnValues: 'ALL_NEW'
     };
 
