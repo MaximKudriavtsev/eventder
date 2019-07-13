@@ -80,7 +80,7 @@ module.exports.save = (event, context, callback) => {
 };
 
 module.exports.addLike = (event, context, callback) => {
-  const data = JSON.parse(event.body);
+  const data = JSON.parse(Buffer.from(event.body, 'base64').toString());
   const { userId, id } = data;
 
   const params = {
@@ -102,11 +102,9 @@ module.exports.addLike = (event, context, callback) => {
       });
       return;
     }
-
-    const likedUsers = result.liked_users || [];
+    const likedUsers = result.Item.liked_users || [];
     likedUsers.push(userId);
     const uniqueUsers = [...new Set(likedUsers)];
-
     const params = {
       TableName: process.env.DYNAMODB_TABLE,
       Key: {
@@ -116,7 +114,7 @@ module.exports.addLike = (event, context, callback) => {
         ':l': uniqueUsers.length,
         ':u': uniqueUsers
       },
-      UpdateExpression: 'SET like=:l, liked_users=:u',
+      UpdateExpression: 'SET liked=:l, liked_users=:u',
       ReturnValues: 'ALL_NEW'
     };
 
