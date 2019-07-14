@@ -5,7 +5,7 @@ require('leaflet.markercluster');
 
 // docs here https://www.npmjs.com/package/react-leaflet-markercluster
 // current workaround here https://github.com/YUzhva/react-leaflet-markercluster/issues/71#issuecomment-403071677
-class MarkerClusterGroup extends MapLayer {
+class ClusterMarker extends MapLayer {
   createLeafletElement(props) {
     // eslint-disable-next-line new-cap
     const el = new L.markerClusterGroup(props);
@@ -17,4 +17,4 @@ class MarkerClusterGroup extends MapLayer {
   }
 }
 
-export default withLeaflet(MarkerClusterGroup);
+export default withLeaflet(ClusterMarker);

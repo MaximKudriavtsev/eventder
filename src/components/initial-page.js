@@ -1,13 +1,13 @@
 import * as React from 'react';
 import { Link } from 'react-router-dom';
-import styles, { root, title } from './initial-page.scss';
+import { root, title, logoContainer } from './initial-page.scss';
 import SignUp from '../components-utils/sign-up';
 import SignOut from '../components-utils/sign-out';
 
 /* eslint-disable react/prop-types */
 const InitialPage = ({ userData }) => (
   <div className={root}>
-    <div className={styles['logo-container']}>
+    <div className={logoContainer}>
       <span className={title}>EVENTDER</span>
       {userData ? (
         <div>

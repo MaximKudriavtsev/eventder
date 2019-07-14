@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import LeafletMap from '../components/leaflet-map';
+import Map from '../components/leaflet-map/map';
 import PostPreview from '../components/post-preview';
 import PostPreviewMobile from '../components/post-preview-mobile';
 import FileUploader from '../components/file-uploader';
@@ -90,7 +90,7 @@ class Main extends React.PureComponent {
 
     return (
       <React.Fragment>
-        <LeafletMap
+        <Map
           position={stateViewport.center}
           stateViewport={stateViewport}
           viewport={stateViewport}

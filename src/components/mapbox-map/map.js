@@ -5,7 +5,7 @@ import Cluster from '@urbica/react-map-gl-cluster';
 import 'mapbox-gl/dist/mapbox-gl.css';
 import { root, marker } from './map.scss';
 import ClusterMarker from './cluster-marker';
-import currentMarker from '../assets/current-marker.svg';
+import currentMarker from '../../assets/current-marker.svg';
 
 const Map = ({
   viewport,

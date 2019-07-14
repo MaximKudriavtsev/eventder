@@ -2,15 +2,15 @@ import * as React from 'react';
 import PropTypes from 'prop-types';
 import { Map, TileLayer, Marker, Polygon } from 'react-leaflet';
 import L, { Icon } from 'leaflet';
-import MarkerClusterGroup from './leaflet-marker-cluster';
+import ClusterMarker from './cluster-marker';
 import {
   marker,
   map,
   eventderMarker,
   pulsatingCircle,
   innerBlock
-} from './leaflet-map.scss';
-import circleCoordinates from '../utils/circle-coordinates';
+} from './map.scss';
+import circleCoordinates from '../../utils/circle-coordinates';
 
 const TILE_LAYER_URL =
   'https://api.maptiler.com/maps/streets/{z}/{x}/{y}.png?key=wEprA7FVrnTjOteV6Qfz';
@@ -110,7 +110,7 @@ class LeafletMap extends React.PureComponent {
         {...restProps}
       >
         <TileLayer url={TILE_LAYER_URL} attribution={null} />
-        <MarkerClusterGroup
+        <ClusterMarker
           maxClusterRadius={40}
           onClusterClick={this.onClusterClick}
           iconCreateFunction={iconCreateFunction}
@@ -145,7 +145,7 @@ class LeafletMap extends React.PureComponent {
               />
             );
           })}
-        </MarkerClusterGroup>
+        </ClusterMarker>
         <Marker
           position={initial}
           zIndexOffset={1000}
