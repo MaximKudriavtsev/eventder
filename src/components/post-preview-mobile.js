@@ -68,7 +68,7 @@ class PostPreviewMobile extends React.PureComponent {
 }
 
 PostPreviewMobile.propTypes = {
-  userId: PropTypes.number,
+  userId: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
   open: PropTypes.bool,
   toggleVisible: PropTypes.func,
   postsData: PropTypes.arrayOf(
@@ -89,7 +89,7 @@ PostPreviewMobile.propTypes = {
 };
 
 PostPreviewMobile.defaultProps = {
-  userId: 0,
+  userId: undefined,
   open: false,
   toggleVisible: undefined,
   postsData: [

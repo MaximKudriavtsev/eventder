@@ -43,7 +43,7 @@ const PostPreview = ({ open, toggleVisible, postsData, userId }) => {
 export default PostPreview;
 
 PostPreview.propTypes = {
-  userId: PropTypes.number,
+  userId: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
   open: PropTypes.bool,
   toggleVisible: PropTypes.func,
   postsData: PropTypes.arrayOf(
@@ -64,7 +64,7 @@ PostPreview.propTypes = {
 };
 
 PostPreview.defaultProps = {
-  userId: 0,
+  userId: undefined,
   open: false,
   toggleVisible: undefined,
   postsData: {

@@ -163,7 +163,7 @@ class PhotoPreview extends React.PureComponent {
 PhotoPreview.propTypes = {
   // addLocalLike: PropTypes.func.isRequired,
   // removeLocalLike: PropTypes.func.isRequired,
-  userId: PropTypes.number.isRequired,
+  userId: PropTypes.oneOfType([PropTypes.number, PropTypes.string]).isRequired,
   data: PropTypes.shape({
     id: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
     display_url: PropTypes.string,

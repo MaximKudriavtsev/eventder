@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { LeafletMap } from '../components';
+import LeafletMap from '../components/leaflet-map';
 import PostPreview from '../components/post-preview';
 import PostPreviewMobile from '../components/post-preview-mobile';
 import FileUploader from '../components/file-uploader';
@@ -86,6 +86,7 @@ class Main extends React.PureComponent {
       mobileDevice
     } = this.state;
     const { publishUserFile } = actions;
+    const userId = userData ? userData.identities[0].userId : null;
 
     return (
       <React.Fragment>
@@ -102,14 +103,14 @@ class Main extends React.PureComponent {
         />
         {mobileDevice ? (
           <PostPreviewMobile
-            userId={userData.identities[0].userId}
+            userId={userId}
             open={previewVisible}
             postsData={currentPostsData}
             toggleVisible={this.changePostPreviewVisible}
           />
         ) : (
           <PostPreview
-            userId={userData.identities[0].userId}
+            userId={userId}
             open={previewVisible}
             postsData={currentPostsData}
             toggleVisible={this.changePostPreviewVisible}

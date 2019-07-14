@@ -1,5 +1,4 @@
 import * as React from 'react';
-import { Redirect } from 'react-router';
 import jose from 'node-jose';
 import Cookie from 'js-cookie';
 import findToken from '../utils/find-token';
@@ -16,8 +15,6 @@ export default class Auth extends React.PureComponent {
       const userData = JSON.parse(payload);
 
       Cookie.set('userData', userData, { path: '/' });
-
-      return <Redirect to="/main" />;
     }
     return null;
   }
