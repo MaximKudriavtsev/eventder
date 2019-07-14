@@ -1,68 +1,11 @@
 import * as React from 'react';
 import PropTypes from 'prop-types';
 import { Map, TileLayer, Marker, Polygon } from 'react-leaflet';
-import L, { Icon } from 'leaflet';
-import ClusterMarker from './cluster-marker';
-import {
-  marker,
-  map,
-  eventderMarker,
-  pulsatingCircle,
-  innerBlock
-} from './map.scss';
+import ClusterMarker, { iconCreateFunction } from './cluster-marker';
+import { marker, map, eventderMarker } from './map.scss';
+import IconMarker, { CustomIcon2 } from './icon-marker';
 import circleCoordinates from '../../utils/circle-coordinates';
-
-const TILE_LAYER_URL =
-  'https://api.maptiler.com/maps/streets/{z}/{x}/{y}.png?key=wEprA7FVrnTjOteV6Qfz';
-const MARKER_CURRENT_URL =
-  'https://image.flaticon.com/icons/svg/143/143960.svg';
-
-/* eslint-disable react/no-multi-comp */
-const iconCreateFunction = cluster =>
-  L.divIcon({
-    html: `<div class=${pulsatingCircle}><div class=${innerBlock}>${cluster.getChildCount()}</div></div>`
-  });
-
-const CustomIcon = Icon.extend({
-  options: {
-    iconSize: [70, 70],
-    iconAnchor: [35, 35]
-  }
-});
-
-const CustomIcon2 = Icon.extend({
-  options: {
-    iconSize: [50, 80],
-    iconAnchor: [25, 80]
-  }
-});
-
-class IconMarker extends React.PureComponent {
-  render() {
-    const { lng, lat, onClick, imageURL, className, ...restProps } = this.props;
-    return (
-      <Marker
-        position={[lat, lng]}
-        onClick={onClick}
-        icon={
-          new CustomIcon({
-            iconUrl: imageURL,
-            className
-          })
-        }
-        {...restProps}
-      />
-    );
-  }
-}
-
-IconMarker.propTypes = {
-  lng: PropTypes.oneOfType([PropTypes.number, PropTypes.string]).isRequired,
-  lat: PropTypes.oneOfType([PropTypes.number, PropTypes.string]).isRequired,
-  onClick: PropTypes.func.isRequired,
-  imageURL: PropTypes.string.isRequired,
-  className: PropTypes.string.isRequired
-};
+import { TILE_LAYER_URL, MARKER_CURRENT_URL } from './constants';
 
 class LeafletMap extends React.PureComponent {
   constructor() {

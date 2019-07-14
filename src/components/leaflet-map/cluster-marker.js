@@ -1,5 +1,6 @@
 import { MapLayer, withLeaflet } from 'react-leaflet';
 import L from 'leaflet';
+import { pulsatingCircle, innerBlock } from './cluster-marker.scss';
 
 require('leaflet.markercluster');
 
@@ -18,3 +19,8 @@ class ClusterMarker extends MapLayer {
 }
 
 export default withLeaflet(ClusterMarker);
+
+export const iconCreateFunction = cluster =>
+  L.divIcon({
+    html: `<div class=${pulsatingCircle}><div class=${innerBlock}>${cluster.getChildCount()}</div></div>`
+  });
