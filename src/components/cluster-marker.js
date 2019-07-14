@@ -1,19 +1,11 @@
 import * as React from 'react';
 import * as PropTypes from 'prop-types';
 import { Marker } from '@urbica/react-map-gl';
-
-const style = {
-  width: '30px',
-  height: '30px',
-  color: '#fff',
-  background: '#1978c8',
-  borderRadius: '30px',
-  textAlign: 'center'
-};
+import { clusterMarker } from './cluster-marker.scss';
 
 const ClusterMarker = ({ longitude, latitude, pointCount }) => (
   <Marker longitude={longitude} latitude={latitude}>
-    <div style={{ ...style, background: '#f28a25' }}>{pointCount}</div>
+    <div className={clusterMarker}>{pointCount}</div>
   </Marker>
 );
 
