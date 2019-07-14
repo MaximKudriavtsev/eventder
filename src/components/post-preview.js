@@ -4,8 +4,6 @@ import { Modal, ModalBody } from 'reactstrap';
 import Slider from 'react-slick';
 import PhotoPreview from './photo-preview';
 import { body, modalMain, exitButton, exitIcon } from './post-preview.scss';
-
-/* eslint-disable jsx-a11y/no-static-element-interactions */
 import whiteCross from '../assets/white-cross.svg';
 
 const settings = {

@@ -3,7 +3,6 @@ import * as PropTypes from 'prop-types';
 import Slider from 'react-slick';
 import PhotoPreview from './photo-preview';
 import leftChevron from '../assets/left-chevron.svg';
-
 import {
   slickSliderCustom,
   modalMain,
@@ -26,7 +25,7 @@ const preventSafariBoundEffect = event => {
   event.preventDefault();
 };
 
-class PostPreviewMobile extends React.PureComponent {
+class PostPreviewMobile extends React.Component {
   constructor() {
     super();
 
@@ -37,6 +36,10 @@ class PostPreviewMobile extends React.PureComponent {
     this.toggleLoading = this.toggleLoading.bind(this);
   }
 
+  componentDidMount() {
+    document.ontouchmove = preventSafariBoundEffect;
+  }
+
   toggleLoading() {
     const { loading: stateLoading } = this.state;
     this.setState({ loading: !stateLoading });
@@ -45,7 +48,6 @@ class PostPreviewMobile extends React.PureComponent {
   render() {
     const { open, toggleVisible, postsData, userId } = this.props;
 
-    document.ontouchmove = preventSafariBoundEffect;
     return (
       <div className={modalMain} style={{ display: open ? 'flex' : 'none' }}>
         <div className={modalHeader}>

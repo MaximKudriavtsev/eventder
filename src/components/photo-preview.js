@@ -6,6 +6,7 @@ import {
   previewImage,
   previewFooter
 } from './post-preview-mobile.scss';
+import { photoContainer, likeImage } from './photo-preview.scss';
 import LoadingIndicator from '../assets/loading.svg';
 import Heart from '../assets/heart.svg';
 import HeartFull from '../assets/heart-full.svg';
@@ -103,19 +104,11 @@ class PhotoPreview extends React.PureComponent {
         <img
           className={previewImage}
           src={data && data.display_url}
-          alt=""
           onLoad={this.toggleLoading}
+          alt=""
         />
         {loading ? (
-          <div
-            style={{
-              height: '100px',
-              padding: '40px',
-              display: 'flex',
-              alignItems: 'center',
-              flexDirection: 'column'
-            }}
-          >
+          <div className={photoContainer}>
             <img
               src={LoadingIndicator}
               width="30px"
@@ -136,17 +129,9 @@ class PhotoPreview extends React.PureComponent {
           <div className={container}>
             <div className={mainText} onClick={toggleLike}>
               {isLiked ? (
-                <img
-                  src={HeartFull}
-                  style={{ margin: '0 auto', height: '35px' }}
-                  alt="liked"
-                />
+                <img src={HeartFull} className={likeImage} alt="liked" />
               ) : (
-                <img
-                  src={Heart}
-                  style={{ margin: '0 auto', height: '35px' }}
-                  alt="like"
-                />
+                <img src={Heart} className={likeImage} alt="like" />
               )}
             </div>
             <div className={childText} style={{ textAlign: 'center' }}>
