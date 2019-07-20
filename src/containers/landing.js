@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import * as rootActions from '../actions/actions';
 import InitialPage from '../components/initial-page';
-import Auth from '../components-utils/auth';
+import Auth from '../components/utils/auth';
 
 /* eslint-disable react/prop-types */
 const Landing = props => {

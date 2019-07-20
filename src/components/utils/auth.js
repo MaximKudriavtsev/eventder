@@ -1,7 +1,7 @@
 import * as React from 'react';
 import jose from 'node-jose';
 import Cookie from 'js-cookie';
-import findToken from '../utils/find-token';
+import findToken from '../../utils/find-token';
 
 export default class Auth extends React.PureComponent {
   render() {

@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { COGNITO_APP_URL, COGNITO_CLIENT_ID } from '../credentials';
+import { COGNITO_APP_URL, COGNITO_CLIENT_ID } from '../../credentials';
 
 export default class SignUp extends React.Component {
   constructor(props) {

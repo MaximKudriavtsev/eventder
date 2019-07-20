@@ -2,7 +2,7 @@ import * as React from 'react';
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import Landing from './landing';
 import Main from './main';
-import Settings from '../components-utils/settings';
+import Settings from '../components/utils/settings';
 import ErrorPage from '../components/error-page';
 
 export default () => (

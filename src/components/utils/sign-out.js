@@ -1,7 +1,7 @@
 import * as React from 'react';
 import Cookie from 'js-cookie';
 import { connect } from 'react-redux';
-import { setUserData as setUserDataAction } from '../actions/actions';
+import { setUserData as setUserDataAction } from '../../actions/actions';
 import { clickable } from './sign-out.scss';
 
 const signOut = removeUserData => () => {

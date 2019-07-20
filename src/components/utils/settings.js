@@ -1,6 +1,6 @@
 import { connect } from 'react-redux';
-import { setUserData as setUserDataAction } from '../actions/actions';
-import checkCookie from '../utils/check-cookie';
+import { setUserData as setUserDataAction } from '../../actions/actions';
+import checkCookie from '../../utils/check-cookie';
 
 /* eslint-disable react/prop-types */
 const Settings = props => {

@@ -1,8 +1,8 @@
 import * as React from 'react';
 import { Link } from 'react-router-dom';
 import { root, title, logoContainer } from './initial-page.scss';
-import SignUp from '../components-utils/sign-up';
-import SignOut from '../components-utils/sign-out';
+import SignUp from './utils/sign-up';
+import SignOut from './utils/sign-out';
 
 /* eslint-disable react/prop-types */
 const InitialPage = ({ userData }) => (
