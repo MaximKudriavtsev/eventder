@@ -1,7 +1,5 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
-import * as rootActions from '../actions/actions';
 import InitialPage from '../components/initial-page';
 import Auth from '../components/utils/auth';
 
@@ -16,7 +14,4 @@ const Landing = props => {
   );
 };
 
-export default connect(
-  store => ({ userData: store.userData }),
-  dispatch => ({ actions: bindActionCreators(rootActions, dispatch) })
-)(Landing);
+export default connect(store => ({ userData: store.userData }))(Landing);

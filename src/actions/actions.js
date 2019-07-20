@@ -1,4 +1,5 @@
 import * as ActionTypes from './action-types';
+import isMobileDevice from '../utils/is-mobile-device';
 
 export const getUserLocation = payload => ({
   type: ActionTypes.RECEIVE_USER_LOCATION,
@@ -62,4 +63,18 @@ export const addLike = payload => {
 export const removeLike = payload => ({
   type: ActionTypes.REMOVE_LIKE,
   payload
+});
+
+export const changeViewport = payload => ({
+  type: ActionTypes.CHANGE_VIEWPORT,
+  payload
+});
+
+export const togglePostPreviewVisibility = () => ({
+  type: ActionTypes.TOGGLE_POST_PREVIEW_VISIBILITY
+});
+
+export const setMobileDevice = () => ({
+  type: ActionTypes.SET_MOBILE_DEVICE,
+  payload: isMobileDevice()
 });

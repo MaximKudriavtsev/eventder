@@ -1,6 +1,9 @@
 import * as React from 'react';
 import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
 import { Map, TileLayer, Marker, Polygon } from 'react-leaflet';
+import * as rootActions from '../../actions/actions';
 import ClusterMarker, { iconCreateFunction } from './cluster-marker';
 import { marker, map, eventderMarker } from './map.scss';
 import IconMarker, { CustomIcon2 } from './icon-marker';
@@ -15,42 +18,36 @@ class LeafletMap extends React.PureComponent {
     this.onClusterClick = this.onClusterClick.bind(this);
   }
 
-  onMarkerClick(data) {
-    const { onMarkerClick } = this.props;
-    onMarkerClick(data);
+  onMarkerClick(postData) {
+    const { actions } = this.props;
+
+    actions.togglePostPreviewVisibility();
+    actions.changeCurrentPostData(postData);
   }
 
   onClusterClick(event) {
-    const { onMarkerClick } = this.props;
     const markers = event.sourceTarget
       .getAllChildMarkers()
       .map(item => item.options.postData);
-    onMarkerClick(markers);
+    this.onMarkerClick(markers);
   }
 
   render() {
-    const {
-      position,
-      stateViewport,
-      posts,
-      eventderPosts,
-      initialPosition,
-      ...restProps
-    } = this.props;
+    const { posts, eventderPosts, userLocation, viewport } = this.props;
 
-    const initial = [initialPosition[0] || 20, initialPosition[1] || 20];
-
+    const initial = [userLocation[0] || 20, userLocation[1] || 20];
     const polygonCircle = [
       circleCoordinates(initial[0], initial[1], 1000), // outer ring
       circleCoordinates(initial[0], initial[1], 3) // hole
     ];
     return (
       <Map
-        center={position}
-        zoom={stateViewport.zoom}
+        center={viewport.center}
+        zoom={viewport.zoom}
         className={map}
         maxZoom={23}
-        {...restProps}
+        animate={false}
+        viewport={viewport}
       >
         <TileLayer url={TILE_LAYER_URL} attribution={null} />
         <ClusterMarker
@@ -105,16 +102,21 @@ class LeafletMap extends React.PureComponent {
 }
 
 LeafletMap.propTypes = {
-  position: PropTypes.arrayOf(
+  userLocation: PropTypes.arrayOf(
     PropTypes.oneOfType([PropTypes.string, PropTypes.number])
   ).isRequired,
-  initialPosition: PropTypes.arrayOf(
-    PropTypes.oneOfType([PropTypes.string, PropTypes.number])
-  ).isRequired,
-  stateViewport: PropTypes.shape({}).isRequired,
+  viewport: PropTypes.shape({}).isRequired,
   posts: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
   eventderPosts: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
-  onMarkerClick: PropTypes.func.isRequired
+  actions: PropTypes.shape({}).isRequired
 };
 
-export default LeafletMap;
+export default connect(
+  store => ({
+    userLocation: store.userLocation,
+    posts: store.posts,
+    eventderPosts: store.eventderPosts,
+    viewport: store.viewport
+  }),
+  dispatch => ({ actions: bindActionCreators(rootActions, dispatch) })
+)(LeafletMap);

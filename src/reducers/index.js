@@ -6,7 +6,14 @@ const initialState = {
   userLocation: [null, null],
   userData: null,
   currentPostId: null,
-  currentPostsData: {}
+  currentPostsData: {},
+
+  viewport: {
+    center: [54.19, 37.61],
+    zoom: 14
+  },
+  isPreviewVisible: false,
+  isMobileDevice: false
 };
 
 export default (state = initialState, { type, payload }) => {
@@ -73,6 +80,27 @@ export default (state = initialState, { type, payload }) => {
       return {
         ...state,
         userData: payload
+      };
+    }
+
+    case ActionTypes.CHANGE_VIEWPORT: {
+      return {
+        ...state,
+        viewport: payload
+      };
+    }
+
+    case ActionTypes.TOGGLE_POST_PREVIEW_VISIBILITY: {
+      return {
+        ...state,
+        isPreviewVisible: !state.isPreviewVisible
+      };
+    }
+
+    case ActionTypes.SET_MOBILE_DEVICE: {
+      return {
+        ...state,
+        isMobileDevice: payload
       };
     }
 

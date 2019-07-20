@@ -1,6 +1,9 @@
 import * as React from 'react';
 import * as PropTypes from 'prop-types';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
 import Slider from 'react-slick';
+import { togglePostPreviewVisibility } from '../actions/actions';
 import PhotoPreview from './photo-preview';
 import leftChevron from '../assets/left-chevron.svg';
 import {
@@ -12,20 +15,9 @@ import {
   headerTitle,
   headerRightButton
 } from './post-preview-mobile.scss';
+import preventSafariBoundEffect from '../utils/prevent-safari-bound';
 
-const settings = {
-  dots: true,
-  infinite: true,
-  speed: 500,
-  slidesToShow: 1,
-  slidesToScroll: 1
-};
-
-const preventSafariBoundEffect = event => {
-  event.preventDefault();
-};
-
-class PostPreviewMobile extends React.Component {
+class PostPreviewMobile extends React.PureComponent {
   constructor() {
     super();
 
@@ -46,19 +38,29 @@ class PostPreviewMobile extends React.Component {
   }
 
   render() {
-    const { open, toggleVisible, postsData, userId } = this.props;
+    const { open, actions, postsData, userId } = this.props;
 
     return (
       <div className={modalMain} style={{ display: open ? 'flex' : 'none' }}>
         <div className={modalHeader}>
-          <div className={headerLeftButton} onClick={toggleVisible}>
+          <div
+            className={headerLeftButton}
+            onClick={actions.togglePostPreviewVisibility}
+          >
             <img className={headerBackImage} src={leftChevron} alt="exit" />
           </div>
           <div className={headerTitle}>Eventder</div>
           <div className={headerRightButton} />
         </div>
 
-        <Slider {...settings} className={slickSliderCustom}>
+        <Slider
+          dots
+          infinite
+          speed={500}
+          slidesToShow={1}
+          slidesToScroll={1}
+          className={slickSliderCustom}
+        >
           {Array.isArray(postsData) &&
             postsData.map(data => (
               <PhotoPreview data={data} key={data.id} userId={userId} />
@@ -70,9 +72,9 @@ class PostPreviewMobile extends React.Component {
 }
 
 PostPreviewMobile.propTypes = {
+  actions: PropTypes.shape({}).isRequired,
   userId: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
   open: PropTypes.bool,
-  toggleVisible: PropTypes.func,
   postsData: PropTypes.arrayOf(
     PropTypes.shape({
       id: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
@@ -93,7 +95,6 @@ PostPreviewMobile.propTypes = {
 PostPreviewMobile.defaultProps = {
   userId: undefined,
   open: false,
-  toggleVisible: undefined,
   postsData: [
     {
       id: 0,
@@ -111,4 +112,13 @@ PostPreviewMobile.defaultProps = {
   ]
 };
 
-export default PostPreviewMobile;
+export default connect(
+  store => ({
+    userId: store.userData && store.userData.identities[0].userId,
+    open: store.isPreviewVisible,
+    postsData: store.currentPostsData
+  }),
+  dispatch => ({
+    actions: bindActionCreators({ togglePostPreviewVisibility }, dispatch)
+  })
+)(PostPreviewMobile);
