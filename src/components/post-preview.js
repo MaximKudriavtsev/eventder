@@ -5,7 +5,7 @@ import { bindActionCreators } from 'redux';
 import { Modal, ModalBody } from 'reactstrap';
 import Slider from 'react-slick';
 import { togglePostPreviewVisibility } from '../actions/actions';
-import PhotoPreview from './photo-preview';
+import ImageViewer from './image-viewer';
 import { body, modalMain, exitButton, exitIcon } from './post-preview.scss';
 import whiteCross from '../assets/white-cross.svg';
 
@@ -20,7 +20,7 @@ const PostPreview = React.memo(({ open, actions, postsData, userId }) => {
         {Array.isArray(postsData) &&
           postsData.map(postData => (
             <ModalBody key={postData.id} className={body}>
-              <PhotoPreview key={postData.id} data={postData} userId={userId} />
+              <ImageViewer key={postData.id} data={postData} userId={userId} />
               <div
                 className={exitButton}
                 onClick={actions.togglePostPreviewVisibility}

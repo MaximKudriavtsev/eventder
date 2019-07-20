@@ -13,7 +13,7 @@ import {
   photoContainer,
   likeImage,
   loadingIndicator
-} from './photo-preview.scss';
+} from './image-viewer.scss';
 import LoadingIndicator from '../assets/loading.svg';
 import Heart from '../assets/heart.svg';
 import HeartFull from '../assets/heart-full.svg';
@@ -39,7 +39,7 @@ const isLikedMyself = (likedIds, userId) => {
   return false;
 };
 
-class PhotoPreview extends React.PureComponent {
+class ImageViewer extends React.PureComponent {
   constructor(props) {
     super(props);
 
@@ -61,6 +61,10 @@ class PhotoPreview extends React.PureComponent {
     }
   }
 
+  static getDeliveredStateFromProps() {
+    return { isLoading: true };
+  }
+
   toggleLoading() {
     this.setState({ isLoading: false });
   }
@@ -79,7 +83,7 @@ class PhotoPreview extends React.PureComponent {
           className={previewImage}
           src={data && data.display_url}
           onLoad={this.toggleLoading}
-          alt=""
+          alt="user post"
         />
         {isLoading && (
           <div className={photoContainer}>
@@ -107,7 +111,7 @@ class PhotoPreview extends React.PureComponent {
               )}
             </div>
             <div className={childText} style={{ textAlign: 'center' }}>
-              {likeCount}
+              {likeCount && likeCount}
             </div>
           </div>
           <div className={container} />
@@ -117,7 +121,7 @@ class PhotoPreview extends React.PureComponent {
   }
 }
 
-PhotoPreview.propTypes = {
+ImageViewer.propTypes = {
   actions: PropTypes.shape({}).isRequired,
   userId: PropTypes.oneOfType([PropTypes.number, PropTypes.string]).isRequired,
   data: PropTypes.shape({
@@ -142,4 +146,4 @@ export default connect(
   dispatch => ({
     actions: bindActionCreators({ addLike, removeLike }, dispatch)
   })
-)(PhotoPreview);
+)(ImageViewer);

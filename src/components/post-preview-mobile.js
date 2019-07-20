@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import Slider from 'react-slick';
 import { togglePostPreviewVisibility } from '../actions/actions';
-import PhotoPreview from './photo-preview';
+import ImageViewer from './image-viewer';
 import leftChevron from '../assets/left-chevron.svg';
 import {
   slickSliderCustom,
@@ -18,23 +18,8 @@ import {
 import preventSafariBoundEffect from '../utils/prevent-safari-bound';
 
 class PostPreviewMobile extends React.PureComponent {
-  constructor() {
-    super();
-
-    this.state = {
-      loading: true
-    };
-
-    this.toggleLoading = this.toggleLoading.bind(this);
-  }
-
   componentDidMount() {
     document.ontouchmove = preventSafariBoundEffect;
-  }
-
-  toggleLoading() {
-    const { loading: stateLoading } = this.state;
-    this.setState({ loading: !stateLoading });
   }
 
   render() {
@@ -63,7 +48,7 @@ class PostPreviewMobile extends React.PureComponent {
         >
           {Array.isArray(postsData) &&
             postsData.map(data => (
-              <PhotoPreview data={data} key={data.id} userId={userId} />
+              <ImageViewer data={data} key={data.id} userId={userId} />
             ))}
         </Slider>
       </div>
