@@ -105,27 +105,52 @@ export default (state = initialState, { type, payload }) => {
     }
 
     case ActionTypes.ADD_LIKE: {
-      const nextEventderPostData = state.eventderPosts.map(postData => {
+      let currentPost = {};
+      const nextCurrentPostsData = state.currentPostsData.map(postData => {
         if (postData.id === payload.id) {
-          return {
+          currentPost = {
             ...postData,
             liked_users: postData.liked_users
               ? postData.liked_users.push(payload.userId)
               : [payload.userId],
             liked: postData.liked_users ? postData.liked_users.length + 1 : 1
           };
+          return currentPost;
         }
         return postData;
       });
+      const nextEventderPostData = state.eventderPosts.map(postData => {
+        if (postData.id === payload.id) {
+          return currentPost;
+        }
+        return postData;
+      });
+
+      return {
+        ...state,
+        eventderPosts: nextEventderPostData,
+        currentPostsData: nextCurrentPostsData
+      };
+    }
+
+    case ActionTypes.REMOVE_LIKE: {
+      let currentPost = {};
       const nextCurrentPostsData = state.currentPostsData.map(postData => {
         if (postData.id === payload.id) {
-          return {
+          currentPost = {
             ...postData,
             liked_users: postData.liked_users
-              ? postData.liked_users.push(payload.userId)
-              : [payload.userId],
-            liked: postData.liked_users ? postData.liked_users.length + 1 : 1
+              ? postData.liked_users.filter(userId => userId !== payload.userId)
+              : [],
+            liked: postData.liked_users ? postData.liked_users.length - 1 : 0
           };
+          return currentPost;
+        }
+        return postData;
+      });
+      const nextEventderPostData = state.eventderPosts.map(postData => {
+        if (postData.id === payload.id) {
+          return currentPost;
         }
         return postData;
       });

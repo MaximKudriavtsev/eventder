@@ -63,10 +63,20 @@ export const addLike = payload => {
   };
 };
 
-export const removeLike = payload => ({
-  type: ActionTypes.REMOVE_LIKE,
-  payload
-});
+export const removeLike = payload => {
+  fetch(
+    'https://pgu80wwqs6.execute-api.eu-central-1.amazonaws.com/dev/removeLike',
+    {
+      mode: 'no-cors',
+      method: 'POST',
+      body: JSON.stringify({ id: payload.id, userId: payload.userId })
+    }
+  );
+  return {
+    type: ActionTypes.REMOVE_LIKE,
+    payload
+  };
+};
 
 export const changeViewport = payload => ({
   type: ActionTypes.CHANGE_VIEWPORT,

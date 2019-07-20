@@ -9,7 +9,11 @@ import {
   previewImage,
   previewFooter
 } from './post-preview-mobile.scss';
-import { photoContainer, likeImage } from './photo-preview.scss';
+import {
+  photoContainer,
+  likeImage,
+  loadingIndicator
+} from './photo-preview.scss';
 import LoadingIndicator from '../assets/loading.svg';
 import Heart from '../assets/heart.svg';
 import HeartFull from '../assets/heart-full.svg';
@@ -40,7 +44,7 @@ class PhotoPreview extends React.PureComponent {
     super(props);
 
     this.state = {
-      loading: true
+      isLoading: true
     };
 
     this.toggleLoading = this.toggleLoading.bind(this);
@@ -53,16 +57,16 @@ class PhotoPreview extends React.PureComponent {
     if (value) {
       actions.addLike({ id: data.id, userId });
     } else {
-      // actions.removeLike({ id: data.id, userId });
+      actions.removeLike({ id: data.id, userId });
     }
   }
 
   toggleLoading() {
-    this.setState({ loading: false });
+    this.setState({ isLoading: false });
   }
 
   render() {
-    const { loading } = this.state;
+    const { isLoading } = this.state;
     const { data, userId } = this.props;
 
     const isLiked = isLikedMyself(data.liked_users, userId);
@@ -77,16 +81,15 @@ class PhotoPreview extends React.PureComponent {
           onLoad={this.toggleLoading}
           alt=""
         />
-        {loading ? (
+        {isLoading && (
           <div className={photoContainer}>
             <img
               src={LoadingIndicator}
-              width="30px"
-              height="30px"
+              className={loadingIndicator}
               alt="Loading..."
             />
           </div>
-        ) : null}
+        )}
 
         <div className={previewFooter}>
           <div className={container}>
