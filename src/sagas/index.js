@@ -3,8 +3,6 @@ import { eventChannel, END } from 'redux-saga';
 import * as actions from '../actions/actions';
 import * as actionTypes from '../actions/action-types';
 
-import postsVk from '../../scraper-vk/result.json';
-
 const SEARCH_RADIUS = 1000;
 
 const getLocation = () => {
@@ -31,24 +29,6 @@ const getVkPostsComputedBase = (lat, long) => {
   )
     .then(res => res.json())
     .then(res => res);
-};
-
-const getVkPostsComputed = (lat, long) => () => {
-  if (process.env.BASE_NAME === '/site/') {
-    // use local data without execute Lambda
-    const makeDateInterval = () =>
-      Math.floor(new Date().getTime() / 1000 - 1 * 60 * 60);
-
-    return fetch(
-      `https://392veon8m6.execute-api.eu-central-1.amazonaws.com/default/getVkPosts?lat=${lat}&long=${long}&radius=${SEARCH_RADIUS}&startTime=${makeDateInterval()}`,
-      {
-        mode: 'cors'
-      }
-    )
-      .then(res => res.json())
-      .then(res => res);
-  }
-  return postsVk;
 };
 
 const getEventderPostsComputed = () => {
@@ -162,28 +142,12 @@ export function* getUserLocation2() {
   const location = yield call(getLocation);
   yield put(actions.getUserLocation(location));
 
-  // const vkPosts = yield call(getVkPostsComputed(location[0], location[1]));
-  // yield put(actions.getPosts(vkPosts));
-
-  // const eventderPosts = yield call(getEventderPostsComputed);
-  // yield put(actions.getEventderPosts(eventderPosts));
-
-  // call every time
   yield saga(location);
   // yield sagaEventder();
 }
 
 export function* getUserLocation() {
   yield takeEvery(actionTypes.GET_USER_LOCATION, getUserLocation2);
-}
-
-export function* getVkPosts2() {
-  const posts = yield call(getVkPostsComputed);
-  yield put(actions.getPosts(posts));
-}
-
-export function* getVkPosts() {
-  yield takeEvery('GET_VK_POSTS', getVkPosts2);
 }
 
 export function* publishUserFile2({ payload }) {
