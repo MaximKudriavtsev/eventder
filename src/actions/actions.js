@@ -47,10 +47,17 @@ export const setUserData = payload => ({
   payload
 });
 
-export const addLike = payload => ({
-  type: ActionTypes.ADD_LIKE,
-  payload
-});
+export const addLike = payload => {
+  fetch('https://pgu80wwqs6.execute-api.eu-central-1.amazonaws.com/dev/add', {
+    mode: 'no-cors',
+    method: 'POST',
+    body: JSON.stringify({ id: payload.id, userId: payload.userId })
+  });
+  return {
+    type: ActionTypes.ADD_LIKE,
+    payload
+  };
+};
 
 export const removeLike = payload => ({
   type: ActionTypes.REMOVE_LIKE,
