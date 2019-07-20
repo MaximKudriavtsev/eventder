@@ -19,21 +19,15 @@ const PostPreview = React.memo(({ open, actions, postsData, userId }) => {
       <Slider dots infinite speed={500} slidesToShow={1} slidesToScroll={1}>
         {Array.isArray(postsData) &&
           postsData.map(postData => (
-            <React.Fragment key={postData.id}>
-              <ModalBody className={body}>
-                <PhotoPreview
-                  data={postData}
-                  key={postData.id}
-                  userId={userId}
-                />
-                <div
-                  className={exitButton}
-                  onClick={actions.togglePostPreviewVisibility}
-                >
-                  <img className={exitIcon} src={whiteCross} alt="exit" />
-                </div>
-              </ModalBody>
-            </React.Fragment>
+            <ModalBody key={postData.id} className={body}>
+              <PhotoPreview key={postData.id} data={postData} userId={userId} />
+              <div
+                className={exitButton}
+                onClick={actions.togglePostPreviewVisibility}
+              >
+                <img className={exitIcon} src={whiteCross} alt="exit" />
+              </div>
+            </ModalBody>
           ))}
       </Slider>
     </Modal>

@@ -1,5 +1,8 @@
 import * as React from 'react';
 import * as PropTypes from 'prop-types';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+import { addLike, removeLike } from '../actions/actions';
 import { container, mainText, childText } from './post-preview.scss';
 import {
   previewMain,
@@ -37,53 +40,20 @@ class PhotoPreview extends React.PureComponent {
     super(props);
 
     this.state = {
-      isLiked: isLikedMyself(props.data.liked_users, props.userId),
-      loading: true,
-      postId: props.data.id,
-      likeCount: props.data.liked || 0
+      loading: true
     };
 
     this.toggleLoading = this.toggleLoading.bind(this);
     this.setLike = this.setLike.bind(this);
   }
 
-  static getDerivedStateFromProps(props, state) {
-    const { postId } = state;
-
-    if (postId !== props.data.id)
-      return {
-        postId: props.data.id,
-        loading: true,
-        isLiked: isLikedMyself(props.liked_users, props.userId),
-        likeCount: props.data.liked
-      };
-    return state;
-  }
-
   setLike(value) {
-    const { likeCount: prevLikeCount } = this.state;
-    const { data, userId } = this.props;
-    const method = value ? 'addLike' : 'removeLike';
-
-    fetch(
-      `https://pgu80wwqs6.execute-api.eu-central-1.amazonaws.com/dev/${method}`,
-      {
-        mode: 'no-cors',
-        method: 'POST',
-        body: JSON.stringify({ id: data.id, userId })
-      }
-    );
-
-    this.setState({
-      isLiked: value,
-      likeCount: value ? prevLikeCount + 1 : prevLikeCount - 1
-    });
+    const { data, userId, actions } = this.props;
 
     if (value) {
-      // TODO: pass the next actions into this component
-      // addLocalLike({ id: data.id, userId });
+      actions.addLike({ id: data.id, userId });
     } else {
-      // removeLocalLike({ id: data.id, userId });
+      // actions.removeLike({ id: data.id, userId });
     }
   }
 
@@ -92,11 +62,11 @@ class PhotoPreview extends React.PureComponent {
   }
 
   render() {
-    const { loading, likeCount, isLiked } = this.state;
-    const { data } = this.props;
+    const { loading } = this.state;
+    const { data, userId } = this.props;
 
-    console.log(data); // data.liked_users: []
-
+    const isLiked = isLikedMyself(data.liked_users, userId);
+    const likeCount = data.liked;
     const toggleLike = () => this.setLike(!isLiked);
 
     return (
@@ -122,8 +92,7 @@ class PhotoPreview extends React.PureComponent {
           <div className={container}>
             <p className={mainText}>Опубликовано</p>
             <p className={childText}>
-              {data.taken_at_timestamp &&
-                formatDate(new Date(postDate(data.taken_at_timestamp)))}
+              {formatDate(new Date(postDate(data.taken_at_timestamp)))}
             </p>
           </div>
           <div className={container}>
@@ -146,8 +115,7 @@ class PhotoPreview extends React.PureComponent {
 }
 
 PhotoPreview.propTypes = {
-  // addLocalLike: PropTypes.func.isRequired,
-  // removeLocalLike: PropTypes.func.isRequired,
+  actions: PropTypes.shape({}).isRequired,
   userId: PropTypes.oneOfType([PropTypes.number, PropTypes.string]).isRequired,
   data: PropTypes.shape({
     id: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
@@ -166,4 +134,9 @@ PhotoPreview.propTypes = {
   }).isRequired
 };
 
-export default PhotoPreview;
+export default connect(
+  () => undefined,
+  dispatch => ({
+    actions: bindActionCreators({ addLike, removeLike }, dispatch)
+  })
+)(PhotoPreview);

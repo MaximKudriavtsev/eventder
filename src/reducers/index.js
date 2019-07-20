@@ -109,8 +109,10 @@ export default (state = initialState, { type, payload }) => {
         if (postData.id === payload.id) {
           return {
             ...postData,
-            liked_user: postData.liked_user.push(payload.userId),
-            liked: postData.liked_user.length + 1
+            liked_users: postData.liked_users
+              ? postData.liked_users.push(payload.userId)
+              : [payload.userId],
+            liked: postData.liked_users ? postData.liked_users.length + 1 : 1
           };
         }
         return postData;
@@ -119,8 +121,10 @@ export default (state = initialState, { type, payload }) => {
         if (postData.id === payload.id) {
           return {
             ...postData,
-            liked_user: postData.liked_user.push(payload.userId),
-            liked: postData.liked_user.length + 1
+            liked_users: postData.liked_users
+              ? postData.liked_users.push(payload.userId)
+              : [payload.userId],
+            liked: postData.liked_users ? postData.liked_users.length + 1 : 1
           };
         }
         return postData;

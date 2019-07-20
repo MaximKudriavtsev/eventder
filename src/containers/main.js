@@ -5,7 +5,7 @@ import LeafletMap from '../components/leaflet-map/map';
 import PostPreview from '../components/post-preview';
 import PostPreviewMobile from '../components/post-preview-mobile';
 import CommandPanel from '../components/command-panel';
-import * as rootActions from '../actions/actions';
+import { setMobileDevice, getUserLocationInit } from '../actions/actions';
 import 'leaflet/dist/leaflet.css';
 
 /* eslint-disable react/prop-types */
@@ -35,5 +35,10 @@ class Main extends React.PureComponent {
 
 export default connect(
   store => store,
-  dispatch => ({ actions: bindActionCreators(rootActions, dispatch) })
+  dispatch => ({
+    actions: bindActionCreators(
+      { setMobileDevice, getUserLocationInit },
+      dispatch
+    )
+  })
 )(Main);
