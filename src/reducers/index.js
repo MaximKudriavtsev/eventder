@@ -54,7 +54,11 @@ export default (state = initialState, { type, payload }) => {
     case ActionTypes.RECEIVE_USER_LOCATION: {
       return {
         ...state,
-        userLocation: payload
+        userLocation: payload,
+        viewport: {
+          zoom: 14,
+          center: payload
+        }
       };
     }
 
