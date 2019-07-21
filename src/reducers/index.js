@@ -62,10 +62,12 @@ export default (state = initialState, { type, payload }) => {
       };
     }
 
-    case ActionTypes.RECEIVE_POSTS: {
+    case ActionTypes.RECEIVE_VK_POSTS: {
       return {
         ...state,
-        posts: payload
+        posts: payload.posts,
+        searchRadius: payload.searchRadius,
+        searchTimeInterval: payload.searchTimeInterval
       };
     }
 

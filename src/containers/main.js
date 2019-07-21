@@ -5,17 +5,37 @@ import LeafletMap from '../components/leaflet-map/map';
 import PostPreview from '../components/post-preview';
 import PostPreviewMobile from '../components/post-preview-mobile';
 import CommandPanel from '../components/command-panel';
-import { setMobileDevice, getUserLocationInit } from '../actions/actions';
+import {
+  setMobileDevice,
+  getUserLocationInit,
+  getEventderPosts,
+  getVkPosts
+} from '../actions/actions';
 import 'leaflet/dist/leaflet.css';
 
 /* eslint-disable react/prop-types */
 class Main extends React.PureComponent {
   componentDidMount() {
-    const { actions, searchRadius, searchTimeInterval } = this.props;
+    const { actions } = this.props;
 
-    // TODO: should be move into Saga loading
     actions.setMobileDevice();
-    actions.getUserLocationInit({ searchRadius, searchTimeInterval });
+    actions.getUserLocationInit();
+  }
+
+  componentDidUpdate() {
+    const {
+      actions,
+      searchRadius,
+      searchTimeInterval,
+      userLocation
+    } = this.props;
+
+    actions.getEventderPosts();
+    actions.getVkPosts({
+      location: userLocation,
+      searchRadius,
+      searchTimeInterval
+    });
   }
 
   render() {
@@ -35,12 +55,18 @@ class Main extends React.PureComponent {
 
 export default connect(
   store => ({
+    userLocation: store.userLocation,
     searchRadius: store.searchRadius,
     searchTimeInterval: store.searchTimeInterval
   }),
   dispatch => ({
     actions: bindActionCreators(
-      { setMobileDevice, getUserLocationInit },
+      {
+        setMobileDevice,
+        getUserLocationInit,
+        getEventderPosts,
+        getVkPosts
+      },
       dispatch
     )
   })

@@ -16,13 +16,23 @@ export const changeCurrentPostData = payload => ({
   payload
 });
 
-export const getPosts = payload => ({
-  type: ActionTypes.RECEIVE_POSTS,
+export const getVkPosts = payload => ({
+  type: ActionTypes.GET_VK_POSTS,
+  payload
+});
+
+export const receiveVkPosts = payload => ({
+  type: ActionTypes.RECEIVE_VK_POSTS,
+  payload
+});
+
+export const getAppPosts = payload => ({
+  type: ActionTypes.RECEIVE_EVENTDER_POSTS,
   payload
 });
 
 export const getEventderPosts = payload => ({
-  type: ActionTypes.RECEIVE_EVENTDER_POSTS,
+  type: ActionTypes.GET_EVENTDER_POSTS,
   payload
 });
 
