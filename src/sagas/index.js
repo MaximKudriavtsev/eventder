@@ -146,7 +146,7 @@ function* publishUserFileSaga() {
 
 function* getUserLocationBase() {
   const location = yield call(getLocation);
-  yield put(actions.getUserLocation(location));
+  yield put(actions.receiveUserLocation(location));
 }
 
 function* getUserLocationSaga() {
@@ -185,7 +185,7 @@ function* getAppPostsBase({ payload }) {
   try {
     while (true) {
       const appPosts = yield take(appChain);
-      yield put(actions.getAppPosts(appPosts));
+      yield put(actions.receiveAppPosts(appPosts));
     }
   } finally {
     console.log('countdown terminated');
@@ -193,7 +193,7 @@ function* getAppPostsBase({ payload }) {
 }
 
 function* getAppPostsSaga() {
-  yield takeLatest(actionTypes.GET_EVENTDER_POSTS, getAppPostsBase);
+  yield takeLatest(actionTypes.GET_APP_POSTS, getAppPostsBase);
 }
 
 function* getVkPostsBase({ payload }) {

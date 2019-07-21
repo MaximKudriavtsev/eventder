@@ -71,7 +71,7 @@ export default (state = initialState, { type, payload }) => {
       };
     }
 
-    case ActionTypes.RECEIVE_EVENTDER_POSTS: {
+    case ActionTypes.RECEIVE_APP_POSTS: {
       return {
         ...state,
         eventderPosts: payload

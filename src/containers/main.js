@@ -7,8 +7,8 @@ import PostPreviewMobile from '../components/post-preview-mobile';
 import CommandPanel from '../components/command-panel';
 import {
   setMobileDevice,
-  getUserLocationInit,
-  getEventderPosts,
+  getUserLocation,
+  getAppPosts,
   getVkPosts
 } from '../actions/actions';
 import 'leaflet/dist/leaflet.css';
@@ -19,7 +19,7 @@ class Main extends React.PureComponent {
     const { actions } = this.props;
 
     actions.setMobileDevice();
-    actions.getUserLocationInit();
+    actions.getUserLocation();
   }
 
   componentDidUpdate() {
@@ -30,7 +30,7 @@ class Main extends React.PureComponent {
       userLocation
     } = this.props;
 
-    actions.getEventderPosts();
+    actions.getAppPosts();
     actions.getVkPosts({
       location: userLocation,
       searchRadius,
@@ -63,8 +63,8 @@ export default connect(
     actions: bindActionCreators(
       {
         setMobileDevice,
-        getUserLocationInit,
-        getEventderPosts,
+        getUserLocation,
+        getAppPosts,
         getVkPosts
       },
       dispatch

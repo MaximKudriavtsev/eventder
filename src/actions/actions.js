@@ -1,12 +1,12 @@
 import * as ActionTypes from './action-types';
 import isMobileDevice from '../utils/is-mobile-device';
 
-export const getUserLocation = payload => ({
+export const receiveUserLocation = payload => ({
   type: ActionTypes.RECEIVE_USER_LOCATION,
   payload
 });
 
-export const getUserLocationInit = payload => ({
+export const getUserLocation = payload => ({
   type: ActionTypes.GET_USER_LOCATION,
   payload
 });
@@ -26,13 +26,13 @@ export const receiveVkPosts = payload => ({
   payload
 });
 
-export const getAppPosts = payload => ({
-  type: ActionTypes.RECEIVE_EVENTDER_POSTS,
+export const receiveAppPosts = payload => ({
+  type: ActionTypes.RECEIVE_APP_POSTS,
   payload
 });
 
-export const getEventderPosts = payload => ({
-  type: ActionTypes.GET_EVENTDER_POSTS,
+export const getAppPosts = payload => ({
+  type: ActionTypes.GET_APP_POSTS,
   payload
 });
 
