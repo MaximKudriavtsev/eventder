@@ -11,18 +11,25 @@ const getLocation = () => {
       res([position.coords.latitude, position.coords.longitude]);
     };
     const geoReject = () => {
-      res([54.19, 37.61]);
+      res([40.776354, -73.969687]);
     };
     navigator.geolocation.getCurrentPosition(geoSuccess, geoReject);
   }).then(res => res);
 };
 
-const getVkPostsComputedBase = (lat, long) => {
-  const makeDateInterval = () =>
-    Math.floor(new Date().getTime() / 1000 - 1 * 60 * 60);
+const getVkPostsComputedBase = (
+  lat,
+  long,
+  searchRadius = SEARCH_RADIUS,
+  searchTimeInterval = 1
+) => {
+  const makeDateInterval = hours =>
+    Math.floor(new Date().getTime() / 1000 - hours * 60 * 60);
 
   return fetch(
-    `https://392veon8m6.execute-api.eu-central-1.amazonaws.com/default/getVkPosts?lat=${lat}&long=${long}&radius=${SEARCH_RADIUS}&startTime=${makeDateInterval()}`,
+    `https://392veon8m6.execute-api.eu-central-1.amazonaws.com/default/getVkPosts?lat=${lat}&long=${long}&radius=${searchRadius}&startTime=${makeDateInterval(
+      searchTimeInterval
+    )}`,
     {
       mode: 'cors'
     }
@@ -93,17 +100,36 @@ function createEventChannelEventder() {
   });
 }
 
-function createEventChannelVk(location) {
+function createEventChannelVk({ location, searchRadius, searchTimeInterval }) {
+  let searchTime = searchTimeInterval;
+  let radius = searchRadius;
+
+  const whileFetch = emitter => {
+    getVkPostsComputedBase(location[0], location[1], radius, searchTime).then(
+      res => {
+        if (res.length < 30) {
+          searchTime += 24; // time is not very important for searches
+          radius += 200; // vk api works fine with radius is above 1000
+          return whileFetch(emitter);
+        }
+        return emitter(res);
+      }
+    );
+  };
+
   return eventChannel(emitter => {
-    // initial call
-    getVkPostsComputedBase(location[0], location[1]).then(res => emitter(res));
+    whileFetch(emitter);
+
     let endCallsTime = 100; // ~ 1.6 hour
     const iv = setInterval(() => {
       endCallsTime -= 1;
       if (endCallsTime > 0) {
-        getVkPostsComputedBase(location[0], location[1]).then(res =>
-          emitter(res)
-        );
+        getVkPostsComputedBase(
+          location[0],
+          location[1],
+          radius,
+          searchTime
+        ).then(res => emitter(res));
       } else {
         emitter(END);
       }
@@ -114,8 +140,12 @@ function createEventChannelVk(location) {
   });
 }
 
-export function* saga(location) {
-  const vkChain = yield call(createEventChannelVk, location);
+export function* saga(location, searchRadius, searchTimeInterval) {
+  const vkChain = yield call(createEventChannelVk, {
+    location,
+    searchRadius,
+    searchTimeInterval
+  });
   try {
     while (true) {
       const vkPosts = yield take(vkChain);
@@ -138,11 +168,11 @@ function* sagaEventder() {
   }
 }
 
-export function* getUserLocation2() {
+export function* getUserLocation2({ payload }) {
   const location = yield call(getLocation);
   yield put(actions.getUserLocation(location));
 
-  yield saga(location);
+  yield saga(location, payload.searchRadius, payload.searchTimeInterval);
   // yield sagaEventder();
 }
 

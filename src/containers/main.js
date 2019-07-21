@@ -11,11 +11,11 @@ import 'leaflet/dist/leaflet.css';
 /* eslint-disable react/prop-types */
 class Main extends React.PureComponent {
   componentDidMount() {
-    const { actions } = this.props;
+    const { actions, searchRadius, searchTimeInterval } = this.props;
 
     // TODO: should be move into Saga loading
     actions.setMobileDevice();
-    actions.getUserLocationInit();
+    actions.getUserLocationInit({ searchRadius, searchTimeInterval });
   }
 
   render() {
@@ -34,7 +34,10 @@ class Main extends React.PureComponent {
 }
 
 export default connect(
-  store => store,
+  store => ({
+    searchRadius: store.searchRadius,
+    searchTimeInterval: store.searchTimeInterval
+  }),
   dispatch => ({
     actions: bindActionCreators(
       { setMobileDevice, getUserLocationInit },

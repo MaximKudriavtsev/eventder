@@ -6,8 +6,9 @@ export const getUserLocation = payload => ({
   payload
 });
 
-export const getUserLocationInit = () => ({
-  type: ActionTypes.GET_USER_LOCATION
+export const getUserLocationInit = payload => ({
+  type: ActionTypes.GET_USER_LOCATION,
+  payload
 });
 
 export const changeCurrentPostData = payload => ({

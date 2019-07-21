@@ -9,11 +9,14 @@ const initialState = {
   currentPostsData: {},
 
   viewport: {
-    center: [54.19, 37.61],
+    center: [40.776354, -73.969687],
     zoom: 14
   },
   isPreviewVisible: false,
-  isMobileDevice: false
+  isMobileDevice: false,
+
+  searchRadius: 800, // meters
+  searchTimeInterval: 1 // hours
 };
 
 export default (state = initialState, { type, payload }) => {

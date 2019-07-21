@@ -33,12 +33,18 @@ class LeafletMap extends React.PureComponent {
   }
 
   render() {
-    const { posts, eventderPosts, userLocation, viewport } = this.props;
+    const {
+      posts,
+      eventderPosts,
+      userLocation,
+      viewport,
+      searchRadius
+    } = this.props;
 
     const initial = [userLocation[0] || 20, userLocation[1] || 20];
     const polygonCircle = [
-      circleCoordinates(initial[0], initial[1], 1000), // outer ring
-      circleCoordinates(initial[0], initial[1], 3) // hole
+      circleCoordinates(initial[0], initial[1], 1000), // outer ring km
+      circleCoordinates(initial[0], initial[1], (searchRadius * 2) / 1000) // hole km
     ];
     return (
       <Map
@@ -108,7 +114,8 @@ LeafletMap.propTypes = {
   viewport: PropTypes.shape({}).isRequired,
   posts: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
   eventderPosts: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
-  actions: PropTypes.shape({}).isRequired
+  actions: PropTypes.shape({}).isRequired,
+  searchRadius: PropTypes.number.isRequired
 };
 
 export default connect(
@@ -116,7 +123,8 @@ export default connect(
     userLocation: store.userLocation,
     posts: store.posts,
     eventderPosts: store.eventderPosts,
-    viewport: store.viewport
+    viewport: store.viewport,
+    searchRadius: store.searchRadius
   }),
   dispatch => ({ actions: bindActionCreators(rootActions, dispatch) })
 )(LeafletMap);
