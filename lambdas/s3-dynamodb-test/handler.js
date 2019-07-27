@@ -195,7 +195,7 @@ module.exports.removeLike = (event, context, callback) => {
       if (err) {
         console.error(err);
         callback(null, {
-          statusCode: error.statusCode || 501,
+          statusCode: err.statusCode || 501,
           headers: { 'Content-Type': 'text/plain' },
           body: "Couldn't fetch the record item."
         });
@@ -231,7 +231,31 @@ module.exports.getRecords = (event, context, callback) => {
         longitude: Number(lng)
       }
     })
-    .then(res => {
-      callback(null, response(res));
+    .then(geoItems => {
+      console.log(geoItems);
+      const dynamoDbParams = {
+        TableName: process.env.DYNAMODB_DATA_TABLE,
+        RequestItems: {
+          [process.env.DYNAMODB_DATA_TABLE]: {
+            Keys: geoItems.map(geoItem => ({
+              id: geoItem.id.S
+            }))
+          }
+        }
+      };
+
+      dynamoDbData.batchGet(dynamoDbParams, (err, data) => {
+        if (err) {
+          console.error(err);
+          callback(null, {
+            statusCode: err.statusCode || 501,
+            headers: { 'Content-Type': 'text/plain' },
+            body: "Couldn't fetch the record item."
+          });
+          return;
+        }
+
+        callback(null, response(data));
+      });
     });
 };
