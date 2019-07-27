@@ -6,6 +6,7 @@
   "dependencies": {
     "uuid": "^3.3.2",
     "aws-sdk": "^2.451.0",
-    "formidable": "^1.2.1"
+    "formidable": "^1.2.1",
+    "dynamodb-geo": "^0.4.0"
   }
 }

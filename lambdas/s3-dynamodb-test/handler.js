@@ -1,15 +1,24 @@
 const uuid = require('uuid');
 const AWS = require('aws-sdk');
+const ddbGeo = require('dynamodb-geo');
 
-const dynamoDb = new AWS.DynamoDB.DocumentClient();
+const dynamoDb = new AWS.DynamoDB(); // AWS.DynamoDB.DocumentClient()
 const s3 = new AWS.S3();
+
+// Configuration for a new instance of a GeoDataManager. Each GeoDataManager instance represents a table
+const config = new ddbGeo.GeoDataManagerConfiguration(
+  dynamoDb,
+  process.env.DYNAMODB_TABLE
+);
+// Instantiate the table manager
+const ddbGeoTableManager = new ddbGeo.GeoDataManager(config);
 
 const s3PublicUrl = `https://s3.eu-central-1.amazonaws.com/${
   process.env.BUCKET
 }/`;
 
 module.exports.save = (event, context, callback) => {
-  const timestamp = new Date().getTime();
+  const timestamp = new Date().getTime().toString();
   const id = uuid.v1();
 
   const buffer = new Buffer(event.body, 'base64');
@@ -64,18 +73,40 @@ module.exports.save = (event, context, callback) => {
         'Access-Control-Allow-Origin': '*'
       }
     };
-    dynamoDb.put(dynamoDBParams, errorDB => {
-      if (errorDB) {
-        console.error(errorDB);
-        callback(null, {
-          statusCode: errorDB.statusCode || 501,
-          headers: { 'Content-Type': 'text/plain' },
-          body: "Couldn't create the file item dynamoDB."
-        });
-        return;
-      }
-      callback(null, response);
-    });
+
+    ddbGeoTableManager
+      .putPoint({
+        RangeKeyValue: { S: id }, // Use this to ensure uniqueness of the hash/range pairs.
+        GeoPoint: {
+          // An object specifying latitude and longitude as plain numbers. Used to build the geohash, the hashkey and geojson data
+          latitude: event.queryStringParameters.lat,
+          longitude: event.queryStringParameters.lng
+        },
+        PutItemInput: {
+          // Passed through to the underlying DynamoDB.putItem request. TableName is filled in for you.
+          Item: {
+            id: { S: dynamoDBParams.Item.id },
+            display_url: { S: dynamoDBParams.Item.display_url },
+            preview_url: { S: dynamoDBParams.Item.preview_url },
+            owner_id: { S: dynamoDBParams.Item.owner_id },
+            taken_at_timestamp: { N: timestamp.toString() },
+            liked: { N: '0' },
+            liked_users: { L: [] },
+            location: {
+              M: {
+                lat: { N: dynamoDBParams.Item.location.lat },
+                lng: { N: dynamoDBParams.Item.location.lng },
+                name: { S: dynamoDBParams.Item.location.name },
+                instagramId: { S: dynamoDBParams.Item.location.instagramId }
+              }
+            }
+          }
+        }
+      })
+      .promise()
+      .then(() => {
+        callback(null, response);
+      });
   });
 };
 
@@ -209,4 +240,30 @@ module.exports.removeLike = (event, context, callback) => {
       callback(null, response);
     });
   });
+};
+
+// should be used for get records
+module.exports.getRecords = (event, context, callback) => {
+  const { lat, lng, radius, startTime } = event.queryStringParameters;
+
+  const response = res => ({
+    statusCode: 200,
+    body: JSON.stringify(res),
+    headers: {
+      'Content-Type': 'application/json',
+      'Access-Control-Allow-Origin': '*'
+    }
+  });
+
+  ddbGeoTableManager
+    .queryRadius({
+      RadiusInMeter: Number(radius),
+      CenterPoint: {
+        latitude: Number(lat),
+        longitude: Number(lng)
+      }
+    })
+    .then(res => {
+      callback(null, response(res));
+    });
 };

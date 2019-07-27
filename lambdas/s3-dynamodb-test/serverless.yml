@@ -14,7 +14,7 @@ provider:
     binaryMediaTypes: # Optional binary media types the API might return
       - '*/*'
   environment:
-    DYNAMODB_TABLE: eventder-dynamodb-test
+    DYNAMODB_TABLE: eventder-dynamodb-geohash
   iamRoleStatements:
     - Effect: Allow
       Action:
@@ -29,6 +29,16 @@ provider:
       Resource:
         - "arn:aws:s3:::${self:custom.bucket}/*"
         - "arn:aws:dynamodb:${opt:region, self:provider.region}:*:table/${self:provider.environment.DYNAMODB_TABLE}"
+    - Effect: Allow
+      Action:
+        - dynamodb:Query
+        - dynamodb:Scan
+        - dynamodb:GetItem
+        - dynamodb:PutItem
+        - dynamodb:UpdateItem
+        - dynamodb:DeleteItem
+      Resource:
+        - "arn:aws:dynamodb:${opt:region, self:provider.region}:*:table/${self:provider.environment.DYNAMODB_TABLE}/index/*"
 
 functions:
   save:
@@ -46,20 +56,29 @@ functions:
                 lat: true
                 lng: true
                 ownerId: true
+
+  getRecords:
+    handler: handler.getRecords
+    events:
+      - http:
+          path: getRecords
+          method: get
+          cors: true
+
   addLike:
-    handler: handler.addLike 
+    handler: handler.addLike
     events:
       - http:
           path: addLike
-          method: post 
+          method: post
           cors: true
-  
+
   removeLike:
     handler: handler.removeLike
     events:
       - http:
           path: removeLike/{id}
-          method: post 
+          method: post
           cors: true
 
 resources:
@@ -69,13 +88,26 @@ resources:
       DeletionPolicy: Retain
       Properties:
         AttributeDefinitions:
-          -
-            AttributeName: id
-            AttributeType: S
+          - AttributeName: hashKey
+            AttributeType: 'N'
+          - AttributeName: rangeKey
+            AttributeType: 'S'
+          - AttributeName: geohash
+            AttributeType: 'N'
         KeySchema:
-          -
-            AttributeName: id
+          - AttributeName: hashKey
             KeyType: HASH
+          - AttributeName: rangeKey
+            KeyType: RANGE
+        LocalSecondaryIndexes:
+          - IndexName: geohash-index
+            KeySchema:
+              - AttributeName: hashKey
+                KeyType: HASH
+              - AttributeName: geohash
+                KeyType: RANGE
+            Projection:
+              ProjectionType: ALL
         ProvisionedThroughput:
           ReadCapacityUnits: 1
           WriteCapacityUnits: 1
