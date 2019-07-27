@@ -2,12 +2,13 @@ const uuid = require('uuid');
 const AWS = require('aws-sdk');
 const ddbGeo = require('dynamodb-geo');
 
-const dynamoDb = new AWS.DynamoDB(); // AWS.DynamoDB.DocumentClient()
+const dynamoDbGeo = new AWS.DynamoDB();
+const dynamoDbData = new AWS.DynamoDB.DocumentClient();
 const s3 = new AWS.S3();
 
 // Configuration for a new instance of a GeoDataManager. Each GeoDataManager instance represents a table
 const config = new ddbGeo.GeoDataManagerConfiguration(
-  dynamoDb,
+  dynamoDbGeo,
   process.env.DYNAMODB_TABLE
 );
 // Instantiate the table manager
@@ -18,7 +19,7 @@ const s3PublicUrl = `https://s3.eu-central-1.amazonaws.com/${
 }/`;
 
 module.exports.save = (event, context, callback) => {
-  const timestamp = new Date().getTime().toString();
+  const timestamp = new Date().getTime();
   const id = uuid.v1();
 
   const buffer = new Buffer(event.body, 'base64');
@@ -31,7 +32,7 @@ module.exports.save = (event, context, callback) => {
     Body: buffer
   };
   const dynamoDBParams = {
-    TableName: process.env.DYNAMODB_TABLE,
+    TableName: process.env.DYNAMODB_DATA_TABLE,
     Item: {
       id,
       display_url: `${s3PublicUrl}${id}.jpg`,
@@ -61,19 +62,6 @@ module.exports.save = (event, context, callback) => {
       return;
     }
 
-    // create a response
-    const response = {
-      statusCode: 200,
-      body: JSON.stringify({
-        display_url: `${s3PublicUrl}${fileKey}`,
-        item: dynamoDBParams.Item
-      }),
-      headers: {
-        'Content-Type': 'application/json',
-        'Access-Control-Allow-Origin': '*'
-      }
-    };
-
     ddbGeoTableManager
       .putPoint({
         RangeKeyValue: { S: id }, // Use this to ensure uniqueness of the hash/range pairs.
@@ -83,29 +71,33 @@ module.exports.save = (event, context, callback) => {
           longitude: event.queryStringParameters.lng
         },
         PutItemInput: {
-          // Passed through to the underlying DynamoDB.putItem request. TableName is filled in for you.
           Item: {
-            id: { S: dynamoDBParams.Item.id },
-            display_url: { S: dynamoDBParams.Item.display_url },
-            preview_url: { S: dynamoDBParams.Item.preview_url },
-            owner_id: { S: dynamoDBParams.Item.owner_id },
-            taken_at_timestamp: { N: timestamp.toString() },
-            liked: { N: '0' },
-            liked_users: { L: [] },
-            location: {
-              M: {
-                lat: { N: dynamoDBParams.Item.location.lat },
-                lng: { N: dynamoDBParams.Item.location.lng },
-                name: { S: dynamoDBParams.Item.location.name },
-                instagramId: { S: dynamoDBParams.Item.location.instagramId }
-              }
-            }
+            id: { S: dynamoDBParams.Item.id }
           }
         }
       })
       .promise()
       .then(() => {
-        callback(null, response);
+        dynamoDbData.put(dynamoDBParams, errorDB => {
+          if (errorDB) {
+            console.error(errorDB);
+            callback(null, {
+              statusCode: errorDB.statusCode || 501,
+              headers: { 'Content-Type': 'text/plain' },
+              body: "Couldn't create the file item dynamoDB."
+            });
+            return;
+          }
+
+          callback(null, {
+            statusCode: 200,
+            body: JSON.stringify(dynamoDBParams.Item),
+            headers: {
+              'Content-Type': 'application/json',
+              'Access-Control-Allow-Origin': '*'
+            }
+          });
+        });
       });
   });
 };
@@ -115,15 +107,11 @@ module.exports.addLike = (event, context, callback) => {
   const { userId, id } = data;
 
   const params = {
-    TableName: process.env.DYNAMODB_TABLE,
-    Key: {
-      id
-    }
+    TableName: process.env.DYNAMODB_DATA_TABLE,
+    Key: { id }
   };
 
-  // fetch record from the database
-  dynamoDb.get(params, (error, result) => {
-    // handle potential errors
+  dynamoDbData.get(params, (error, result) => {
     if (error) {
       console.error(error);
       callback(null, {
@@ -133,14 +121,14 @@ module.exports.addLike = (event, context, callback) => {
       });
       return;
     }
+
     const likedUsers = result.Item.liked_users || [];
     likedUsers.push(userId);
     const uniqueUsers = [...new Set(likedUsers)];
-    const params = {
-      TableName: process.env.DYNAMODB_TABLE,
-      Key: {
-        id: data.id
-      },
+
+    const dynamoDbParams = {
+      TableName: process.env.DYNAMODB_DATA_TABLE,
+      Key: { id },
       ExpressionAttributeValues: {
         ':l': uniqueUsers.length,
         ':u': uniqueUsers
@@ -149,11 +137,9 @@ module.exports.addLike = (event, context, callback) => {
       ReturnValues: 'ALL_NEW'
     };
 
-    // update the record in the database
-    dynamoDb.update(params, (error, result) => {
-      // handle potential errors
-      if (error) {
-        console.error(error);
+    dynamoDbData.update(dynamoDbParams, (err, updated) => {
+      if (err) {
+        console.error(err);
         callback(null, {
           statusCode: error.statusCode || 501,
           headers: { 'Content-Type': 'text/plain' },
@@ -162,82 +148,64 @@ module.exports.addLike = (event, context, callback) => {
         return;
       }
 
-      // create a response
-      const response = {
+      callback(null, {
         statusCode: 200,
-        body: JSON.stringify(result.Attributes)
-      };
-      callback(null, response);
+        body: JSON.stringify(updated.Attributes)
+      });
     });
   });
 };
 
 module.exports.removeLike = (event, context, callback) => {
+  const data = JSON.parse(Buffer.from(event.body, 'base64').toString());
+  const { userId, id } = data;
+
   const params = {
-    TableName: process.env.DYNAMODB_TABLE,
-    Key: {
-      id: event.pathParameters.id
-    }
+    TableName: process.env.DYNAMODB_DATA_TABLE,
+    Key: { id }
   };
 
-  // fetch record from the database
-  dynamoDb.get(params, (error, result) => {
-    // handle potential errors
+  dynamoDbData.get(params, (error, result) => {
     if (error) {
       console.error(error);
       callback(null, {
         statusCode: error.statusCode || 501,
-        headers: {
-          'Content-Type': 'text/plain',
-          'Content-Type': 'application/json',
-          'Access-Control-Allow-Origin': '*'
-        },
+        headers: { 'Content-Type': 'text/plain' },
         body: "Couldn't fetch the record item."
       });
       return;
     }
 
-    const likeCount = result.Item.liked;
+    const likedUsers = new Set(result.Item.liked_users || []);
+    likedUsers.delete(userId);
+    const uniqueUsers = [...likedUsers];
 
-    const params = {
-      TableName: process.env.DYNAMODB_TABLE,
-      Key: {
-        id: event.pathParameters.id
-      },
+    const dynamoDbParams = {
+      TableName: process.env.DYNAMODB_DATA_TABLE,
+      Key: { id },
       ExpressionAttributeValues: {
-        ':l': likeCount > 0 ? likeCount - 1 : 0
+        ':l': uniqueUsers.length,
+        ':u': uniqueUsers
       },
-      UpdateExpression: 'SET liked=:l',
+      UpdateExpression: 'SET liked=:l, liked_users=:u',
       ReturnValues: 'ALL_NEW'
     };
 
-    // update the record in the database
-    dynamoDb.update(params, (error, result) => {
-      // handle potential errors
-      if (error) {
-        console.error(error);
+    dynamoDbData.update(dynamoDbParams, (err, updated) => {
+      if (err) {
+        console.error(err);
         callback(null, {
           statusCode: error.statusCode || 501,
-          headers: {
-            'Content-Type': 'text/plain',
-            'Content-Type': 'application/json',
-            'Access-Control-Allow-Origin': '*'
-          },
+          headers: { 'Content-Type': 'text/plain' },
           body: "Couldn't fetch the record item."
         });
         return;
       }
 
-      // create a response
-      const response = {
+      callback(null, {
         statusCode: 200,
-        body: JSON.stringify(result.Attributes),
-        headers: {
-          'Content-Type': 'application/json',
-          'Access-Control-Allow-Origin': '*'
-        }
-      };
-      callback(null, response);
+        body: JSON.stringify(updated.Attributes)
+      });
     });
   });
 };
