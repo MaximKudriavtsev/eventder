@@ -232,7 +232,6 @@ module.exports.getRecords = (event, context, callback) => {
       }
     })
     .then(geoItems => {
-      console.log(geoItems);
       const dynamoDbParams = {
         TableName: process.env.DYNAMODB_DATA_TABLE,
         RequestItems: {
@@ -255,7 +254,16 @@ module.exports.getRecords = (event, context, callback) => {
           return;
         }
 
-        callback(null, response(data));
+        const items = Array.from(
+          data.Responses[process.env.DYNAMODB_DATA_TABLE]
+        );
+
+        const startTimestamp = Number(startTime);
+        const filteringFunction = item =>
+          item.taken_at_timestamp > startTimestamp;
+        const filteredItems = items.filter(filteringFunction);
+
+        callback(null, response(filteredItems));
       });
     });
 };
