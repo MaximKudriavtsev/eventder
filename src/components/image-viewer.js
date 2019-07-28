@@ -142,7 +142,7 @@ ImageViewer.propTypes = {
 };
 
 export default connect(
-  () => undefined,
+  () => ({}),
   dispatch => ({
     actions: bindActionCreators({ addLike, removeLike }, dispatch)
   })

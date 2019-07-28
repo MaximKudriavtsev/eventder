@@ -1,6 +1,9 @@
 # Eventder
 The Eventder
 
+Enable CORS - https://stackoverflow.com/questions/40149788/aws-api-gateway-cors-ok-for-options-fail-for-post
+Enable CORS SLS - https://serverless.com/blog/cors-api-gateway-survival-guide/#cors-preflight-requests
+
 ## userData from Cookie
 
 ```js
