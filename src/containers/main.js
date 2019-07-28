@@ -30,7 +30,11 @@ class Main extends React.PureComponent {
       userLocation
     } = this.props;
 
-    actions.getAppPosts();
+    actions.getAppPosts({
+      location: userLocation,
+      searchRadius,
+      searchTimeInterval: 0 // 0 - fetch data from all time
+    });
     actions.getVkPosts({
       location: userLocation,
       searchRadius,

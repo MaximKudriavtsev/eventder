@@ -55,7 +55,10 @@ module.exports.save = (event, context, callback) => {
         statusCode: error.statusCode || 501,
         headers: {
           'Content-Type': 'application/json',
-          'Access-Control-Allow-Origin': '*'
+          'Access-Control-Allow-Origin': '*',
+          'Access-Control-Allow-Methods': 'DELETE, POST, GET, OPTIONS',
+          'Access-Control-Allow-Headers':
+            'Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With'
         },
         body: JSON.stringify({ error: "Couldn't create the image item s3." })
       });
@@ -83,7 +86,13 @@ module.exports.save = (event, context, callback) => {
             console.error(errorDB);
             callback(null, {
               statusCode: errorDB.statusCode || 501,
-              headers: { 'Content-Type': 'text/plain' },
+              headers: {
+                'Content-Type': 'text/plain',
+                'Access-Control-Allow-Origin': '*',
+                'Access-Control-Allow-Methods': 'DELETE, POST, GET, OPTIONS',
+                'Access-Control-Allow-Headers':
+                  'Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With'
+              },
               body: "Couldn't create the file item dynamoDB."
             });
             return;
@@ -94,7 +103,10 @@ module.exports.save = (event, context, callback) => {
             body: JSON.stringify(dynamoDBParams.Item),
             headers: {
               'Content-Type': 'application/json',
-              'Access-Control-Allow-Origin': '*'
+              'Access-Control-Allow-Origin': '*',
+              'Access-Control-Allow-Methods': 'DELETE, POST, GET, OPTIONS',
+              'Access-Control-Allow-Headers':
+                'Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With'
             }
           });
         });
@@ -116,7 +128,13 @@ module.exports.addLike = (event, context, callback) => {
       console.error(error);
       callback(null, {
         statusCode: error.statusCode || 501,
-        headers: { 'Content-Type': 'text/plain' },
+        headers: {
+          'Content-Type': 'text/plain',
+          'Access-Control-Allow-Origin': '*',
+          'Access-Control-Allow-Methods': 'DELETE, POST, GET, OPTIONS',
+          'Access-Control-Allow-Headers':
+            'Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With'
+        },
         body: "Couldn't fetch the record item."
       });
       return;
@@ -142,7 +160,13 @@ module.exports.addLike = (event, context, callback) => {
         console.error(err);
         callback(null, {
           statusCode: error.statusCode || 501,
-          headers: { 'Content-Type': 'text/plain' },
+          headers: {
+            'Content-Type': 'text/plain',
+            'Access-Control-Allow-Origin': '*',
+            'Access-Control-Allow-Methods': 'DELETE, POST, GET, OPTIONS',
+            'Access-Control-Allow-Headers':
+              'Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With'
+          },
           body: "Couldn't fetch the record item."
         });
         return;
@@ -170,7 +194,13 @@ module.exports.removeLike = (event, context, callback) => {
       console.error(error);
       callback(null, {
         statusCode: error.statusCode || 501,
-        headers: { 'Content-Type': 'text/plain' },
+        headers: {
+          'Content-Type': 'text/plain',
+          'Access-Control-Allow-Origin': '*',
+          'Access-Control-Allow-Methods': 'DELETE, POST, GET, OPTIONS',
+          'Access-Control-Allow-Headers':
+            'Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With'
+        },
         body: "Couldn't fetch the record item."
       });
       return;
@@ -196,7 +226,13 @@ module.exports.removeLike = (event, context, callback) => {
         console.error(err);
         callback(null, {
           statusCode: err.statusCode || 501,
-          headers: { 'Content-Type': 'text/plain' },
+          headers: {
+            'Content-Type': 'text/plain',
+            'Access-Control-Allow-Origin': '*',
+            'Access-Control-Allow-Methods': 'DELETE, POST, GET, OPTIONS',
+            'Access-Control-Allow-Headers':
+              'Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With'
+          },
           body: "Couldn't fetch the record item."
         });
         return;
@@ -212,6 +248,8 @@ module.exports.removeLike = (event, context, callback) => {
 
 // should be used for get records
 module.exports.getRecords = (event, context, callback) => {
+  console.log(event);
+  console.log(context);
   const { lat, lng, radius, startTime } = event.queryStringParameters;
 
   const response = res => ({
@@ -219,7 +257,10 @@ module.exports.getRecords = (event, context, callback) => {
     body: JSON.stringify(res),
     headers: {
       'Content-Type': 'application/json',
-      'Access-Control-Allow-Origin': '*'
+      'Access-Control-Allow-Origin': '*',
+      'Access-Control-Allow-Methods': 'DELETE, POST, GET, OPTIONS',
+      'Access-Control-Allow-Headers':
+        'Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With'
     }
   });
 
@@ -243,12 +284,32 @@ module.exports.getRecords = (event, context, callback) => {
         }
       };
 
+      if (geoItems.length === 0) {
+        callback(null, {
+          statusCode: 200,
+          headers: {
+            'Content-Type': 'text/plain',
+            'Access-Control-Allow-Origin': '*',
+            'Access-Control-Allow-Methods': 'DELETE, POST, GET, OPTIONS',
+            'Access-Control-Allow-Headers':
+              'Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With'
+          },
+          body: JSON.stringify([])
+        });
+      }
+
       dynamoDbData.batchGet(dynamoDbParams, (err, data) => {
         if (err) {
           console.error(err);
           callback(null, {
             statusCode: err.statusCode || 501,
-            headers: { 'Content-Type': 'text/plain' },
+            headers: {
+              'Content-Type': 'text/plain',
+              'Access-Control-Allow-Origin': '*',
+              'Access-Control-Allow-Methods': 'DELETE, POST, GET, OPTIONS',
+              'Access-Control-Allow-Headers':
+                'Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With'
+            },
             body: "Couldn't fetch the record item."
           });
           return;

@@ -43,11 +43,19 @@ const getVkPostsComputedBase = (
     .then(res => res);
 };
 
-const getEventderPostsComputed = () => {
+const getEventderPostsComputed = (
+  lat,
+  lng,
+  searchRadius, // meters
+  searchTimeInterval
+) => {
   return fetch(
-    'https://j0mho994nd.execute-api.eu-central-1.amazonaws.com/dev/records',
+    `https://pgu80wwqs6.execute-api.eu-central-1.amazonaws.com/dev/getRecords?lat=${lat}&lng=${lng}&radius=${searchRadius}&startTime=${searchTimeInterval}`,
     {
-      mode: 'cors'
+      mode: 'cors',
+      headers: {
+        'Content-Type': 'application/json'
+      }
     }
   )
     .then(res => res.json())
@@ -157,12 +165,22 @@ function* getUserLocationSaga() {
 function createEventChannelApp({ location, searchRadius, searchTimeInterval }) {
   return eventChannel(emitter => {
     // initial call
-    getEventderPostsComputed().then(res => emitter(res));
+    getEventderPostsComputed(
+      location[0],
+      location[1],
+      searchRadius,
+      searchTimeInterval
+    ).then(res => emitter(res));
     let endCallsTime = 500; // ~ 1.6 hour
     const iv = setInterval(() => {
       endCallsTime -= 1;
       if (endCallsTime > 0) {
-        getEventderPostsComputed().then(res => emitter(res));
+        getEventderPostsComputed(
+          location[0],
+          location[1],
+          searchRadius,
+          searchTimeInterval
+        ).then(res => emitter(res));
       } else {
         emitter(END);
       }
@@ -175,12 +193,12 @@ function createEventChannelApp({ location, searchRadius, searchTimeInterval }) {
 
 // eslint-disable-next-line no-unused-vars
 function* getAppPostsBase({ payload }) {
-  // const { location, searchRadius, searchTimeInterval } = payload;
+  const { location, searchRadius, searchTimeInterval } = payload;
 
   const appChain = yield call(createEventChannelApp, {
-    // location,
-    // searchRadius,
-    // searchTimeInterval
+    location,
+    searchRadius,
+    searchTimeInterval
   });
   try {
     while (true) {
