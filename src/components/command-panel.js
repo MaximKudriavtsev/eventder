@@ -2,7 +2,11 @@ import * as React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { publishUserFile, changeViewport } from '../actions/actions';
+import {
+  publishUserFile,
+  changeViewport,
+  setAlertMessage
+} from '../actions/actions';
 import {
   inputContainer,
   fileInput,
@@ -31,7 +35,9 @@ class CommandPanel extends React.PureComponent {
         ownerId
       });
     } else {
-      alert('Для публикации фото необходимо зарегистрироваться');
+      actions.setAlertMessage(
+        'Для публикации фото необходимо зарегистрироваться'
+      );
     }
   }
 
@@ -85,6 +91,13 @@ export default connect(
     ownerId: store.userData && store.userData.identities[0].userId
   }),
   dispatch => ({
-    actions: bindActionCreators({ publishUserFile, changeViewport }, dispatch)
+    actions: bindActionCreators(
+      {
+        publishUserFile,
+        changeViewport,
+        setAlertMessage
+      },
+      dispatch
+    )
   })
 )(CommandPanel);

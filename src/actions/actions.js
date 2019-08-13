@@ -102,3 +102,8 @@ export const setMobileDevice = () => ({
   type: ActionTypes.SET_MOBILE_DEVICE,
   payload: isMobileDevice()
 });
+
+export const setAlertMessage = payload => ({
+  type: ActionTypes.SET_ALERT_MESSAGE,
+  payload
+});

@@ -4,6 +4,7 @@ import Landing from './landing';
 import Main from './main';
 import Settings from '../components/utils/settings';
 import ErrorPage from '../components/error-page';
+import AlertMessage from '../components/alert-message';
 
 export default () => (
   <BrowserRouter basename={process.env.BASE_NAME}>
@@ -13,5 +14,6 @@ export default () => (
       <Route path="*" component={ErrorPage} />
     </Switch>
     <Settings />
+    <AlertMessage />
   </BrowserRouter>
 );

@@ -7,6 +7,7 @@ const initialState = {
   userData: null,
   currentPostId: null,
   currentPostsData: {},
+  alertMessage: null,
 
   viewport: {
     center: [40.776354, -73.969687],
@@ -31,6 +32,13 @@ export default (state = initialState, { type, payload }) => {
       return {
         ...state,
         loading: true
+      };
+    }
+
+    case ActionTypes.SET_ALERT_MESSAGE: {
+      return {
+        ...state,
+        alertMessage: payload
       };
     }
 
