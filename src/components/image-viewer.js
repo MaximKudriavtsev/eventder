@@ -2,7 +2,7 @@ import * as React from 'react';
 import * as PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { addLike, removeLike } from '../actions/actions';
+import { addLike, removeLike, setAlertMessage } from '../actions/actions';
 import { container, mainText, childText } from './post-preview.scss';
 import {
   previewMain,
@@ -49,6 +49,7 @@ class ImageViewer extends React.PureComponent {
 
     this.toggleLoading = this.toggleLoading.bind(this);
     this.setLike = this.setLike.bind(this);
+    this.toggleLike = this.toggleLike.bind(this);
   }
 
   setLike(value) {
@@ -69,13 +70,25 @@ class ImageViewer extends React.PureComponent {
     this.setState({ isLoading: false });
   }
 
+  toggleLike() {
+    const { data, userId, actions } = this.props;
+    if (userId) {
+      const isLiked = isLikedMyself(data.liked_users, userId);
+      this.setLike(!isLiked);
+    } else {
+      actions.setAlertMessage({
+        message: 'Необходимо ',
+        linkMessage: 'зарегистрироваться'
+      });
+    }
+  }
+
   render() {
     const { isLoading } = this.state;
     const { data, userId } = this.props;
 
     const isLiked = isLikedMyself(data.liked_users, userId);
     const likeCount = data.liked;
-    const toggleLike = () => this.setLike(!isLiked);
 
     return (
       <div className={previewMain} key={data.id}>
@@ -103,7 +116,7 @@ class ImageViewer extends React.PureComponent {
             </p>
           </div>
           <div className={container}>
-            <div className={mainText} onClick={toggleLike}>
+            <div className={mainText} onClick={this.toggleLike}>
               {isLiked ? (
                 <img src={HeartFull} className={likeImage} alt="liked" />
               ) : (
@@ -144,6 +157,9 @@ ImageViewer.propTypes = {
 export default connect(
   () => ({}),
   dispatch => ({
-    actions: bindActionCreators({ addLike, removeLike }, dispatch)
+    actions: bindActionCreators(
+      { addLike, removeLike, setAlertMessage },
+      dispatch
+    )
   })
 )(ImageViewer);
