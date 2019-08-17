@@ -21,23 +21,29 @@ class CommandPanel extends React.PureComponent {
     super(props);
 
     this.onChangeHandler = this.onChangeHandler.bind(this);
+    this.onClickHandler = this.onClickHandler.bind(this);
     this.resetCurrentLocation = this.resetCurrentLocation.bind(this);
   }
 
   onChangeHandler(event) {
     const { actions, userLocation, ownerId } = this.props;
-    if (ownerId) {
-      const file = event.target.files[0];
-      actions.publishUserFile({
-        file,
-        lat: userLocation[0],
-        lng: userLocation[1],
-        ownerId
+    const file = event.target.files[0];
+    actions.publishUserFile({
+      file,
+      lat: userLocation[0],
+      lng: userLocation[1],
+      ownerId
+    });
+  }
+
+  onClickHandler(event) {
+    const { actions, ownerId } = this.props;
+    if (!ownerId) {
+      event.preventDefault();
+      actions.setAlertMessage({
+        message: 'Для публикации фото необходимо ',
+        linkMessage: 'зарегистрироваться'
       });
-    } else {
-      actions.setAlertMessage(
-        'Для публикации фото необходимо зарегистрироваться'
-      );
     }
   }
 
@@ -60,6 +66,7 @@ class CommandPanel extends React.PureComponent {
             type="file"
             name="file"
             onChange={this.onChangeHandler}
+            onClick={this.onClickHandler}
           />
           <img src={camera} alt="add post" className={inputButton} />
         </label>

@@ -7,7 +7,10 @@ const initialState = {
   userData: null,
   currentPostId: null,
   currentPostsData: {},
-  alertMessage: null,
+  alertMessage: {
+    message: null,
+    linkMessage: null
+  },
 
   viewport: {
     center: [40.776354, -73.969687],

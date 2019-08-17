@@ -4,37 +4,38 @@ import { Alert } from 'reactstrap';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { setAlertMessage } from '../actions/actions';
+import SignUp from './utils/sign-up';
+import { root, container } from './alert-message.scss';
 
-const AlertMessage = ({ message }) => {
-  if (!message) return null;
+const AlertMessage = ({ alertMessage, actions }) => {
+  if (!alertMessage.message) return null;
   return (
-    <div
-      style={{ position: 'absolute', top: '5%', width: '100%', zIndex: 10000 }}
-    >
-      <div
-        style={{
-          display: 'flex',
-          alignSelf: 'center',
-          justifyContent: 'center'
-        }}
-      >
-        <Alert color="info">{message}</Alert>
+    <div className={root}>
+      <div className={container}>
+        <Alert color="info" toggle={() => actions.setAlertMessage({})}>
+          {alertMessage.message}
+          <SignUp>{alertMessage.linkMessage}</SignUp>
+        </Alert>
       </div>
     </div>
   );
 };
 
 AlertMessage.propTypes = {
-  message: PropTypes.string
+  alertMessage: PropTypes.shape({
+    message: PropTypes.string,
+    linkMessage: PropTypes.string
+  }),
+  actions: PropTypes.shape({}).isRequired
 };
 
 AlertMessage.defaultProps = {
-  message: undefined
+  alertMessage: {}
 };
 
 export default connect(
   store => ({
-    message: store.alertMessage
+    alertMessage: store.alertMessage
   }),
   dispatch => ({
     actions: bindActionCreators({ setAlertMessage }, dispatch)
