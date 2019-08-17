@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { Link } from 'react-router-dom';
-import { verticalAlignment } from './initial-page.scss';
+import { verticalAlignment, title } from './initial-page.scss';
 import SignUp from './utils/sign-up';
 import SignOut from './utils/sign-out';
 
@@ -11,14 +11,14 @@ const InitialPage = ({ userData }) => (
       <div className="col-2 col-xl-4" />
       <div className="col-8 col-xl-4">
         <div className={verticalAlignment}>
-          <h1 className="display-4 text-center">Eventder</h1>
+          <h1 className={`display-4 text-center ${title}`}>Eventder</h1>
           <br />
           {userData ? (
             <div>
               <h6 className="text-center">{`Привет, ${userData.name}!`}</h6>
               <br />
               <Link to="/main">
-                <button type="button" className="btn btn-success w-100">
+                <button type="button" className="btn btn-info w-100">
                   Открыть карту
                 </button>
               </Link>
@@ -37,7 +37,7 @@ const InitialPage = ({ userData }) => (
               </h6>
               <br />
               <SignUp>
-                <button type="button" className="btn btn-success w-100">
+                <button type="button" className="btn btn-info w-100">
                   Регистрация
                 </button>
               </SignUp>
