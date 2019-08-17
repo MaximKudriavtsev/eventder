@@ -1,34 +1,58 @@
 import * as React from 'react';
 import { Link } from 'react-router-dom';
-import { root, title, logoContainer } from './initial-page.scss';
+import { verticalAlignment } from './initial-page.scss';
 import SignUp from './utils/sign-up';
 import SignOut from './utils/sign-out';
 
 /* eslint-disable react/prop-types */
 const InitialPage = ({ userData }) => (
-  <div className={root}>
-    <div className={logoContainer}>
-      <span className={title}>EVENTDER</span>
-      {userData ? (
-        <div>
-          <p>{`Привет, ${userData.name}!`}</p>
-          <Link to="/main">
-            <div>Открыть карту</div>
-          </Link>
+  <div className="container">
+    <div className="row">
+      <div className="col-2 col-xl-4" />
+      <div className="col-8 col-xl-4">
+        <div className={verticalAlignment}>
+          <h1 className="display-4 text-center">Eventder</h1>
           <br />
-          <SignOut>
-            <a href="/">Выйти</a>
-          </SignOut>
+          {userData ? (
+            <div>
+              <h6 className="text-center">{`Привет, ${userData.name}!`}</h6>
+              <br />
+              <Link to="/main">
+                <button type="button" className="btn btn-success w-100">
+                  Открыть карту
+                </button>
+              </Link>
+              <br />
+              <br />
+              <SignOut>
+                <button type="button" className="btn btn-light w-100">
+                  Выйти
+                </button>
+              </SignOut>
+            </div>
+          ) : (
+            <React.Fragment>
+              <h6 className="text-center">
+                Зарегистрируйтесь, чтобы увидеть события поблизости.
+              </h6>
+              <br />
+              <SignUp>
+                <button type="button" className="btn btn-success w-100">
+                  Регистрация
+                </button>
+              </SignUp>
+              <br />
+              <br />
+              <Link to="/main/">
+                <button type="button" className="btn btn-light w-100">
+                  Войти как гость
+                </button>
+              </Link>
+            </React.Fragment>
+          )}
         </div>
-      ) : (
-        <React.Fragment>
-          <Link to="/main/">
-            <div>Войти как гость</div>
-          </Link>
-          <br />
-          <SignUp>Войти</SignUp>
-        </React.Fragment>
-      )}
+      </div>
+      <div className="col-2 col-xl-4" />
     </div>
   </div>
 );
