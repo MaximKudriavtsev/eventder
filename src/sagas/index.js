@@ -62,37 +62,46 @@ const getEventderPostsComputed = (
     .then(res => res);
 };
 
-const publishUserFileComputed = ({ file, lat, lng, ownerId }) => () => {
-  const reader = new FileReader();
-  reader.readAsBinaryString(file);
+function publishUserFileComputed({ file, lat, lng, ownerId }) {
+  return function* a() {
+    const reader = new FileReader();
+    reader.readAsBinaryString(file);
 
-  alert('Началась загрузка фото 🚀\nЭто может занять какое-то время');
-
-  fetch(
-    `https://pgu80wwqs6.execute-api.eu-central-1.amazonaws.com/dev/files?lat=${lat}&lng=${lng}&ownerId=${ownerId}`,
-    {
-      method: 'POST',
-      body: file,
-      mode: 'no-cors',
-      headers: {
-        'Content-Type': 'application/json'
-      }
+    try {
+      yield put(
+        actions.setAlertMessage({
+          message: 'Началась загрузка фото 🚀\nЭто может занять какое-то время'
+        })
+      );
+      yield call(() =>
+        fetch(
+          `https://pgu80wwqs6.execute-api.eu-central-1.amazonaws.com/dev/files?lat=${lat}&lng=${lng}&ownerId=${ownerId}`,
+          {
+            method: 'POST',
+            body: file,
+            mode: 'no-cors',
+            headers: {
+              'Content-Type': 'application/json'
+            }
+          }
+        ).then(res => {
+          res.text();
+        })
+      );
+      yield put(
+        actions.setAlertMessage({
+          message: 'Фото успешно загружено 👌'
+        })
+      );
+    } catch (error) {
+      yield put(
+        actions.setAlertMessage({
+          message: 'Фото не загрузилось 😱 \nПопробуй ещё раз'
+        })
+      );
     }
-  )
-    .then(res => {
-      res.text();
-    })
-    .then(() => {
-      put(actions.successPublishUserFile());
-      alert('Фото успешно загружено 👌');
-    })
-    .catch(error => {
-      put(actions.errorPublishUserFile(error));
-      alert('Фото не загрузилось 😱 \nПопробуй ещё раз');
-    });
-
-  put(actions.loading());
-};
+  };
+}
 
 function createEventChannelVk({ location, searchRadius, searchTimeInterval }) {
   let searchTime = searchTimeInterval;
