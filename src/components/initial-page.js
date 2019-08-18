@@ -74,7 +74,7 @@ const InitialPage = ({ userData, actions }) => (
           className={footerButton}
           onClick={() => actions.setAlertMessage({ message: AboutUs() })}
         >
-          О НАС
+          КОМАНДА
         </div>
         <div
           className={footerButton}
@@ -92,7 +92,7 @@ const InitialPage = ({ userData, actions }) => (
           className={footerButton}
           onClick={() => actions.setAlertMessage({ message: AboutApp() })}
         >
-          ПРИЛОЖЕНИЕ
+          О ПРИЛОЖЕНИИ
         </div>
       </div>
       <div className="col-2 col-xl-4" />
