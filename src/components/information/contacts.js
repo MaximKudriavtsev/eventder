@@ -9,8 +9,8 @@ export default () => (
       над ошибками.
     </p> */}
     <p>
-      По любым вопросам сотрудничества Вы можете писать на адрес электронной
-      почты:
+      По любым вопросам сотрудничества Вы можете обратиться по адресу
+      электронной почты:
     </p>
     <a href="mailto:mac.kudryavtsev@gmail.com?subject=Eventder%20Feedback">
       mac.kudryavtsev@gmail.com
