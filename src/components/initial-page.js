@@ -1,11 +1,19 @@
 import * as React from 'react';
 import { Link } from 'react-router-dom';
-import { verticalAlignment, title } from './initial-page.scss';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+import { setAlertMessage } from '../actions/actions';
+import { verticalAlignment, title, footerButton } from './initial-page.scss';
 import SignUp from './utils/sign-up';
 import SignOut from './utils/sign-out';
 
+import AboutUs from './information/about-us';
+import Contacts from './information/contacts';
+import AboutApp from './information/about-app';
+import Jobs from './information/jobs';
+
 /* eslint-disable react/prop-types */
-const InitialPage = ({ userData }) => (
+const InitialPage = ({ userData, actions }) => (
   <div className="container">
     <div className="row">
       <div className="col-2 col-xl-4" />
@@ -54,7 +62,51 @@ const InitialPage = ({ userData }) => (
       </div>
       <div className="col-2 col-xl-4" />
     </div>
+
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+
+    <div className="row">
+      <div className="col-2 col-xl-4" />
+      <div className="col-8 col-xl-4 text-center">
+        <div
+          className={footerButton}
+          onClick={() => actions.setAlertMessage({ message: AboutUs() })}
+        >
+          О НАС
+        </div>
+        <div
+          className={footerButton}
+          onClick={() => actions.setAlertMessage({ message: Contacts() })}
+        >
+          КОНТАКТЫ
+        </div>
+        <div
+          className={footerButton}
+          onClick={() => actions.setAlertMessage({ message: Jobs() })}
+        >
+          ВАКАНСИИ
+        </div>
+        <div
+          className={footerButton}
+          onClick={() => actions.setAlertMessage({ message: AboutApp() })}
+        >
+          ПРИЛОЖЕНИЕ
+        </div>
+      </div>
+      <div className="col-2 col-xl-4" />
+    </div>
   </div>
 );
 
-export default InitialPage;
+export default connect(
+  store => ({
+    userData: store.userData
+  }),
+  dispatch => ({
+    actions: bindActionCreators({ setAlertMessage }, dispatch)
+  })
+)(InitialPage);

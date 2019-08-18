@@ -23,7 +23,7 @@ const AlertMessage = ({ alertMessage, actions }) => {
 
 AlertMessage.propTypes = {
   alertMessage: PropTypes.shape({
-    message: PropTypes.string,
+    message: PropTypes.oneOfType([PropTypes.string, PropTypes.shape({})]),
     linkMessage: PropTypes.string
   }),
   actions: PropTypes.shape({}).isRequired

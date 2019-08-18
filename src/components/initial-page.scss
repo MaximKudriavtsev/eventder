@@ -16,3 +16,16 @@
 .verticalAlignment {
   margin-top: 23vh;
 }
+
+.footerButton {
+  cursor: pointer;
+  margin: 8px;
+  font-weight: bold;
+  color: #00b9cb;
+  font-size: 12px;
+  display: inline-block;
+}
+
+.footerButton:hover {
+  color: #007a85;
+}

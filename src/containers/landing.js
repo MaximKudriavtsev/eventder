@@ -1,17 +1,13 @@
 import * as React from 'react';
-import { connect } from 'react-redux';
 import InitialPage from '../components/initial-page';
 import Auth from '../components/utils/auth';
 
 /* eslint-disable react/prop-types */
-const Landing = props => {
-  const { userData } = props;
+export default props => {
   return (
     <React.Fragment>
       <Auth {...props} />
-      <InitialPage userData={userData} />
+      <InitialPage />
     </React.Fragment>
   );
 };
-
-export default connect(store => ({ userData: store.userData }))(Landing);
