@@ -8,7 +8,7 @@
   "private": true,
   "scripts": {
     "start": "parcel index.html --port 3000",
-    "build": "BASE_NAME=/site/ parcel build index.html --public-url /site/",
+    "build": "BASE_NAME=/site/ parcel build index.html --public-url /site/ --no-source-maps",
     "lint": "eslint .",
     "prettier": "prettier --write src/**/*.js",
     "stylelint": "stylelint '**/*.scss'"
