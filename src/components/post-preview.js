@@ -58,19 +58,21 @@ PostPreview.propTypes = {
 PostPreview.defaultProps = {
   userId: undefined,
   open: false,
-  postsData: {
-    id: 0,
-    display_url: '',
-    preview_url: '',
-    owner_id: 0,
-    taken_at_timestamp: 1,
-    location: {
-      lat: 0,
-      lng: 0,
-      name: '',
-      instagramId: 0
+  postsData: [
+    {
+      id: 0,
+      display_url: '',
+      preview_url: '',
+      owner_id: 0,
+      taken_at_timestamp: 1,
+      location: {
+        lat: 0,
+        lng: 0,
+        name: '',
+        instagramId: 0
+      }
     }
-  }
+  ]
 };
 
 export default connect(

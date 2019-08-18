@@ -6,7 +6,7 @@ const initialState = {
   userLocation: [null, null],
   userData: null,
   currentPostId: null,
-  currentPostsData: {},
+  currentPostsData: null,
   alertMessage: {
     message: null,
     linkMessage: null

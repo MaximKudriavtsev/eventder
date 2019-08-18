@@ -83,7 +83,7 @@ class CommandPanel extends React.PureComponent {
 
 CommandPanel.propTypes = {
   actions: PropTypes.shape({}).isRequired,
-  userLocation: PropTypes.number,
+  userLocation: PropTypes.arrayOf(PropTypes.number),
   ownerId: PropTypes.oneOfType([PropTypes.number, PropTypes.string])
 };
 

@@ -136,7 +136,7 @@ class ImageViewer extends React.PureComponent {
 
 ImageViewer.propTypes = {
   actions: PropTypes.shape({}).isRequired,
-  userId: PropTypes.oneOfType([PropTypes.number, PropTypes.string]).isRequired,
+  userId: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
   data: PropTypes.shape({
     id: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
     display_url: PropTypes.string,
@@ -152,6 +152,10 @@ ImageViewer.propTypes = {
     liked: PropTypes.number,
     liked_users: PropTypes.arrayOf(PropTypes.number)
   }).isRequired
+};
+
+ImageViewer.defaultProps = {
+  userId: null
 };
 
 export default connect(
