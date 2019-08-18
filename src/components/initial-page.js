@@ -66,8 +66,6 @@ const InitialPage = ({ userData, actions }) => (
     <br />
     <br />
     <br />
-    <br />
-    <br />
 
     <div className="row">
       <div className="col-2 col-xl-4" />
