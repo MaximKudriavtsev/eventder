@@ -5,6 +5,7 @@ import LeafletMap from '../components/leaflet-map/map';
 import PostPreview from '../components/post-preview';
 import PostPreviewMobile from '../components/post-preview-mobile';
 import CommandPanel from '../components/command-panel';
+import Guide from '../components/guide';
 import {
   setMobileDevice,
   getUserLocation,
@@ -43,7 +44,7 @@ class Main extends React.PureComponent {
   }
 
   render() {
-    const { isMobileDevice } = this.props;
+    const { isMobileDevice, isGuideOpen } = this.props;
 
     return (
       <React.Fragment>
@@ -52,6 +53,7 @@ class Main extends React.PureComponent {
         {isMobileDevice ? <PostPreviewMobile /> : <PostPreview />}
 
         <CommandPanel />
+        {isGuideOpen && <Guide />}
       </React.Fragment>
     );
   }
@@ -61,7 +63,8 @@ export default connect(
   store => ({
     userLocation: store.userLocation,
     searchRadius: store.searchRadius,
-    searchTimeInterval: store.searchTimeInterval
+    searchTimeInterval: store.searchTimeInterval,
+    isGuideOpen: store.isGuideOpen
   }),
   dispatch => ({
     actions: bindActionCreators(

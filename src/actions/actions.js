@@ -107,3 +107,8 @@ export const setAlertMessage = payload => ({
   type: ActionTypes.SET_ALERT_MESSAGE,
   payload
 });
+
+export const setGuideVisibility = payload => ({
+  type: ActionTypes.SET_GUIDE_VISIBILITY,
+  payload
+});

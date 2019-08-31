@@ -20,7 +20,9 @@ const initialState = {
   isMobileDevice: false,
 
   searchRadius: 800, // meters
-  searchTimeInterval: 1 // hours
+  searchTimeInterval: 1, // hours
+
+  isGuideOpen: true
 };
 
 export default (state = initialState, { type, payload }) => {
@@ -121,6 +123,13 @@ export default (state = initialState, { type, payload }) => {
       return {
         ...state,
         isMobileDevice: payload
+      };
+    }
+
+    case ActionTypes.SET_GUIDE_VISIBILITY: {
+      return {
+        ...state,
+        isGuideOpen: payload
       };
     }
 
