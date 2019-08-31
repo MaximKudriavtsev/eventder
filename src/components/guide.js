@@ -98,6 +98,7 @@ class Guide extends React.Component {
           onExiting={this.onExiting}
           onExited={this.onExited}
           key={item.src}
+          interval={8000}
         >
           <h4 style={{ textAlign: 'center', color: '#00b9cb' }}>
             {item.caption}
@@ -108,9 +109,9 @@ class Guide extends React.Component {
               backgroundSize: 'cover',
               backgroundRepeat: 'no-repeat',
               backgroundPosition: '50% 50%',
-              width: '100%',
               height: '100%',
-              maxHeight: '500px'
+              maxHeight: '500px',
+              marginLeft: '15px'
             }}
             src={item.src}
             alt={item.altText}
