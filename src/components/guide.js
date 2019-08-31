@@ -37,7 +37,7 @@ const items = [
     src: Guide2,
     caption: 'Тебя увидят окружающие!',
     text:
-      'Публикую фотографии текущего мероприятия, чтобы привлечь на них больше людей.'
+      'Публикуй фотографии текущего мероприятия, чтобы привлечь на них больше людей.'
   },
   {
     src: Guide3,
@@ -110,7 +110,7 @@ class Guide extends React.Component {
               backgroundPosition: '50% 50%',
               width: '100%',
               height: '100%',
-              maxHeight: '550px'
+              maxHeight: '500px'
             }}
             src={item.src}
             alt={item.altText}
