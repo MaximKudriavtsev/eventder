@@ -11,12 +11,22 @@ import {
   setMobileDevice,
   getUserLocation,
   getAppPosts,
-  getVkPosts
+  getVkPosts,
+  setGuideVisibility
 } from '../actions/actions';
+import checkCookie from '../utils/check-cookie';
 import 'leaflet/dist/leaflet.css';
 
 /* eslint-disable react/prop-types */
 class Main extends React.PureComponent {
+  constructor(props) {
+    super(props);
+
+    if (checkCookie('guide')) {
+      props.actions.setGuideVisibility(false);
+    }
+  }
+
   componentDidMount() {
     const { actions } = this.props;
 
@@ -72,6 +82,7 @@ export default connect(
   dispatch => ({
     actions: bindActionCreators(
       {
+        setGuideVisibility,
         setMobileDevice,
         getUserLocation,
         getAppPosts,

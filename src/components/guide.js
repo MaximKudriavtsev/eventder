@@ -5,6 +5,7 @@ import {
   CarouselControl,
   CarouselIndicators
 } from 'reactstrap';
+import Cookie from 'js-cookie';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { setGuideVisibility } from '../actions/actions';
@@ -76,6 +77,7 @@ class Guide extends React.Component {
     const { activeIndex } = this.state;
     const nextIndex = activeIndex === items.length - 1 ? 0 : activeIndex + 1;
     if (nextIndex === 0) {
+      Cookie.set('guide', true, { path: '/' });
       actions.setGuideVisibility(false);
     } else {
       this.setState({ activeIndex: nextIndex });
