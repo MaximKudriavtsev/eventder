@@ -88,7 +88,11 @@ class Guide extends React.Component {
     if (this.animating) return;
     const { activeIndex } = this.state;
     const nextIndex = activeIndex === 0 ? items.length - 1 : activeIndex - 1;
-    this.setState({ activeIndex: nextIndex });
+    if (nextIndex === items.length - 1) {
+      document.location.href = document.location.href.slice(0, -6);
+    } else {
+      this.setState({ activeIndex: nextIndex });
+    }
   }
 
   goToIndex(newIndex) {
