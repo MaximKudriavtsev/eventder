@@ -5,6 +5,7 @@ import LeafletMap from '../components/leaflet-map/map';
 import PostPreview from '../components/post-preview';
 import PostPreviewMobile from '../components/post-preview-mobile';
 import CommandPanel from '../components/command-panel';
+import preventSafariBoundEffect from '../utils/prevent-safari-bound';
 import Guide from '../components/guide';
 import {
   setMobileDevice,
@@ -21,6 +22,8 @@ class Main extends React.PureComponent {
 
     actions.setMobileDevice();
     actions.getUserLocation();
+
+    document.ontouchmove = preventSafariBoundEffect;
   }
 
   componentDidUpdate() {

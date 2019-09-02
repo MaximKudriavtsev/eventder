@@ -8,6 +8,7 @@ import {
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { setGuideVisibility } from '../actions/actions';
+import preventSafariBoundEffect from '../utils/prevent-safari-bound';
 
 import Guide0 from '../assets/guide-0-4.jpg';
 import Guide1 from '../assets/guide-1.jpg';
@@ -57,6 +58,10 @@ class Guide extends React.Component {
     this.onExited = this.onExited.bind(this);
   }
 
+  componentDidMount() {
+    document.ontouchmove = preventSafariBoundEffect;
+  }
+
   onExiting() {
     this.animating = true;
   }
@@ -104,18 +109,19 @@ class Guide extends React.Component {
             {item.caption}
           </h4>
           <h6 style={{ textAlign: 'center', color: '#00b9cb' }}>{item.text}</h6>
-          <img
-            style={{
-              backgroundSize: 'cover',
-              backgroundRepeat: 'no-repeat',
-              backgroundPosition: '50% 50%',
-              height: '100%',
-              maxHeight: '500px',
-              marginLeft: '15px'
-            }}
-            src={item.src}
-            alt={item.altText}
-          />
+          <div style={{ display: 'flex', justifyContent: 'center' }}>
+            <img
+              style={{
+                backgroundSize: 'cover',
+                backgroundRepeat: 'no-repeat',
+                backgroundPosition: '50% 50%',
+                height: '100%',
+                maxHeight: '440px'
+              }}
+              src={item.src}
+              alt={item.altText}
+            />
+          </div>
         </CarouselItem>
       );
     });
@@ -135,7 +141,6 @@ class Guide extends React.Component {
         <div
           style={{
             width: '100%',
-            maxWidth: '500px',
             margin: '0 auto',
             bottom: 0,
             position: 'absolute'
