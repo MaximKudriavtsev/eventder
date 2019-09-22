@@ -1,4 +1,5 @@
 import React from 'react';
+import { APP_NAME } from '../../credentials';
 
 export default () => (
   <div>
@@ -12,7 +13,7 @@ export default () => (
       решений.
     </p>
     <p>Ваше резюме и предложения присылайте по адресу электронной почты:</p>
-    <a href="mailto:mac.kudryavtsev@gmail.com?subject=Eventder%20Job">
+    <a href={`mailto:mac.kudryavtsev@gmail.com?subject=${APP_NAME}%20Job`}>
       mac.kudryavtsev@gmail.com
     </a>
   </div>

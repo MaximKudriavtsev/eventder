@@ -6,6 +6,7 @@ import { setAlertMessage } from '../actions/actions';
 import { verticalAlignment, title, footerButton } from './initial-page.scss';
 import SignUp from './utils/sign-up';
 import SignOut from './utils/sign-out';
+import { APP_NAME } from '../credentials';
 
 import AboutUs from './information/about-us';
 import Contacts from './information/contacts';
@@ -19,7 +20,7 @@ const InitialPage = ({ userData, actions }) => (
       <div className="col-2 col-xl-4" />
       <div className="col-8 col-xl-4">
         <div className={verticalAlignment}>
-          <h1 className={`display-4 text-center ${title}`}>Eventder</h1>
+          <h1 className={`display-5 text-center ${title}`}>{APP_NAME}</h1>
           <br />
           {userData ? (
             <div>

@@ -16,7 +16,9 @@ import {
   headerRightButton
 } from './post-preview-mobile.scss';
 import preventSafariBoundEffect from '../utils/prevent-safari-bound';
+import { APP_NAME } from '../credentials';
 
+// TODO: try to remove this file
 class PostPreviewMobile extends React.PureComponent {
   componentDidMount() {
     document.ontouchmove = preventSafariBoundEffect;
@@ -34,7 +36,7 @@ class PostPreviewMobile extends React.PureComponent {
           >
             <img className={headerBackImage} src={leftChevron} alt="exit" />
           </div>
-          <div className={headerTitle}>Eventder</div>
+          <div className={headerTitle}>{APP_NAME}</div>
           <div className={headerRightButton} />
         </div>
 

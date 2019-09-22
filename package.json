@@ -1,7 +1,7 @@
 {
   "name": "eventder",
   "version": "0.0.1",
-  "description": "Eventder App",
+  "description": "Urban Pulse App",
   "repository": "https://github.com/MaximKudriavtsev/eventder",
   "author": "no@no.net",
   "license": "Licence",
@@ -75,6 +75,7 @@
     "react-slick": "^0.24.0",
     "reactstrap": "^8.0.0",
     "redux": "^4.0.1",
+    "react-helmet": "^5.2.1",
     "redux-saga": "^1.0.2"
   }
 }

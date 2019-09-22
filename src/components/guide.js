@@ -10,6 +10,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { setGuideVisibility } from '../actions/actions';
 import preventSafariBoundEffect from '../utils/prevent-safari-bound';
+import { APP_NAME } from '../credentials';
 
 import Guide0 from '../assets/guide-0-4.jpg';
 import Guide1 from '../assets/guide-1.jpg';
@@ -21,7 +22,7 @@ import Guide3 from '../assets/guide-3.jpg';
 const items = [
   {
     src: Guide0,
-    caption: 'Добро пожаловать в Eventder!',
+    caption: `Добро пожаловать в ${APP_NAME}!`,
     // eslint-disable-next-line react/jsx-one-expression-per-line
     text: (
       <React.Fragment>
@@ -33,7 +34,7 @@ const items = [
   {
     src: Guide1,
     caption: 'Все под рукой!',
-    text: 'Eventder показывает события, которые происходят сейчас вокруг тебя.'
+    text: `${APP_NAME} показывает события, которые происходят сейчас вокруг тебя.`
   },
   {
     src: Guide2,
