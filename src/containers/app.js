@@ -1,19 +1,18 @@
 import * as React from 'react';
-import { BrowserRouter, Route, Switch } from 'react-router-dom';
+import { HashRouter, Route, Switch } from 'react-router-dom';
 import Landing from './landing';
 import Main from './main';
 import Settings from '../components/utils/settings';
-import ErrorPage from '../components/error-page';
 import AlertMessage from '../components/alert-message';
 
 export default () => (
-  <BrowserRouter basename={process.env.BASE_NAME}>
+  <HashRouter basename={process.env.BASE_NAME}>
     <Switch>
       <Route path="/" exact component={Landing} />
       <Route path="/main" exact component={Main} />
-      <Route path="*" component={ErrorPage} />
+      <Route path="*" component={Landing} />
     </Switch>
     <Settings />
     <AlertMessage />
-  </BrowserRouter>
+  </HashRouter>
 );
