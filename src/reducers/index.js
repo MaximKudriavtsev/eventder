@@ -3,7 +3,7 @@ import * as ActionTypes from '../actions/action-types';
 const initialState = {
   posts: [],
   eventderPosts: [],
-  userLocation: [null, null],
+  userLocation: [40.776354, -73.969687],
   userData: null,
   currentPostId: null,
   currentPostsData: null,
