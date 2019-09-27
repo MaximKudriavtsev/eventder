@@ -18,7 +18,7 @@ export default () => (
       gtag('config', 'UA-140052799-1');`}
     </script>
 
-    <title>{APP_NAME}</title>
+    <title>{`${APP_NAME} - Присоединяйся к событиям вокруг тебя!`}</title>
 
     <meta
       name="description"
@@ -35,7 +35,5 @@ export default () => (
       property="og:image"
       content="https://i.ibb.co/VjPKp9q/eventder-preview-min.png"
     />
-
-    <link rel="icon" href="/src/assets/favicon.ico" type="image/x-icon" />
   </Helmet>
 );
