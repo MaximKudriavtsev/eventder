@@ -2,12 +2,12 @@ import * as React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { Map, TileLayer, Marker, Polygon } from 'react-leaflet';
+import { Map, TileLayer, Marker } from 'react-leaflet'; // Polygon
 import * as rootActions from '../../actions/actions';
 import ClusterMarker, { iconCreateFunction } from './cluster-marker';
 import { marker, map, eventderMarker } from './map.scss';
 import IconMarker, { CustomIcon2 } from './icon-marker';
-import circleCoordinates from '../../utils/circle-coordinates';
+// import circleCoordinates from '../../utils/circle-coordinates';
 import { TILE_LAYER_URL, MARKER_CURRENT_URL } from './constants';
 
 class LeafletMap extends React.PureComponent {
@@ -37,15 +37,15 @@ class LeafletMap extends React.PureComponent {
       posts,
       eventderPosts,
       userLocation,
-      viewport,
-      searchRadius
+      viewport
+      // searchRadius
     } = this.props;
 
     const initial = [userLocation[0] || 20, userLocation[1] || 20];
-    const polygonCircle = [
-      circleCoordinates(initial[0], initial[1], 1000), // outer ring km
-      circleCoordinates(initial[0], initial[1], (searchRadius * 2) / 1000) // hole km
-    ];
+    // const polygonCircle = [
+    //   circleCoordinates(initial[0], initial[1], 1000), // outer ring km
+    //   circleCoordinates(initial[0], initial[1], (searchRadius * 2) / 1000) // hole km
+    // ];
     return (
       <Map
         center={viewport.center}
@@ -101,7 +101,7 @@ class LeafletMap extends React.PureComponent {
             })
           }
         />
-        <Polygon positions={polygonCircle} color="#00b9cb" />
+        {/* <Polygon positions={polygonCircle} color="#00b9cb" /> */}
       </Map>
     );
   }
@@ -114,8 +114,8 @@ LeafletMap.propTypes = {
   viewport: PropTypes.shape({}).isRequired,
   posts: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
   eventderPosts: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
-  actions: PropTypes.shape({}).isRequired,
-  searchRadius: PropTypes.number.isRequired
+  actions: PropTypes.shape({}).isRequired
+  // searchRadius: PropTypes.number.isRequired
 };
 
 export default connect(
@@ -123,8 +123,8 @@ export default connect(
     userLocation: store.userLocation,
     posts: store.posts,
     eventderPosts: store.eventderPosts,
-    viewport: store.viewport,
-    searchRadius: store.searchRadius
+    viewport: store.viewport
+    // searchRadius: store.searchRadius
   }),
   dispatch => ({ actions: bindActionCreators(rootActions, dispatch) })
 )(LeafletMap);
