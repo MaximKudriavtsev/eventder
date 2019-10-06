@@ -39,19 +39,25 @@ class Main extends React.PureComponent {
   componentDidUpdate() {
     const {
       actions,
-      searchRadius,
+      // searchRadius,
       searchTimeInterval,
-      userLocation
+      // userLocation,
+      viewport
     } = this.props;
 
+    // eslint-disable-next-line no-restricted-properties
+    const nextRadius = (Math.pow(2, 20 - viewport.zoom) * 37.5) / 4;
+    console.log(nextRadius);
+    console.log(viewport.zoom);
+
     actions.getAppPosts({
-      location: userLocation,
-      searchRadius,
+      location: viewport.center,
+      searchRadius: 100000,
       searchTimeInterval: 0 // 0 - fetch data from all time
     });
     actions.getVkPosts({
-      location: userLocation,
-      searchRadius,
+      location: viewport.center,
+      searchRadius: nextRadius,
       searchTimeInterval
     });
   }
@@ -74,6 +80,7 @@ class Main extends React.PureComponent {
 
 export default connect(
   store => ({
+    viewport: store.viewport,
     userLocation: store.userLocation,
     searchRadius: store.searchRadius,
     searchTimeInterval: store.searchTimeInterval,

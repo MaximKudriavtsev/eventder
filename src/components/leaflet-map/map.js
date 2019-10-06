@@ -37,7 +37,8 @@ class LeafletMap extends React.PureComponent {
       posts,
       eventderPosts,
       userLocation,
-      viewport
+      viewport,
+      actions
       // searchRadius
     } = this.props;
 
@@ -51,9 +52,11 @@ class LeafletMap extends React.PureComponent {
         center={viewport.center}
         zoom={viewport.zoom}
         className={map}
-        maxZoom={23}
+        maxZoom={20}
+        minZoom={3}
         animate={false}
         viewport={viewport}
+        onViewportChanged={actions.changeViewport}
       >
         <TileLayer url={TILE_LAYER_URL} attribution={null} />
         <ClusterMarker

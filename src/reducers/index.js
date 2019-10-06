@@ -78,7 +78,7 @@ export default (state = initialState, { type, payload }) => {
     case ActionTypes.RECEIVE_VK_POSTS: {
       return {
         ...state,
-        posts: payload.posts,
+        posts: payload.posts.length ? payload.posts : state.posts,
         searchRadius: payload.searchRadius,
         searchTimeInterval: payload.searchTimeInterval
       };
@@ -108,7 +108,13 @@ export default (state = initialState, { type, payload }) => {
     case ActionTypes.CHANGE_VIEWPORT: {
       return {
         ...state,
-        viewport: payload
+        viewport: {
+          zoom: payload.zoom,
+          center: [
+            payload.center[0] || initialState.userLocation[0],
+            payload.center[1] || initialState.userLocation[1]
+          ]
+        }
       };
     }
 

@@ -6,9 +6,11 @@ import {
   take,
   takeLatest
 } from 'redux-saga/effects';
-import { eventChannel, END } from 'redux-saga';
+import { eventChannel } from 'redux-saga';
 import * as actions from '../actions/actions';
 import * as actionTypes from '../actions/action-types';
+
+const MAX_CALL_COUNT = 2;
 
 const makeDateInterval = hours =>
   Math.floor(new Date().getTime() / 1000 - hours * 60 * 60);
@@ -106,13 +108,15 @@ function publishUserFileComputed({ file, lat, lng, ownerId }) {
 function createEventChannelVk({ location, searchRadius, searchTimeInterval }) {
   let searchTime = searchTimeInterval;
   let radius = searchRadius;
+  let callCount = 0;
 
   const whileFetch = emitter => {
+    callCount += 1;
     getVkPostsComputedBase(location[0], location[1], radius, searchTime).then(
       res => {
-        if (res.length < 30) {
+        if (res.length < 30 && callCount < MAX_CALL_COUNT) {
           searchTime += 24; // time is not very important for searches
-          radius += 200; // vk api works fine with radius is above 1000
+          radius *= 1.5; // vk api works fine with radius is below 1000
           return whileFetch(emitter);
         }
         return emitter({
@@ -127,28 +131,28 @@ function createEventChannelVk({ location, searchRadius, searchTimeInterval }) {
   return eventChannel(emitter => {
     whileFetch(emitter);
 
-    let endCallsTime = 100; // ~ 1.6 hour
-    const iv = setInterval(() => {
-      endCallsTime -= 1;
-      if (endCallsTime > 0) {
-        getVkPostsComputedBase(
-          location[0],
-          location[1],
-          radius,
-          searchTime
-        ).then(res =>
-          emitter({
-            posts: res,
-            searchRadius: radius,
-            searchTimeInterval: searchTime
-          })
-        );
-      } else {
-        emitter(END);
-      }
-    }, 70000);
+    // let endCallsTime = 100; // ~ 1.6 hour
+    // const iv = setInterval(() => {
+    //   endCallsTime -= 1;
+    //   if (endCallsTime > 0) {
+    //     getVkPostsComputedBase(
+    //       location[0],
+    //       location[1],
+    //       radius,
+    //       searchTime
+    //     ).then(res =>
+    //       emitter({
+    //         posts: res,
+    //         searchRadius: radius,
+    //         searchTimeInterval: searchTime
+    //       })
+    //     );
+    //   } else {
+    //     emitter(END);
+    //   }
+    // }, 70000);
     return () => {
-      clearInterval(iv);
+      // clearInterval(iv);
     };
   });
 }
@@ -180,22 +184,22 @@ function createEventChannelApp({ location, searchRadius, searchTimeInterval }) {
       searchRadius,
       searchTimeInterval
     ).then(res => emitter(res));
-    let endCallsTime = 500; // ~ 1.6 hour
-    const iv = setInterval(() => {
-      endCallsTime -= 1;
-      if (endCallsTime > 0) {
-        getEventderPostsComputed(
-          location[0],
-          location[1],
-          searchRadius,
-          searchTimeInterval
-        ).then(res => emitter(res));
-      } else {
-        emitter(END);
-      }
-    }, 10000);
+    // let endCallsTime = 500; // ~ 1.6 hour
+    // const iv = setInterval(() => {
+    //   endCallsTime -= 1;
+    //   if (endCallsTime > 0) {
+    //     getEventderPostsComputed(
+    //       location[0],
+    //       location[1],
+    //       searchRadius,
+    //       searchTimeInterval
+    //     ).then(res => emitter(res));
+    //   } else {
+    //     emitter(END);
+    //   }
+    // }, 10000);
     return () => {
-      clearInterval(iv);
+      // clearInterval(iv);
     };
   });
 }
@@ -234,10 +238,12 @@ function* getVkPostsBase({ payload }) {
   try {
     while (true) {
       const vkPosts = yield take(vkChain);
+      console.log(vkPosts);
       yield put(actions.receiveVkPosts(vkPosts));
     }
   } finally {
     console.log('countdown terminated');
+    yield put(actions.receiveVkPosts({ posts: [] }));
   }
 }
 
